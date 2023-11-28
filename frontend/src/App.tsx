@@ -5,8 +5,8 @@ import Login from './pages/Login';
 import Register1 from './pages/Register/Register1';
 import Register2 from './pages/Register/Register2';
 import Register3 from './pages/Register/Register3';
-import Home from './pages/Home';
-import Posts from './pages/Posts';
+import Feed from './pages/Feed';
+import Post from './pages/Post';
 import Profile from './pages/Profile';
 import Layout from './pages/Layout';
 
@@ -27,8 +27,8 @@ function App() {
               </Route>
 
               <Route path='user/:id' element={<Layout navbar={true}/>}>
-                <Route path='home' element={<Home/>}/>
-                <Route path='posts' element={<Posts/>}/>
+                <Route path='home' element={<Feed/>}/>
+                <Route path='posts' element={<Post/>}/>
                 <Route path='profile' element={<Profile/>}/>
               </Route>
 

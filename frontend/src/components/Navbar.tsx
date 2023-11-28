@@ -21,7 +21,7 @@ function NavBar() {
                 value={value}
                 onChange={(event,newValue)=> setValue(newValue)}>
             <BottomNavigationAction label='Feed' icon={<HomeIcon/>}/>
-            <BottomNavigationAction label='Posts' icon={<AddToPhotosIcon/>}/>
+            <BottomNavigationAction label='Post' icon={<AddToPhotosIcon/>}/>
             <BottomNavigationAction label='Profile' icon={<PersonIcon/>}/>
         </BottomNavigation>
      );
