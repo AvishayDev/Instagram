@@ -1,6 +1,6 @@
 import {BottomNavigation, BottomNavigationAction} from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home';
-import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
+import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import PersonIcon from '@mui/icons-material/Person';
 import { useEffect, useState } from 'react';
 
@@ -20,8 +20,8 @@ function NavBar() {
                     bottom:0}}
                 value={value}
                 onChange={(event,newValue)=> setValue(newValue)}>
-            <BottomNavigationAction label='Home' icon={<HomeIcon/>}/>
-            <BottomNavigationAction label='Feed' icon={<DynamicFeedIcon/>}/>
+            <BottomNavigationAction label='Feed' icon={<HomeIcon/>}/>
+            <BottomNavigationAction label='Post' icon={<AddToPhotosIcon/>}/>
             <BottomNavigationAction label='Profile' icon={<PersonIcon/>}/>
         </BottomNavigation>
      );
