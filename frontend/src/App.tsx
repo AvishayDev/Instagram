@@ -27,8 +27,8 @@ function App() {
               </Route>
 
               <Route path='user/:id' element={<Layout navbar={true}/>}>
-                <Route path='home' element={<Feed/>}/>
-                <Route path='posts' element={<Post/>}/>
+                <Route path='feed' element={<Feed/>}/>
+                <Route path='post' element={<Post/>}/>
                 <Route path='profile' element={<Profile/>}/>
               </Route>
 
