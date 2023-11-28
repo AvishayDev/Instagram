@@ -1,4 +1,5 @@
 import { Stack, TextField, Button, Box } from "@mui/material";
+import {IMAGES} from './../Images'
 
 function Login() {
     return ( 
@@ -14,6 +15,8 @@ function Login() {
                     <Button variant="outlined" fullWidth>Register</Button>
                     <Button variant="contained" fullWidth>Login</Button>
                 </Stack>
+
+                <img src={IMAGES.instagramIcon}/>
             </Stack>
         </>
     );
