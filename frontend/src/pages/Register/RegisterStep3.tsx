@@ -5,7 +5,7 @@ import { TextareaAutosize } from '@mui/base';
 
 function RegisterStep3() {
     return ( 
-        <Stack spacing={4} sx={{width:'50vw'}}>
+        <Stack spacing={4}>
             
             <Box   
                 component='div'
