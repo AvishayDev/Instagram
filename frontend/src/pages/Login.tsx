@@ -4,7 +4,7 @@ import {IMAGES} from './../Images'
 function Login() {
     return ( 
         <>  
-            <Stack spacing={4} position="absolute">
+            <Stack spacing={4} position="absolute" sx={{width:'50vw'}}>
                 <TextField
                     label='Username'
                     />
@@ -15,8 +15,24 @@ function Login() {
                     <Button variant="outlined" fullWidth>Register</Button>
                     <Button variant="contained" fullWidth>Login</Button>
                 </Stack>
-
-                <img src={IMAGES.instagramIcon}/>
+                <Box>
+                    <Box   
+                        component='img'
+                        sx={{
+                            width:'100px',
+                            height:'100px',
+                            alignSelf:'center'
+                        }}
+                        src={IMAGES.instagramIcon}/>
+                    <Box
+                        component='img'
+                        sx={{
+                            width:'80%',
+                            bgcolor:'blue',
+                            alignSelf:'center',
+                        }}
+                        src={IMAGES.instagramIconText}/>
+                </Box>
             </Stack>
         </>
     );
