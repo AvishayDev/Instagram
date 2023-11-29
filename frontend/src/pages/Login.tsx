@@ -1,5 +1,41 @@
+import { Stack, TextField, Button, Box } from "@mui/material";
+import {IMAGES} from './../Images'
+
 function Login() {
-    return ( <h1>Login</h1> );
+    return ( 
+        <>  
+            <Stack spacing={4} sx={{width:'50vw',marginTop:4}}>
+                <TextField
+                    label='Username'
+                    />
+                <TextField
+                    label='Password'
+                    />
+                <Stack spacing={2} direction='row'>
+                    <Button variant="outlined" fullWidth>Register</Button>
+                    <Button variant="contained" fullWidth>Login</Button>
+                </Stack>
+                <Box>
+                    <Box   
+                        component='img'
+                        sx={{
+                            width:'100px',
+                            height:'100px',
+                            alignSelf:'center'
+                        }}
+                        src={IMAGES.instagramIcon}/>
+                    <Box
+                        component='img'
+                        sx={{
+                            width:'80%',
+                            bgcolor:'blue',
+                            alignSelf:'center',
+                        }}
+                        src={IMAGES.instagramIconText}/>
+                </Box>
+            </Stack>
+        </>
+    );
 }
 
 export default Login;
