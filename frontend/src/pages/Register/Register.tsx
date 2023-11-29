@@ -1,11 +1,19 @@
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { Outlet } from "react-router";
 
-
+interface RegisterProps {
+    hasBack:boolean
+    hasNext:boolean
+}
 
 function Register() {
     return ( 
         <Box sx={{width:'50vw', marginTop:4}}>
+
+            <Box sx={{marginBottom:4}}>
+                <Typography variant="h4" >Let's Register!</Typography>
+                <Typography variant="subtitle1">Just Few Steps and Your'e In!</Typography>
+            </Box>
 
             <Outlet/>
             
