@@ -2,13 +2,14 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import Login from './pages/Login';
-import Register1 from './pages/Register/Register1';
-import Register2 from './pages/Register/Register2';
-import Register3 from './pages/Register/Register3';
+import RegisterStep1 from './pages/Register/RegisterStep1';
+import RegisterStep2 from './pages/Register/RegisterStep2';
+import RegisterStep3 from './pages/Register/RegisterStep3';
 import Feed from './pages/Feed';
 import Post from './pages/Post';
 import Profile from './pages/Profile';
 import Layout from './pages/Layout';
+import Register from './pages/Register/Register';
 
 
 
@@ -21,9 +22,11 @@ function App() {
 
               <Route element={<Layout navbar={false}/>}>
                 <Route path='login' element={<Login/>}/>
-                <Route path='register1' element={<Register1/>}/>
-                <Route path='register2' element={<Register2/>}/>
-                <Route path='register3' element={<Register3/>}/>
+                <Route path='register' element={<Register/>}>
+                  <Route path='1' element={<RegisterStep1/>}/>
+                  <Route path='2' element={<RegisterStep2/>}/>
+                  <Route path='3' element={<RegisterStep3/>}/>
+                </Route>
               </Route>
 
               <Route path='user/:id' element={<Layout navbar={true}/>}>
