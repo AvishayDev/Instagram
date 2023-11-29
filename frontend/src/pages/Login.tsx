@@ -4,7 +4,7 @@ import {IMAGES} from './../Images'
 function Login() {
     return ( 
         <>  
-            <Stack spacing={4} position="absolute" sx={{width:'50vw'}}>
+            <Stack spacing={4} sx={{width:'50vw', bgcolor:'red',marginTop:4}}>
                 <TextField
                     label='Username'
                     />
