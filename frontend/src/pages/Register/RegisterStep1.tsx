@@ -7,9 +7,11 @@ function RegisterStep1() {
                 label='Username'
                     />
             <TextField
+                type="password"
                 label='Password'
                 />
             <TextField
+                type="password"
                 label='Re-password'
                 />
         </Stack> 

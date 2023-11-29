@@ -6,6 +6,7 @@ import { Outlet } from "react-router";
 function Register() {
     return ( 
         <Box sx={{width:'50vw', marginTop:4}}>
+
             <Outlet/>
             
             <Box sx={{

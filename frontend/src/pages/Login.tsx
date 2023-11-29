@@ -9,6 +9,7 @@ function Login() {
                     label='Username'
                     />
                 <TextField
+                    type="password"
                     label='Password'
                     />
                 <Stack spacing={2} direction='row'>
@@ -21,15 +22,12 @@ function Login() {
                         sx={{
                             width:'100px',
                             height:'100px',
-                            alignSelf:'center'
                         }}
                         src={IMAGES.instagramIcon}/>
                     <Box
                         component='img'
                         sx={{
                             width:'80%',
-                            bgcolor:'blue',
-                            alignSelf:'center',
                         }}
                         src={IMAGES.instagramIconText}/>
                 </Box>
