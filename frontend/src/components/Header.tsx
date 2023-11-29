@@ -1,9 +1,17 @@
-import { Typography } from "@mui/material";
+import { AppBar, Toolbar, Typography } from "@mui/material";
 
+
+interface HeaderProps {
+    text:string
+}
 
 function Header() {
     return ( 
-        <Typography>Header</Typography>
+        <AppBar position="static">
+            <Toolbar>
+                
+            </Toolbar>
+        </AppBar>
      );
 }
 

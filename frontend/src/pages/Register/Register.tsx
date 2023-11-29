@@ -1,7 +1,10 @@
 import { Box, Button, Stack } from "@mui/material";
 import { Outlet } from "react-router";
 
-
+interface RegisterProps {
+    hasBack:boolean
+    hasNext:boolean
+}
 
 function Register() {
     return ( 

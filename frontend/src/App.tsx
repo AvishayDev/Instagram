@@ -6,7 +6,7 @@ import RegisterStep1 from './pages/Register/RegisterStep1';
 import RegisterStep2 from './pages/Register/RegisterStep2';
 import RegisterStep3 from './pages/Register/RegisterStep3';
 import Feed from './pages/Feed';
-import Post from './pages/Post';
+import Share from './pages/Share';
 import Profile from './pages/Profile';
 import Layout from './pages/Layout';
 import Register from './pages/Register/Register';
@@ -31,7 +31,7 @@ function App() {
 
               <Route path='user/:id' element={<Layout hasNavbar={true}/>}>
                 <Route path='feed' element={<Feed/>}/>
-                <Route path='post' element={<Post/>}/>
+                <Route path='share' element={<Share/>}/>
                 <Route path='profile' element={<Profile/>}/>
               </Route>
 
