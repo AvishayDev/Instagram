@@ -4,7 +4,7 @@ import NavBar from "../components/Navbar";
 import { Box } from "@mui/material";
 
 interface LayoutProps {
-    navbar: boolean
+    hasNavbar: boolean
 }
 function Layout(props:LayoutProps) {
     return ( 
@@ -13,13 +13,12 @@ function Layout(props:LayoutProps) {
                 <Box sx={{
                     display:'flex',
                     justifyContent:'center',
-                    bgcolor:'green',
                     width:'100vw'
                 }}>
                     <Outlet/>
                 </Box>
             
-            {props.navbar && <NavBar/>}
+            {props.hasNavbar && <NavBar/>}
         </>
      );
 }

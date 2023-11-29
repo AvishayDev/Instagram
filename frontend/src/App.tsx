@@ -19,14 +19,14 @@ function App() {
         <Routes>
           <Route path='/'>
 
-              <Route element={<Layout navbar={false}/>}>
+              <Route element={<Layout hasNavbar={false}/>}>
                 <Route path='login' element={<Login/>}/>
                 <Route path='register1' element={<Register1/>}/>
                 <Route path='register2' element={<Register2/>}/>
                 <Route path='register3' element={<Register3/>}/>
               </Route>
 
-              <Route path='user/:id' element={<Layout navbar={true}/>}>
+              <Route path='user/:id' element={<Layout hasNavbar={true}/>}>
                 <Route path='feed' element={<Feed/>}/>
                 <Route path='post' element={<Post/>}/>
                 <Route path='profile' element={<Profile/>}/>
