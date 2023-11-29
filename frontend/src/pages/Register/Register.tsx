@@ -5,11 +5,10 @@ import { Outlet } from "react-router";
 
 function Register() {
     return ( 
-        <Box sx={{width:'50vw'}}>
+        <Box sx={{width:'50vw', marginTop:4}}>
             <Outlet/>
             
             <Box sx={{
-                bgcolor:'red',
                 display:'flex',
                 justifyContent: 'space-between',
                 marginTop: 4
