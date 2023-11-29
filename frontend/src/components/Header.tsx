@@ -1,8 +1,9 @@
+import { Typography } from "@mui/material";
 
 
 function Header() {
     return ( 
-        <h1>Header</h1>
+        <Typography>Header</Typography>
      );
 }
 

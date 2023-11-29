@@ -8,18 +8,19 @@ interface LayoutProps {
 }
 function Layout(props:LayoutProps) {
     return ( 
-        <>
+        <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+
             <Header/>
-                <Box sx={{
-                    display:'flex',
-                    justifyContent:'center',
-                    width:'100vw'
-                }}>
-                    <Outlet/>
-                </Box>
+            <Box sx={{
+                display:'flex',
+                justifyContent:'center',
+                flex:1
+            }}>
+                <Outlet/>
+            </Box>
             
             {props.hasNavbar && <NavBar/>}
-        </>
+        </Box>
      );
 }
 
