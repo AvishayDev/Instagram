@@ -34,7 +34,6 @@ function Post(props :PostProps) {
                         sx={{
                             width:'40px',
                             height:'40px',
-                            bgcolor:'blue',
                             borderRadius:'100%'
                             }}
                         src={props.userProfileImageUrl}
@@ -53,7 +52,6 @@ function Post(props :PostProps) {
                 component='img'
                 sx={{
                     height:'40vh',
-                    bgcolor:'green',
                     width:'100%'
                     }}
                 src={props.ImageUrl}
