@@ -1,10 +1,12 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, ImageList, ImageListItem } from "@mui/material";
+import { DEMO_PROFILE_IMAGES } from "../demoData";
+
 
 function Profile() {
     return ( 
 
-        <Stack spacing={6} width='100vw'>
-                <Stack spacing={4} alignItems='flex-start' margin={2}>
+        <Stack width='100vw'>
+                <Stack spacing={4} alignItems='flex-start' padding={2}>
                     <Box   
                             component='div'
                             sx={{
@@ -24,8 +26,18 @@ function Profile() {
                         <Typography variant="body2" align="left" sx={{width:'50vw'}}>woenfnf oewfmoi wedwdwd wdwd</Typography>
                     </Stack>
                 </Stack>
-                            
                 
+                <ImageList sx={{
+                        borderTop:'#d3d3d3 solid 1px',
+                        }} cols={3} rowHeight={160} >
+                            {
+                                DEMO_PROFILE_IMAGES.map((imageData, index)=> (
+                                    <ImageListItem key={index}>
+                                        <img src={imageData} loading="lazy"/>
+                                    </ImageListItem>
+                                ))
+                            }
+                </ImageList>
         </Stack>
         
         );
