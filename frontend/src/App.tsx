@@ -29,7 +29,7 @@ function App() {
                 </Route>
               </Route>
 
-              <Route path='user/:id' element={<Layout hasNavbar={true}/>}>
+              <Route element={<Layout hasNavbar={true}/>}>
                 <Route path='feed' element={<Feed/>}/>
                 <Route path='share' element={<Share/>}/>
                 <Route path='profile' element={<Profile/>}/>
