@@ -7,7 +7,7 @@ interface HeaderProps {
 
 function Header() {
     return ( 
-        <AppBar position="static" sx={{bgcolor:'#EFEFEF',color:'#151515',alignItems:'center'}}>
+        <AppBar position="static" sx={{bgcolor:'#EFEFEF',color:'#151515',alignItems:'center',marginBottom:1}}>
             <Toolbar>
                 <Typography variant="h5">Text</Typography>
             </Toolbar>
