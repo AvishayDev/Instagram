@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import { Outlet } from "react-router";
+import RegisterNavigation from "../../components/RegisterNavigation";
 
 
 function Register() {
@@ -13,14 +14,7 @@ function Register() {
 
             <Outlet/>
             
-            <Box sx={{
-                display:'flex',
-                justifyContent: 'space-between',
-                marginTop: 4
-                }}>
-                <Button variant="outlined"  sx={{height:'40px'}}>Back</Button>
-                <Button variant="contained" sx={{height:'40px'}}>Next</Button>
-            </Box>
+            <RegisterNavigation/>
         </Box>
      );
 }
