@@ -20,7 +20,7 @@ function Post(props :PostProps) {
 
 
     return (
-        <Box sx={{ width:'100vw', bgcolor:'red'}}>
+        <Box sx={{ width:'100vw', borderTop:'#d3d3d3 solid 1px'}}>
             
             <Box sx={{ 
                 display:'flex',
@@ -66,7 +66,7 @@ function Post(props :PostProps) {
                 
                 <Stack direction='row' alignItems='center'>
                     <IconButton onClick={()=>setIsLiked(!isLiked)}>{isLiked ? <FavoriteIcon/>:<FavoriteBorderIcon/>}</IconButton>
-                    <Typography>100 Likes</Typography>
+                    <Typography>{props.numOfLikes} Likes</Typography>
                 </Stack>
             </Stack>
             
