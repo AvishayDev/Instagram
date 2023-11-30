@@ -24,7 +24,7 @@ function Profile() {
                         <Typography variant="body2" align="left" sx={{width:'50vw'}}>woenfnf oewfmoi wedwdwd wdwd</Typography>
                     </Stack>
                 </Stack>
-
+                            
                 
         </Stack>
         

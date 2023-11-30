@@ -31,5 +31,25 @@ export const DEMO_DATA: {
                 text: "kuku - A'ha Glida Tova!",
                 isLiked: true,
                 numOfLikes: 7361,
+            },
+            {
+                userProfileImageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Field_in_K%C3%A4rk%C3%B6l%C3%A4.jpg/275px-Field_in_K%C3%A4rk%C3%B6l%C3%A4.jpg',
+                userFirstName: 'GoGo',
+                userLastName: 'PowerRangers',
+                uploadDate: new Date(),
+                ImageUrl: 'https://images.unsplash.com/photo-1558871585-4c3574a1b7cd?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmllbGRzfGVufDB8fDB8fHww',
+                text: "kuku - A'ha Glida Tova!",
+                isLiked: true,
+                numOfLikes: 342,
+            },
+            {
+                userProfileImageUrl: 'https://media.istockphoto.com/id/1414765339/photo/rows-of-newly-cut-cereal-plants-in-a-field-in-sussex-on-a-sunny-summers-day.jpg?s=612x612&w=0&k=20&c=oa_YAcw68WETFppnIJ-yGcFWEPEFo4LktzQ4ZYEMg9E=',
+                userFirstName: 'Tolo',
+                userLastName: 'Maroko',
+                uploadDate: new Date(),
+                ImageUrl: 'https://media.istockphoto.com/id/1319763440/photo/stubble-field-panorama-with-impressive-cloudscape.jpg?s=612x612&w=0&k=20&c=HhLv6TFzldoJjQd8QE8kg52d3ZgrD_laSyuC-oadNrQ=',
+                text: "kuku - A'ha Glida Tova!",
+                isLiked: false,
+                numOfLikes: 182,
             }
         ]
