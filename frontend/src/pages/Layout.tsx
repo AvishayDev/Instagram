@@ -9,13 +9,17 @@ interface LayoutProps {
 function Layout(props:LayoutProps) {
 
     return ( 
-        <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ 
+            height: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            }}>
 
             <Header/>
             <Box sx={{
                 display:'flex',
                 justifyContent:'center',
-                flex:1
+                flex:1,
             }}>
                 <Outlet/>
             </Box>

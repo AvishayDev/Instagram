@@ -26,7 +26,7 @@ function NavBar() {
         <BottomNavigation 
                 sx={{ 
                     width:'100%', 
-                    position: 'absolute', 
+                    position: 'sticky', 
                     borderTop: '#d3d3d3 solid 1px',
                     bottom:0}}
                 value={value}
