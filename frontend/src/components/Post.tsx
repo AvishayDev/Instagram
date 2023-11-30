@@ -15,8 +15,8 @@ interface PostProps {
 }
 
 
-function Post(props? :PostProps) {
-    const [isLiked,setIsLiked] = useState(false)
+function Post(props :PostProps) {
+    const [isLiked,setIsLiked] = useState(props.isLiked)
 
 
     return (
@@ -30,34 +30,39 @@ function Post(props? :PostProps) {
                 <Stack spacing={1} direction='row' alignItems='center'>
                     
                     <Box   
-                        component='div'
+                        component='img'
                         sx={{
                             width:'40px',
                             height:'40px',
                             bgcolor:'blue',
                             borderRadius:'100%'
-                            }}>
-                            img
+                            }}
+                        src={props.userProfileImageUrl}
+                        >
+                            
                     </Box>
                     
-                    <Typography>Fname Lname</Typography>
+                    <Typography>{props.userFirstName} {props.userLastName}</Typography>
                     
                 </Stack>
 
-                <Typography sx={{alignSelf:'center'}}>Date</Typography>
+                <Typography sx={{alignSelf:'center'}}>{props.uploadDate.getFullYear()}</Typography>
             </Box>
 
             <Box   
-                component='div'
+                component='img'
                 sx={{
                     height:'40vh',
                     bgcolor:'green',
-                    }}>
-                    img
+                    width:'100%'
+                    }}
+                src={props.ImageUrl}
+                >
+                    
             </Box>
             
             <Stack alignItems='flex-start'>
-                <Typography align="left" sx={{margin:1}}>ihaodnimfo klanusf sfsofiefe fieosfj sefieof fiosfs fefpseifoef sfespifosjf fpeifousfkjf efeiajkfefe0wio fowfiwufjewf</Typography>
+                <Typography align="left" sx={{margin:1}}>{props.text}</Typography>
                 
                 <Stack direction='row' alignItems='center'>
                     <IconButton onClick={()=>setIsLiked(!isLiked)}>{isLiked ? <FavoriteIcon/>:<FavoriteBorderIcon/>}</IconButton>
