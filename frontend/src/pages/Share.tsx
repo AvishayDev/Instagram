@@ -6,10 +6,10 @@ function Share() {
         <Stack spacing={4} sx={{marginTop:4}}>
             <Typography variant="h4">Let's Post Something!</Typography>
             <TextField
-                label='Add Image Url'/>
+                label='Image Url'/>
             
             <TextField
-                label='Write Something..'/>
+                label='Write Something...'/>
             <Button variant="contained">
                 Publish!
             </Button>
