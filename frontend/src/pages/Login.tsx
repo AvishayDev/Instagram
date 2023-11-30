@@ -1,5 +1,6 @@
 import { Stack, TextField, Button, Box, Typography } from "@mui/material";
 import {IMAGES} from './../Images'
+import LinkButton from "../components/LinkButton";
 
 function Login() {
     return ( 
@@ -16,7 +17,8 @@ function Login() {
                     label='Password'
                     />
                 <Stack spacing={2} direction='row'>
-                    <Button variant="outlined" fullWidth>Register</Button>
+                    {/* <Button variant="outlined" fullWidth>Register</Button> */}
+                    <LinkButton variant="outlined" fullWidth to="/register/1">Register</LinkButton>
                     <Button variant="contained" fullWidth>Login</Button>
                 </Stack>
                 <Box>
