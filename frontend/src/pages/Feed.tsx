@@ -7,14 +7,7 @@ import { maxHeight } from "@mui/system";
 function Feed() {
     return ( 
         <>
-            <List sx={
-                    {maxHeight:'83vh',
-                     overflowY:'scroll',
-                     padding:0,
-                     '::-webkit-scrollbar': {
-                        width: '0'
-                      }
-                    }}>
+            <List sx={ {  overflowY:'hidden'  }}>
                 {DEMO_DATA.map((postData, index)=>{
                             return (
                                 <ListItem key={index} sx={{padding:0}}>
