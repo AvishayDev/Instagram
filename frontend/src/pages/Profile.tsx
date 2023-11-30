@@ -29,6 +29,7 @@ function Profile() {
                 
                 <ImageList sx={{
                         borderTop:'#d3d3d3 solid 1px',
+                        overflow:'hidden'
                         }} cols={3} rowHeight={160} >
                             {
                                 DEMO_PROFILE_IMAGES.map((imageData, index)=> (
