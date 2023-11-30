@@ -4,13 +4,18 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useEffect, useState } from "react";
 
 interface PostProps {
+    userProfileImageUrl:string
+    userFirstName:string
+    userLastName:string
+    uploadDate:Date
+    ImageUrl:string
+    text:string
     isLiked:boolean
     numOfLikes:number
-    uploadUserId:number
 }
 
 
-function Post() {
+function Post(props? :PostProps) {
     const [isLiked,setIsLiked] = useState(false)
 
 
