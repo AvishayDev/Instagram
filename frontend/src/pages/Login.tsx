@@ -1,5 +1,5 @@
 import { Stack, TextField, Button, Box, Typography } from "@mui/material";
-import {IMAGES} from './../Images'
+import {IMAGES} from '../consts/Images'
 import LinkButton from "../components/LinkButton";
 import { useRegisterContext } from "./Register/RegisterContext";
 

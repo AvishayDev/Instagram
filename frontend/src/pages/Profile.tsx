@@ -1,5 +1,5 @@
 import { Box, Stack, Typography, ImageList, ImageListItem } from "@mui/material";
-import { DEMO_PROFILE_IMAGES } from "../demoData";
+import { DEMO_PROFILE_IMAGES } from "../consts/demoData";
 
 
 function Profile() {
