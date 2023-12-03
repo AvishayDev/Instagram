@@ -55,6 +55,7 @@ function Post(props :PostProps) {
                     width:'100%'
                     }}
                 src={props.ImageUrl}
+                loading="lazy"
                 >
                     
             </Box>
