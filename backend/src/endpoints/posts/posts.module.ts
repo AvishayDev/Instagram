@@ -10,4 +10,4 @@ import { Post } from 'src/Tables/Post';
   controllers: [PostsController],
   providers: [PostsService]
 })
-export class UsersModule {}
+export class PostsModule {}

@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-
+import { Post } from './Post'
 
 @Entity({name:'users'})
 export class User {
@@ -9,7 +9,7 @@ export class User {
     @Column({unique:true})
     username:string;
 
-    @Column()
+    @Column({nullable:false})
     password: string;
 
     @Column({default:IMAGES.defaultUserProfileImage})
@@ -24,12 +24,8 @@ export class User {
     @Column()
     bio:string;
 
-    // @OneToOne(() => Profile)
-    // @JoinColumn()
-    // profile: Profile;
-
-    // @OneToMany(()=> Post, (post)=>post.user)
-    // posts: Post[];
+    @OneToMany(()=> Post, (post)=>post.user)
+    posts: Post[];
 
 
 

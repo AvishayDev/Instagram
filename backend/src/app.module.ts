@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './endpoints/users/users.module';
+import { PostsModule } from './endpoints/posts/posts.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -14,7 +15,7 @@ import { UsersModule } from './endpoints/users/users.module';
     database:'instagram',
     entities:[],
     synchronize:true,
-  }),UsersModule],
+  }),UsersModule,PostsModule],
   controllers: [AppController],
   providers: [AppService],
 })
