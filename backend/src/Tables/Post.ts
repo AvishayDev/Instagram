@@ -1,0 +1,25 @@
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./User";
+import { Like } from "./Like";
+
+
+@Entity({name:'posts'})
+export class Post {
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column({default:IMAGES.defaultPostImage})
+    imageUrl: string;
+
+    @ManyToOne(()=> User,(user)=>user.posts)
+    user:User;
+
+    @OneToMany(()=> Like, (like)=>like.post)
+    likes: Like[];
+
+    @Column()
+    text:string;
+
+    @Column()
+    createdAt:Date;
+}
