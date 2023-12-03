@@ -3,7 +3,7 @@ import { Stack } from "@mui/system";
 
 function Share() {
     return ( 
-        <Stack spacing={4} sx={{marginTop:4}}>
+        <Stack spacing={4} marginTop={4}>
             <Typography variant="h4">Let's Post Something!</Typography>
             <TextField
                 label='Image Url'/>
