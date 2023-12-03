@@ -1,5 +1,5 @@
 import { Controller } from "@nestjs/common";
-import { PostsService } from "../services/posts.service";
+import { PostsService } from "./posts.service";
 
 
 
