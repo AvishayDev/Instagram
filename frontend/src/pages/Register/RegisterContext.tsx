@@ -1,24 +1,46 @@
-import { createContext,ReactNode } from "react";
+import { createContext,ReactNode, useContext, useState } from "react";
 
 
 interface RegisterContextProps {
     children: ReactNode;
 }
 
-export interface RegisterContent {
-    currentPage:number
+interface RegisterContextVariables { 
+    currentPage: number; 
+    nextPage: ()=> void; 
+    backPage: ()=> void; 
+    registerFlow: string[]; 
 }
 
-const context:RegisterContent ={
-    currentPage:2
-}
+const RegisterContext = createContext<RegisterContextVariables>({
+    currentPage:0,
+    nextPage:()=>{},
+    backPage:()=>{},
+    registerFlow:[]
+});
 
-export const RegisterContext = createContext(context);
+export const useRegisterContext = () => useContext(RegisterContext);
 
 
 export function RegisterProvider({children}:RegisterContextProps){
     
+    const [currentPage,setCurrentPage] = useState(0)
 
+    const registerFlow = [
+        '/login',
+        '/register/1',
+        '/register/2',
+        '/register/3',
+        '/feed'
+    ]
+
+    const context ={
+        currentPage,
+        nextPage:()=>setCurrentPage(currentPage + 1),
+        backPage:()=>setCurrentPage(currentPage - 1),
+        registerFlow
+    }
+    
     return (
         <RegisterContext.Provider value={context}>
             {children}

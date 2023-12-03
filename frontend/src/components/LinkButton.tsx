@@ -11,7 +11,7 @@ interface LinkButtonProps extends ButtonProps{
 function LinkButton(props:LinkButtonProps) {
     return (<>
             <Button {...props}>
-                    <Link to={props.to} style={{ textDecoration: 'none',color:'#1976d2' }}>
+                    <Link to={props.to} style={{ textDecoration: 'none',color:props.variant === 'contained' ? '#ffffff': '#1976d2' }}>
                         {props.children}
                     </Link>
             </Button>
