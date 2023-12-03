@@ -1,4 +1,4 @@
-import { Box, List, ListItem, Stack } from "@mui/material";
+import { Box, List, ListItem } from "@mui/material";
 import Post from "../components/Post";
 import { DEMO_DATA } from "../demoData";
 import { maxHeight } from "@mui/system";

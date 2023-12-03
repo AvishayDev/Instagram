@@ -9,7 +9,7 @@ function Login() {
 
     return ( 
         <>  
-            <Stack spacing={4} sx={{width:'50vw', alignSelf:'center'}}>
+            <Stack spacing={4} width='50vw' alignSelf='center'>
                 
                 <Typography variant="h4" >Let's Login!</Typography>
                 

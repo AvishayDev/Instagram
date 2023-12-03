@@ -20,7 +20,7 @@ function RegisterStep3() {
             </Box>
             
             <Box>
-                <Stack spacing={1} direction='row' sx={{justifyContent:'center'}}>
+                <Stack spacing={1} direction='row' justifyContent='center'>
                     <Typography>First</Typography>
                     <Typography>Last</Typography>
                 </Stack>
