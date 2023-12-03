@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { Outlet } from "react-router";
 import RegisterNavigation from "../../components/RegisterNavigation";
 
