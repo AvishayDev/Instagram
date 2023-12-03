@@ -3,10 +3,6 @@ import { useLocation } from "react-router";
 import { RoutesToPagesNameMapper } from "../consts/mappers/RoutesToPagesNameMapper";
 
 
-interface HeaderProps {
-    text:string
-}
-
 function Header() {
     const location = useLocation();
     const routeKey = location.pathname as keyof typeof RoutesToPagesNameMapper;
