@@ -1,19 +1,25 @@
 import { Box, Button, ButtonProps } from "@mui/material";
 import { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 interface LinkButtonProps extends ButtonProps{
     to:string
     children:ReactNode
+    onClick? : () => void
 }
 
 function LinkButton(props:LinkButtonProps) {
+
+    const navigate = useNavigate();
+
     return (<>
-            <Button {...props}>
-                    <Link to={props.to} style={{ textDecoration: 'none',color:'inherit' }}>
-                        {props.children}
-                    </Link>
+            <Button {...props} 
+                    onClick={()=>{
+                        props.onClick && props.onClick();
+                        navigate(props.to);
+                        }}>
+                    {props.children}
             </Button>
 
             </> 

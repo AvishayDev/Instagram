@@ -21,13 +21,14 @@ function Login() {
                     label='Password'
                     />
                 <Stack spacing={2} direction='row'>
-                    {/* <Button variant="outlined" fullWidth>Register</Button> */}
                     <LinkButton 
                             variant="outlined" 
                             to="/register/1"
                             fullWidth
                             onClick={nextPage}
-                            >Register</LinkButton>
+                            >
+                        Register
+                    </LinkButton>
                     <Button variant="contained" fullWidth>Login</Button>
                 </Stack>
                 <Box>
