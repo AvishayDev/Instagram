@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./User";
+import { Like } from "./Like";
 
 
 @Entity({name:'posts'})
@@ -13,8 +14,8 @@ export class Post {
     @ManyToOne(()=> User,(user)=>user.posts)
     user:User;
 
-    // @OneToMany(()=> Post, (post)=>post.user)
-    // posts: Post[];
+    @OneToMany(()=> Like, (like)=>like.post)
+    likes: Like[];
 
     @Column()
     text:string;
