@@ -1,8 +1,12 @@
 import { Stack, TextField, Button, Box, Typography } from "@mui/material";
 import {IMAGES} from './../Images'
 import LinkButton from "../components/LinkButton";
+import { useRegisterContext } from "./Register/RegisterContext";
 
 function Login() {
+
+    const {nextPage} = useRegisterContext()
+
     return ( 
         <>  
             <Stack spacing={4} sx={{width:'50vw', alignSelf:'center'}}>
@@ -18,7 +22,12 @@ function Login() {
                     />
                 <Stack spacing={2} direction='row'>
                     {/* <Button variant="outlined" fullWidth>Register</Button> */}
-                    <LinkButton variant="outlined" fullWidth to="/register/1">Register</LinkButton>
+                    <LinkButton 
+                            variant="outlined" 
+                            to="/register/1"
+                            fullWidth
+                            onClick={nextPage}
+                            >Register</LinkButton>
                     <Button variant="contained" fullWidth>Login</Button>
                 </Stack>
                 <Box>

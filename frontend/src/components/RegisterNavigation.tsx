@@ -5,7 +5,7 @@ import { useRegisterContext } from "../pages/Register/RegisterContext";
 
 function RegisterNavigation() {
 
-    const {currentPage} = useRegisterContext()
+    const {currentPage,nextPage,backPage,registerFlow} = useRegisterContext()
 
     return ( 
         <Box sx={{
@@ -13,8 +13,14 @@ function RegisterNavigation() {
             justifyContent: 'space-between',
             marginTop: 4
             }}>
-            <LinkButton to={`${currentPage}`} variant="outlined"  sx={{height:'40px'}}>Back</LinkButton>
-            <LinkButton to={`${currentPage}`} variant="contained" sx={{height:'40px'}}>Next</LinkButton>
+            <LinkButton to={registerFlow[currentPage - 1]}
+                        onClick={backPage} 
+                        variant="outlined"  
+                        sx={{height:'40px'}}>Back</LinkButton>
+            <LinkButton to={registerFlow[currentPage + 1]}
+                        onClick={nextPage} 
+                        variant="contained" 
+                        sx={{height:'40px'}}>Next</LinkButton>
         </Box>
      );
 }

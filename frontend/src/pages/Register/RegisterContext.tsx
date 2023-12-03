@@ -1,4 +1,4 @@
-import { createContext,ReactNode, useContext, useState } from "react";
+import { createContext,ReactNode, useContext, useEffect, useState } from "react";
 
 
 interface RegisterContextProps {
@@ -41,6 +41,10 @@ export function RegisterProvider({children}:RegisterContextProps){
         registerFlow
     }
     
+    useEffect(()=>{
+        console.log(currentPage)
+    },[currentPage])
+
     return (
         <RegisterContext.Provider value={context}>
             {children}
