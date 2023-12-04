@@ -23,6 +23,22 @@ export class LikesService {
         });
     }
 
+    async checkUserAndPost(userId:number,postId:number){
+        const user = await this.usersService.getUserById(userId);
+
+        if (!user){
+            throw new NotFoundException('userId Doesnt Exists!')
+        }
+
+        const post = await this.postsService.getPostById(postId);
+
+        if (!post){
+            throw new NotFoundException('postId Doesnt Exists!')
+        }
+
+        return {user,post}
+    }
+
     getLike(signLikeDB:SignLikeDB){
         return this.likesRepository.findOneBy({
             post:{
@@ -35,18 +51,8 @@ export class LikesService {
     }
 
     async signLike(signLikeDB:SignLikeDB){
-        const user = await this.usersService.getUserById(signLikeDB.userId);
 
-        if (!user){
-            throw new NotFoundException('userId Doesnt Exists!')
-        }
-
-        const post = await this.postsService.getPostById(signLikeDB.postId);
-
-        if (!post){
-            throw new NotFoundException('postId Doesnt Exists!')
-        }
-
+        const {user,post} = await this.checkUserAndPost(signLikeDB.userId,signLikeDB.postId)
         
         const like = await this.getLike(signLikeDB);
         
@@ -54,7 +60,7 @@ export class LikesService {
             throw new BadRequestException('You have Already Liked This Post!')
         }
 
-        const newLike = this.likesRepository.create({...signLikeDB, user,post});
+        const newLike = this.likesRepository.create({...signLikeDB, user ,post});
 
         return this.likesRepository.save(newLike);
     }
