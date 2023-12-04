@@ -1,5 +1,8 @@
-import { Controller } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { UsersService } from "./users.service";
+import { CheckUserExistsDTO } from "./dtos/CheckUserExistence.dto";
+import { addUserDTO } from "./dtos/AddUser.dto";
+import { LoginUserDTO } from "./dtos/LoginUser.dto";
 
 
 
@@ -7,4 +10,40 @@ import { UsersService } from "./users.service";
 export class UsersController {
 
     constructor(private readonly usersService: UsersService){}
+
+    @Get('test')
+    testPath(
+        
+    ){
+        const instance = new CheckUserExistsDTO()
+        const keysArrayDynamic: string[] = Object.keys(instance);
+
+        return instance;
+    }
+
+    @Get()
+    getAllUsers(){
+        return this.usersService.getAllUsers();
+    }
+
+    @Post('check')
+    checkUserExists(
+        @Body() checkUserExistsDTO:CheckUserExistsDTO
+    ){
+        return this.usersService.checkUserExists(checkUserExistsDTO)
+    }
+
+    @Post('register')
+    addUser(
+        @Body()addUserDTO:addUserDTO
+    ){
+        return this.usersService.createUser(addUserDTO)
+    }
+
+    @Post('login')
+    loginUser(
+        @Body()loginUserDTO:LoginUserDTO
+    ){
+        return this.usersService.checkUsernamePassword(loginUserDTO);
+    }
 }
