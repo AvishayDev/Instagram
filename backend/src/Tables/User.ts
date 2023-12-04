@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Post } from './Post'
 import { Like } from "./Like";
+import {IMAGES} from './../consts'
 
 @Entity({name:'users'})
 export class User {
