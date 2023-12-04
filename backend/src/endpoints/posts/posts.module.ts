@@ -11,6 +11,6 @@ import { User } from 'src/Tables/User';
 @Module({
   imports:[TypeOrmModule.forFeature([Post,User]),UsersModule],
   controllers: [PostsController],
-  providers: [PostsService,UsersService]
+  providers: [PostsService, UsersService]
 })
 export class PostsModule {}

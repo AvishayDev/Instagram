@@ -11,16 +11,6 @@ export class UsersController {
 
     constructor(private readonly usersService: UsersService){}
 
-    @Get('test')
-    testPath(
-        
-    ){
-        const instance = new CheckUserExistsDTO()
-        const keysArrayDynamic: string[] = Object.keys(instance);
-
-        return instance;
-    }
-
     @Get()
     getAllUsers(){
         return this.usersService.getAllUsers();
