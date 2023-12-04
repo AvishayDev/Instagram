@@ -60,8 +60,15 @@ export class LikesService {
             throw new BadRequestException('You have Already Liked This Post!')
         }
 
+        // add soft delete
+        //deletedAt, IsNull(), restore
         const newLike = this.likesRepository.create({...signLikeDB, user ,post});
 
         return this.likesRepository.save(newLike);
+    }
+
+
+    unsignLike(){
+
     }
 }
