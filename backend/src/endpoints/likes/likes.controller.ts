@@ -7,7 +7,9 @@ import { SignLikeDTO } from "./dtos/SignLike.dto";
 @Controller('likes')
 export class LikesController {
 
-    constructor(private likesService: LikesService){}
+    constructor(
+        private likesService: LikesService,
+    ){}
 
     @Get()
     getAllLikes(){
