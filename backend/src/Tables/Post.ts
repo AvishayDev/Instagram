@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./User";
 import { Like } from "./Like";
 import {IMAGES} from './../consts'
@@ -21,6 +21,6 @@ export class Post {
     @Column()
     text:string;
 
-    @Column()
+    @CreateDateColumn()
     createdAt:Date;
 }

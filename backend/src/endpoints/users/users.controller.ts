@@ -30,7 +30,7 @@ export class UsersController {
     checkUserExists(
         @Body() checkUserExistsDTO:CheckUserExistsDTO
     ){
-        return this.usersService.checkUserExists(checkUserExistsDTO)
+        return this.usersService.checkUserExistsByUsername(checkUserExistsDTO.username)
     }
 
     @Post('register')
