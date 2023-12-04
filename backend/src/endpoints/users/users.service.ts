@@ -16,10 +16,14 @@ export class UsersService{
         @InjectRepository(User) private usersRepository: Repository<User>,
     ){}
     
+    getAllUsers(){
+        return this.usersRepository.find();
+    }
+
 
     checkUserExists(checkUserExistsDB : CheckUserExistsDB){
         return this.usersRepository.findOneBy({
-            username:Equal(checkUserExistsDB.username)
+            username:checkUserExistsDB.username
         })
     }
 
