@@ -4,6 +4,7 @@ import { User } from "src/Tables/User";
 import { Equal, Repository } from "typeorm";
 import { CheckUserExistsDB } from "./dbtypes/CheckUserExists.db";
 import { CreateUserDB } from "./dbtypes/CreateUser.db";
+import { CheckUsernamePasswordDB } from "./dbtypes/CheckUsernamePassword.db";
 
 
 
@@ -17,7 +18,7 @@ export class UsersService{
     
 
     checkUserExists(checkUserExistsDB : CheckUserExistsDB){
-        return this.usersRepository.findBy({
+        return this.usersRepository.findOneBy({
             username:Equal(checkUserExistsDB.username)
         })
     }
@@ -28,5 +29,12 @@ export class UsersService{
         });
 
         return this.usersRepository.save(newUser)
+    }
+
+    checkUsernamePassword(checkUsernamePasswordDB:CheckUsernamePasswordDB){
+        return this.usersRepository.findOneBy({
+            username:checkUsernamePasswordDB.username,
+            password:checkUsernamePasswordDB.password
+        })
     }
 }
