@@ -19,7 +19,8 @@ import { Like } from './Tables/Like';
     database:'instagram',
     entities:[User,Post,Like],
     synchronize:true,
-  }),UsersModule,PostsModule,LikesModule],
+  }),
+    UsersModule, PostsModule, LikesModule],
   controllers: [AppController],
   providers: [AppService],
 })

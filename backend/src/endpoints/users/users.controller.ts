@@ -1,5 +1,6 @@
-import { Controller } from "@nestjs/common";
+import { Body, Controller, Post } from "@nestjs/common";
 import { UsersService } from "./users.service";
+import { CheckUserExistsDTO } from "./dtos/CheckUserExistence.dto";
 
 
 
@@ -7,4 +8,12 @@ import { UsersService } from "./users.service";
 export class UsersController {
 
     constructor(private readonly usersService: UsersService){}
+
+
+    @Post()
+    checkUserExists(
+        @Body() checkUserExistsDTO:CheckUserExistsDTO
+    ){
+        return this.usersService.checkUserExists(checkUserExistsDTO)
+    }
 }
