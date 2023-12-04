@@ -1,5 +1,7 @@
 
 
-export interface CheckUserExistsDTO {
+
+
+export class CheckUserExistsDTO {
     username:string
 }
