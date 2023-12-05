@@ -22,16 +22,6 @@ export class PostsService {
         return this.postsRepository.findOneBy({ id:postId })
     }
 
-    async checkUserExists(userId:number){
-        const user = await this.usersService.getUserById(userId);
-
-        if (!user){
-            throw new NotFoundException('userId Doesnt Exists!')
-        }
-
-        return user;
-    }
-
     getPostsByPage(page:number){
         return this.postsRepository.find({
             relations:['user'],
@@ -45,7 +35,7 @@ export class PostsService {
 
     async createPost(createPostDB: CreatePostDB){
         
-        const user = await this.checkUserExists(createPostDB.userId);
+        const user = await this.usersService.getUserById(createPostDB.userId);
 
         const newPost = this.postsRepository.create({...createPostDB, user});
 
@@ -54,7 +44,7 @@ export class PostsService {
 
     async getUserPosts(userPostsDB:UserPostsDB){
         
-        await this.checkUserExists(userPostsDB.userId);
+        await this.usersService.getUserById(userPostsDB.userId);
 
 
         return this.postsRepository.find({

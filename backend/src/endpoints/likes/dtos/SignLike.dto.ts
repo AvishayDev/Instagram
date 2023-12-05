@@ -1,7 +1,11 @@
+import { IsNumber } from "class-validator"
+import { IsNull } from "typeorm"
 
 
 
-export interface SignLikeDTO{
-    userId:number,
+export class SignLikeDTO{
+    @IsNumber()
+    userId:number;
+    @IsNumber()
     postId:number
 }

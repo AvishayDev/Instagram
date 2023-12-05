@@ -17,13 +17,13 @@ export class User {
     @Column({default:IMAGES.defaultUserProfileImage})
     profileImageUrl: string;
 
-    @Column()
+    @Column({nullable:false})
     firstName:string;
 
-    @Column()
+    @Column({nullable:false})
     lastName:string;
 
-    @Column()
+    @Column({nullable:true})
     bio:string;
 
     @OneToMany(()=> Post, (post)=>post.user)

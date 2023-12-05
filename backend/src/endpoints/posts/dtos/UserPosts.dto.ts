@@ -1,5 +1,7 @@
+import { IsNumber } from "class-validator";
 
 
-export interface UserPostsDTO {
+export class UserPostsDTO {
+    @IsNumber()
     userId:number
 }

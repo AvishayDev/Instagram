@@ -8,6 +8,7 @@ import { LikesModule } from './endpoints/likes/likes.module';
 import { User } from './Tables/User';
 import { Post } from './Tables/Post';
 import { Like } from './Tables/Like';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -20,6 +21,7 @@ import { Like } from './Tables/Like';
     entities:[User,Post,Like],
     synchronize:true,
   }),
+    ConfigModule.forRoot(),
     UsersModule, PostsModule, LikesModule],
   controllers: [AppController],
   providers: [AppService],
