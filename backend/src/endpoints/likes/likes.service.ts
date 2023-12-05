@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Like } from "src/Tables/Like";
-import { Repository } from "typeorm";
+import { IsNull, Not, Repository } from "typeorm";
 import { SignLikeDB } from "./dbtypes/SignLike.db";
 import { UsersService } from "../users/users.service";
 import { PostsService } from "../posts/posts.service";
@@ -19,6 +19,7 @@ export class LikesService {
 
     getAllLikes(){
         return this.likesRepository.find({
+            withDeleted:true,
             relations:['user','post']
         });
     }
@@ -39,14 +40,16 @@ export class LikesService {
         return {user,post}
     }
 
-    getLike(signLikeDB:SignLikeDB){
-        return this.likesRepository.findOneBy({
-            post:{
-                id:signLikeDB.postId
-            },
-            user:{
-                id:signLikeDB.userId
-            }
+    getLike(signLikeDB:SignLikeDB,withDeleted:boolean){
+        return this.likesRepository.findOne({
+            withDeleted,
+            where: {
+                post:{
+                    id:signLikeDB.postId
+                },
+                user:{
+                    id:signLikeDB.userId
+                }}
         })
     }
 
@@ -54,21 +57,37 @@ export class LikesService {
 
         const {user,post} = await this.checkUserAndPost(signLikeDB.userId,signLikeDB.postId)
         
-        const like = await this.getLike(signLikeDB);
-        
-        if (like){
-            throw new BadRequestException('You have Already Liked This Post!')
+        const like = await this.getLike(signLikeDB, true);
+
+        let newLike;
+        if (!like){
+            // like === null => create new like.
+            newLike = this.likesRepository.create({...signLikeDB, user ,post});
+            newLike = await this.likesRepository.save(newLike);
+        } else if (like.deletedAt){
+            // like && deteledAt => restore.
+            newLike = await this.likesRepository.restore({id:like.id});
+        } else {
+            // like && !deletedAt => Exception.
+            throw new BadRequestException('You have Already Liked This Post!');
         }
 
-        // add soft delete
-        //deletedAt, IsNull(), restore
-        const newLike = this.likesRepository.create({...signLikeDB, user ,post});
+        return newLike;
 
-        return this.likesRepository.save(newLike);
     }
 
 
-    unsignLike(){
+    async unsignLike(signLikeDB:SignLikeDB){
+        await this.checkUserAndPost(signLikeDB.userId,signLikeDB.postId)
 
+        const like = await this.getLike(signLikeDB, false);
+
+        if (!like){
+            throw new BadRequestException("You're dosen't Liked This Post!")
+        }
+
+        const affectedRows = await this.likesRepository.softDelete({id:like.id});
+
+        return affectedRows;
     }
 }

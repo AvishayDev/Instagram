@@ -16,11 +16,19 @@ export class LikesController {
         return this.likesService.getAllLikes();
     }
 
+
     @Post('sign')
     signLike(
         @Body() likeSignDTO:SignLikeDTO
     ){
         return this.likesService.signLike(likeSignDTO)
+    }
+
+    @Post('unsign')
+    unsignLike(
+        @Body() likeSignDTO:SignLikeDTO
+    ){
+        return this.likesService.unsignLike(likeSignDTO)
     }
 
 }
