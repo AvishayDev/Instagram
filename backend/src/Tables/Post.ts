@@ -18,7 +18,7 @@ export class Post {
     @OneToMany(()=> Like, (like)=>like.post)
     likes: Like[];
 
-    @Column()
+    @Column({nullable:true})
     text:string;
 
     @CreateDateColumn()
