@@ -3,6 +3,7 @@ import { UsersService } from "./users.service";
 import { CheckUserExistsDTO } from "./dtos/CheckUserExistence.dto";
 import { addUserDTO } from "./dtos/AddUser.dto";
 import { LoginUserDTO } from "./dtos/LoginUser.dto";
+import { PasswordValidationPipe } from "./pips/PasswordMatch.pip";
 
 
 
@@ -25,7 +26,7 @@ export class UsersController {
 
     @Post('register')
     addUser(
-        @Body()addUserDTO:addUserDTO
+        @Body(new PasswordValidationPipe())addUserDTO:addUserDTO
     ){
         return this.usersService.createUser(addUserDTO)
     }

@@ -23,7 +23,7 @@ export class User {
     @Column({nullable:false})
     lastName:string;
 
-    @Column()
+    @Column({nullable:true})
     bio:string;
 
     @OneToMany(()=> Post, (post)=>post.user)

@@ -1,4 +1,4 @@
-import { IsAlpha, IsAlphanumeric, IsNotEmpty, IsString } from "class-validator";
+import { IsAlpha, IsAlphanumeric, IsDefined, IsNotEmpty, IsOptional, IsString, IsUrl, ValidateBy } from "class-validator";
 
 
 export class addUserDTO {
@@ -21,9 +21,13 @@ export class addUserDTO {
 
     @IsNotEmpty()
     @IsString()
-    //@IsEquals('password')
     rePassword:string;
     
+    @IsUrl()
+    @IsOptional()
     profileImageUrl:string;
+
+    @IsString()
+    @IsOptional()
     bio:string;
 }
