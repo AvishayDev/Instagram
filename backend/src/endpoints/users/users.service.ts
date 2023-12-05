@@ -1,8 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/Tables/User";
-import { Equal, Repository } from "typeorm";
-import { CheckUserExistsDB } from "./dbtypes/CheckUserExists.db";
+import { Repository } from "typeorm";
 import { CreateUserDB } from "./dbtypes/CreateUser.db";
 import { CheckUsernamePasswordDB } from "./dbtypes/CheckUsernamePassword.db";
 
@@ -21,12 +20,24 @@ export class UsersService{
     }
 
 
-    getUserByUsername(username:string){
-        return this.usersRepository.findOneBy({ username })
+    async getUserByUsername(username:string){
+        const user = await this.usersRepository.findOneBy({ username })
+
+        if (!user){
+            throw new NotFoundException('Username Doesnt Exists!')
+        }
+
+        return user;
     }
 
-    getUserById(userId:number){
-        return this.usersRepository.findOneBy({ id:userId })
+    async getUserById(userId:number){
+        const user = await this.usersRepository.findOneBy({ id:userId })
+
+        if (!user){
+            throw new NotFoundException('userId Doesnt Exists!')
+        }
+
+        return user;
     }
 
     createUser(createUserDB: CreateUserDB){

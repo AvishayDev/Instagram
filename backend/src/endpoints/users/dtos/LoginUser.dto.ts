@@ -1,6 +1,14 @@
+import { IsAlphanumeric, IsDefined, IsNotEmpty, IsString } from "class-validator";
 
 
-export interface LoginUserDTO {
+export class LoginUserDTO {
+    @IsNotEmpty()
+    @IsDefined()
+    @IsAlphanumeric()
     username:string;
+
+    @IsNotEmpty()
+    @IsDefined()
+    @IsString()
     password:string;
 }
