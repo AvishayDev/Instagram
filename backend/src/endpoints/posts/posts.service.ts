@@ -59,12 +59,16 @@ export class PostsService {
 
         return this.postsRepository.find({
             select:{
-                imageUrl:true
+                imageUrl:true,
+                id:true
             },
             where:{
                 user:{
                     id:userPostsDB.userId
                 }
+            },
+            order:{
+                id: "DESC"
             }
         })
     }

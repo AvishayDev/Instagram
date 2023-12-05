@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { LikesService } from "./likes.service";
 import { SignLikeDTO } from "./dtos/SignLike.dto";
+import { PostsLikesDTO } from "./dtos/PostsLikes.dto";
 
 
 
@@ -31,4 +32,10 @@ export class LikesController {
         return this.likesService.unsignLike(likeSignDTO)
     }
 
+    @Post('posts')
+    getPostsLikes(
+        @Body() postsLikesDTO:PostsLikesDTO
+    ){
+        return this.likesService.getPostsLikes(postsLikesDTO)
+    }
 }

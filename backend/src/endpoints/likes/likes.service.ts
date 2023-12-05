@@ -5,6 +5,7 @@ import { IsNull, Not, Repository } from "typeorm";
 import { SignLikeDB } from "./dbtypes/SignLike.db";
 import { UsersService } from "../users/users.service";
 import { PostsService } from "../posts/posts.service";
+import { PostsLikesDB } from "./dbtypes/PostsLikes.db";
 
 
 
@@ -59,21 +60,17 @@ export class LikesService {
         
         const like = await this.getLike(signLikeDB, true);
 
-        let newLike;
         if (!like){
             // like === null => create new like.
-            newLike = this.likesRepository.create({...signLikeDB, user ,post});
-            newLike = await this.likesRepository.save(newLike);
+            const newLike = this.likesRepository.create({...signLikeDB, user ,post});
+            return await this.likesRepository.save(newLike);
         } else if (like.deletedAt){
             // like && deteledAt => restore.
-            newLike = await this.likesRepository.restore({id:like.id});
+            return await this.likesRepository.restore({id:like.id});
         } else {
             // like && !deletedAt => Exception.
             throw new BadRequestException('You have Already Liked This Post!');
         }
-
-        return newLike;
-
     }
 
 
@@ -86,8 +83,15 @@ export class LikesService {
             throw new BadRequestException("You're dosen't Liked This Post!")
         }
 
-        const affectedRows = await this.likesRepository.softDelete({id:like.id});
+        return await this.likesRepository.softDelete({id:like.id});
+    }
 
-        return affectedRows;
+    getPostsLikes(postsLikesDB:PostsLikesDB){
+        return this.likesRepository.createQueryBuilder('like')
+                                    .select('COUNT(*) AS likesCount, like.postId AS postId')
+                                    .where('like.postId IN (:...posts)',{posts:postsLikesDB.postIds})
+                                    .groupBy('like.postId')
+                                    .orderBy('like.postId','DESC')
+                                    .getRawMany();
     }
 }
