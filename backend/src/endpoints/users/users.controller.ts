@@ -11,16 +11,6 @@ export class UsersController {
 
     constructor(private readonly usersService: UsersService){}
 
-    @Get('test')
-    testPath(
-        
-    ){
-        const instance = new CheckUserExistsDTO()
-        const keysArrayDynamic: string[] = Object.keys(instance);
-
-        return instance;
-    }
-
     @Get()
     getAllUsers(){
         return this.usersService.getAllUsers();
@@ -30,7 +20,7 @@ export class UsersController {
     checkUserExists(
         @Body() checkUserExistsDTO:CheckUserExistsDTO
     ){
-        return this.usersService.checkUserExistsByUsername(checkUserExistsDTO.username)
+        return this.usersService.getUserByUsername(checkUserExistsDTO.username)
     }
 
     @Post('register')

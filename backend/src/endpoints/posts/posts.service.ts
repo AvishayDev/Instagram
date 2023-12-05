@@ -18,6 +18,19 @@ export class PostsService {
     
     pageSize=10;
 
+    getPostById(postId:number){
+        return this.postsRepository.findOneBy({ id:postId })
+    }
+
+    async checkUserExists(userId:number){
+        const user = await this.usersService.getUserById(userId);
+
+        if (!user){
+            throw new NotFoundException('userId Doesnt Exists!')
+        }
+
+        return user;
+    }
 
     getPostsByPage(page:number){
         return this.postsRepository.find({
@@ -32,11 +45,7 @@ export class PostsService {
 
     async createPost(createPostDB: CreatePostDB){
         
-        const user = await this.usersService.checkUserExistsByUserId(createPostDB.userId);
-
-        if (!user){
-            throw new NotFoundException('userId Doesnt Exists!')
-        }
+        const user = await this.checkUserExists(createPostDB.userId);
 
         const newPost = this.postsRepository.create({...createPostDB, user});
 
@@ -45,20 +54,21 @@ export class PostsService {
 
     async getUserPosts(userPostsDB:UserPostsDB){
         
-        const userExists = await this.usersService.checkUserExistsByUserId(userPostsDB.userId);
+        await this.checkUserExists(userPostsDB.userId);
 
-        if (!userExists){
-            throw new NotFoundException('userId Doesnt Exists!')
-        }
 
         return this.postsRepository.find({
             select:{
-                imageUrl:true
+                imageUrl:true,
+                id:true
             },
             where:{
                 user:{
                     id:userPostsDB.userId
                 }
+            },
+            order:{
+                id: "DESC"
             }
         })
     }

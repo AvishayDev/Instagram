@@ -21,16 +21,12 @@ export class UsersService{
     }
 
 
-    checkUserExistsByUsername(username:string){
-        return this.usersRepository.findOneBy({
-            username:username
-        })
+    getUserByUsername(username:string){
+        return this.usersRepository.findOneBy({ username })
     }
 
-    checkUserExistsByUserId(userId:number){
-        return this.usersRepository.findOneBy({
-            id:userId
-        })
+    getUserById(userId:number){
+        return this.usersRepository.findOneBy({ id:userId })
     }
 
     createUser(createUserDB: CreateUserDB){

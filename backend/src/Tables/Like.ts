@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./User";
 import { Post } from "./Post";
 
@@ -16,5 +16,7 @@ export class Like {
     @ManyToOne(()=>Post,post=>post.likes)
     post:Post;
 
+    @DeleteDateColumn()
+    deletedAt: Date;
 
 }
