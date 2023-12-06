@@ -26,6 +26,7 @@ export const usersApi = apiSlice.injectEndpoints({
                 url:'users/login',
                 method:'POST',
                 body:{...loginEP}
+                
             })
         }),
     })

@@ -1,21 +1,32 @@
-import { Stack, TextField, Button, Box, Typography } from "@mui/material";
+import { Stack, TextField, Box, Typography } from "@mui/material";
 import {IMAGES} from '../consts/Images'
 import LinkButton from "../components/LinkButton";
 import { useRegisterContext } from "./Register/RegisterContext";
 import { useState } from "react";
 import { useLazyLoginUserQuery } from "../redux/features/usersApi";
+import { LoadingButton } from "@mui/lab";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
 
     const {nextPage} = useRegisterContext()
     const [username,setUsername] = useState('');
     const [password,setPassword] = useState('');
+    const navigate = useNavigate();
     
-    const [trigger,{data, isLoading, error, isError}] = useLazyLoginUserQuery();
+    const [trigger,{isLoading, isError}] = useLazyLoginUserQuery();
+
 
     const handleLogin = async () =>{
-        const test = await trigger({username,password}) 
-        console.log(test)
+        // validate currect input
+
+        const {isSuccess, data} = await trigger({username,password});
+    
+        if (isSuccess) return 
+        // 1) add user to local storage
+        // 2) navigate to /feed
+
+
     }
 
     return ( 
@@ -30,14 +41,15 @@ function Login() {
                 
                 <TextField
                     label='Username'
-                    // value={username}
+                    error={isError}
                     onChange={(event)=>setUsername(event.target.value)}
                     />
                 <TextField
                     type="password"
                     label='Password'
+                    error={isError}
                     onChange={(event)=>setPassword(event.target.value)}
-
+                    helperText={isError && 'username or password incurrect'}
                     />
                 <Stack spacing={2} direction='row'>
                     <LinkButton 
@@ -48,13 +60,14 @@ function Login() {
                             >
                         Register
                     </LinkButton>
-                    <Button 
+                    <LoadingButton 
                         variant="contained" 
                         fullWidth
                         onClick={handleLogin}
+                        loading={isLoading}
                         >
                         Login
-                    </Button>
+                    </LoadingButton>
                 </Stack>
                 <Box>
                     <Box   
