@@ -11,6 +11,7 @@ import Profile from './pages/Profile';
 import Layout from './pages/Layout';
 import Register from './pages/Register/Register';
 import { RegisterProvider } from './pages/Register/RegisterContext';
+import TestPage from './pages/TestPage';
 
 
 
@@ -20,7 +21,9 @@ function App() {
       <Router>
         <Routes>
           <Route path='/'>
-          
+              
+              <Route path='test' element={<TestPage/>}/>
+              
               <Route element={<RegisterProvider><Layout hasNavbar={false}/></RegisterProvider>}>
                 <Route path='login' element={<Login/>}/>
                 <Route path='register' element={<Register/>}>
