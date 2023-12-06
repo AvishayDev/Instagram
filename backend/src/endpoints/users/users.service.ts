@@ -46,10 +46,16 @@ export class UsersService{
         return this.usersRepository.save(newUser)
     }
 
-    checkUsernamePassword(checkUsernamePasswordDB:CheckUsernamePasswordDB){
-        return this.usersRepository.findOneBy({
+    async checkUsernamePassword(checkUsernamePasswordDB:CheckUsernamePasswordDB){
+        const user = await this.usersRepository.findOneBy({
             username:checkUsernamePasswordDB.username,
             password:checkUsernamePasswordDB.password
         })
+
+        if (!user){
+            throw new NotFoundException('username or password incurrent')
+        }
+
+        return user;
     }
 }
