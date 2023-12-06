@@ -36,6 +36,7 @@ export class LikesController {
     getPostsLikes(
         @Body() postsLikesDTO:PostsLikesDTO
     ){
+        postsLikesDTO.postIds.sort((a,b)=>b-a);
         return this.likesService.getPostsLikes(postsLikesDTO)
     }
 }
