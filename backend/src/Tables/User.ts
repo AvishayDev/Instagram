@@ -1,7 +1,6 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Post } from './Post'
 import { Like } from "./Like";
-import {IMAGES} from './../consts'
 
 @Entity({name:'users'})
 export class User {
@@ -14,7 +13,7 @@ export class User {
     @Column({nullable:false})
     password: string;
 
-    @Column({default:IMAGES.defaultUserProfileImage})
+    @Column({nullable:true})
     profileImageUrl: string;
 
     @Column({nullable:false})

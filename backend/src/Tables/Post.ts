@@ -9,7 +9,7 @@ export class Post {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({default:IMAGES.defaultPostImage})
+    @Column({nullable:true})
     imageUrl: string;
 
     @ManyToOne(()=> User,(user)=>user.posts)
