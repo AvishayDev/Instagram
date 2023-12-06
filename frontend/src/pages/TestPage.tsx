@@ -2,7 +2,7 @@ import { useGetAllUsersQuery } from "../redux/features/usersApi";
 
 function TestPage() {
 
-    const {data} = useGetAllUsersQuery(0);
+    const {data} = useGetAllUsersQuery();
 
     console.log(data);
     
