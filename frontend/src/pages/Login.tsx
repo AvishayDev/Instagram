@@ -2,20 +2,27 @@ import { Stack, TextField, Box, Typography } from "@mui/material";
 import {IMAGES} from '../consts/Images'
 import LinkButton from "../components/LinkButton";
 import { useRegisterContext } from "./Register/RegisterContext";
-import { useState } from "react";
-import { useLazyLoginUserQuery } from "../redux/features/usersApi";
+import { useLazyLoginUserQuery } from "../redux/features/Api/usersApiSlice";
 import { LoadingButton } from "@mui/lab";
-import { useNavigate } from "react-router-dom";
+import { useSelector,useDispatch } from "react-redux";
+import { loginActions } from "../redux/features/Slices/loginSlice";
+import { useEffect, useState } from "react";
 
 function Login() {
 
-    const {nextPage} = useRegisterContext()
+    const {nextPage} = useRegisterContext();
     const [username,setUsername] = useState('');
     const [password,setPassword] = useState('');
-    const navigate = useNavigate();
+    const username1 = useSelector((state)=>state)
+    // const password = useSelector<StateType,LoginState>((state)=>state.login)
+    const dispatch = useDispatch()
     
     const [trigger,{isLoading, isError}] = useLazyLoginUserQuery();
 
+
+    useEffect(()=>{
+        console.log(username1)
+    },[username1])
 
     const handleLogin = async () =>{
         // validate currect input
@@ -42,13 +49,13 @@ function Login() {
                 <TextField
                     label='Username'
                     error={isError}
-                    onChange={(event)=>setUsername(event.target.value)}
+                    onChange={(event)=>dispatch(loginActions.updateUsername(event.target.value))}
                     />
                 <TextField
                     type="password"
                     label='Password'
                     error={isError}
-                    onChange={(event)=>setPassword(event.target.value)}
+                    onChange={(event)=>dispatch(loginActions.updatePassword(event.target.value))}
                     helperText={isError && 'username or password incurrect'}
                     />
                 <Stack spacing={2} direction='row'>

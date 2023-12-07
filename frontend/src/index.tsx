@@ -5,7 +5,7 @@ import App from './App';
 import { Provider } from 'react-redux'
 import store from './redux/app/store';
 import { ApiProvider } from '@reduxjs/toolkit/dist/query/react';
-import { apiSlice } from './redux/features/apiSlice';
+import { apiSlice } from './redux/features/Api/apiSlice';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
