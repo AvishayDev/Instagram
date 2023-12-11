@@ -12,7 +12,7 @@ interface LinkButtonProps extends ButtonProps{
 function LinkButton(props:LinkButtonProps) {
 
     const navigate = useNavigate();
-
+    
     return (<>
             <Button {...props} 
                     onClick={()=>{
