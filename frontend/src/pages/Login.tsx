@@ -1,7 +1,6 @@
 import { Stack, TextField, Box, Typography } from "@mui/material";
 import {IMAGES} from '../consts/Images'
 import LinkButton from "../components/LinkButton";
-import { useRegisterContext } from "./Register/RegisterContext";
 import { useLazyLoginUserQuery } from "../redux/features/Api/users/usersApiSlice";
 import { LoadingButton } from "@mui/lab";
 import { isAlphanumeric, isNotEmpty } from "class-validator";
@@ -11,7 +10,6 @@ import useDataError from "../Hooks/useDataError";
 
 function Login() {
 
-    const {nextPage} = useRegisterContext();
 
     const [username,setUsername,setUsernameError,resetUsernameError] = useDataError('');
     const [password,setPassword,setPasswordError,resetPasswordError] = useDataError('');
@@ -80,7 +78,6 @@ function Login() {
                             variant="outlined" 
                             to="/register/1"
                             fullWidth
-                            onClick={nextPage}
                             >
                         Register
                     </LinkButton>

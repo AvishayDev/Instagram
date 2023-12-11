@@ -10,7 +10,6 @@ import Share from './pages/Share';
 import Profile from './pages/Profile';
 import Layout from './pages/Layout';
 import Register from './pages/Register/Register';
-import { RegisterProvider } from './pages/Register/RegisterContext';
 import TestPage from './pages/TestPage';
 
 
@@ -24,7 +23,7 @@ function App() {
               
               <Route path='test' element={<TestPage/>}/>
               
-              <Route element={<RegisterProvider><Layout hasNavbar={false}/></RegisterProvider>}>
+              <Route element={<Layout hasNavbar={false}/>}>
                 <Route path='login' element={<Login/>}/>
                 <Route path='register' element={<Register/>}>
                   <Route path='1' element={<RegisterStep1/>}/>

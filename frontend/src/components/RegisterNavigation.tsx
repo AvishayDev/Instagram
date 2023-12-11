@@ -1,17 +1,24 @@
 import { Box, Button } from "@mui/material";
 import LinkButton from "./LinkButton";
-import { useContext, useEffect } from "react";
-import { useRegisterContext } from "../pages/Register/RegisterContext";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 function RegisterNavigation() {
 
-    const {currentPage,nextPage,backPage,registerFlow} = useRegisterContext()
-
+    const registerFlow = [
+        '/login',
+        '/register/1',
+        '/register/2',
+        '/register/3',
+        '/feed'
+    ]
     const location = useLocation();
 
+    const [currentPage,setCurrentPage] = useState(registerFlow.findIndex((path)=>(path === location.pathname)))
+
+
     useEffect(()=>{
-        
+        setCurrentPage(registerFlow.findIndex((path)=>(path === location.pathname)))
     },[location])
 
     return ( 
@@ -21,13 +28,11 @@ function RegisterNavigation() {
             marginTop: 4
             }}>
             <LinkButton to={registerFlow[currentPage - 1]}
-                        onClick={backPage} 
                         variant="outlined"  
                         sx={{height:'40px'}}>Back</LinkButton>
             <LinkButton to={registerFlow[currentPage + 1]}
-                        onClick={nextPage} 
                         variant="contained" 
-                        sx={{height:'40px'}}>Next</LinkButton>
+                        sx={{height:'40px'}}>{currentPage === 3 ? 'Done': 'Next'}</LinkButton>
         </Box>
      );
 }
