@@ -2,36 +2,52 @@ import { Stack, TextField, Box, Typography } from "@mui/material";
 import {IMAGES} from '../consts/Images'
 import LinkButton from "../components/LinkButton";
 import { useRegisterContext } from "./Register/RegisterContext";
-import { useLazyLoginUserQuery } from "../redux/features/Api/usersApiSlice";
+import { useLazyLoginUserQuery } from "../redux/features/Api/users/usersApiSlice";
 import { LoadingButton } from "@mui/lab";
-import { useSelector,useDispatch } from "react-redux";
-import { loginActions } from "../redux/features/Slices/loginSlice";
-import { useEffect, useState } from "react";
+import { isAlphanumeric, isNotEmpty } from "class-validator";
+import useLocalStorage from "../Hooks/useLocalStorage";
+import { useNavigate } from "react-router-dom";
+import useDataError from "../Hooks/useDataError";
 
 function Login() {
 
     const {nextPage} = useRegisterContext();
-    const [username,setUsername] = useState('');
-    const [password,setPassword] = useState('');
-    const username1 = useSelector((state)=>state)
-    // const password = useSelector<StateType,LoginState>((state)=>state.login)
-    const dispatch = useDispatch()
-    
+
+    const [username,setUsername,setUsernameError,resetUsernameError] = useDataError('');
+    const [password,setPassword,setPasswordError,resetPasswordError] = useDataError('');
+    const [ _, setUser] = useLocalStorage('user');
+    const navigate = useNavigate();
+
     const [trigger,{isLoading, isError}] = useLazyLoginUserQuery();
 
-
-    useEffect(()=>{
-        console.log(username1)
-    },[username1])
-
     const handleLogin = async () =>{
-        // validate currect input
 
-        const {isSuccess, data} = await trigger({username,password});
-    
-        if (isSuccess) return 
-        // 1) add user to local storage
-        // 2) navigate to /feed
+        let testCheck = true;
+        if (!isAlphanumeric(username.data)){
+            setUsernameError('username can be only letters and numbers');
+            testCheck = false;
+        } else resetUsernameError();
+
+        if (!isNotEmpty(password.data)){
+            setPasswordError("password can't be empty");
+            testCheck = false;
+        } else resetPasswordError();
+
+
+        if (!testCheck) return
+
+        const {isSuccess, data} = await trigger({username: username.data, password: password.data});
+
+        console.log(isError,isSuccess,data)
+        if (isError) {
+            setPasswordError('username or password is incurrect');
+            return
+        }
+
+        if (isSuccess){
+            setUser(data);
+            navigate('/feed');
+        }
 
 
     }
@@ -48,15 +64,16 @@ function Login() {
                 
                 <TextField
                     label='Username'
-                    error={isError}
-                    onChange={(event)=>dispatch(loginActions.updateUsername(event.target.value))}
+                    error={isError || username.isError}
+                    onChange={(event)=>setUsername(event.target.value)}
+                    helperText={username.error}
                     />
                 <TextField
                     type="password"
                     label='Password'
-                    error={isError}
-                    onChange={(event)=>dispatch(loginActions.updatePassword(event.target.value))}
-                    helperText={isError && 'username or password incurrect'}
+                    error={password.isError || isError}
+                    onChange={(event)=>setPassword(event.target.value)}
+                    helperText={password.error}
                     />
                 <Stack spacing={2} direction='row'>
                     <LinkButton 

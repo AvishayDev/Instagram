@@ -1,11 +1,18 @@
 import { Box, Button } from "@mui/material";
 import LinkButton from "./LinkButton";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useRegisterContext } from "../pages/Register/RegisterContext";
+import { useLocation } from "react-router-dom";
 
 function RegisterNavigation() {
 
     const {currentPage,nextPage,backPage,registerFlow} = useRegisterContext()
+
+    const location = useLocation();
+
+    useEffect(()=>{
+        
+    },[location])
 
     return ( 
         <Box sx={{

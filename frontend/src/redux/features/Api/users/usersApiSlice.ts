@@ -1,6 +1,6 @@
-import { LoginEP } from "./types/users/LoginEP";
-import { User } from "./types/users/User";
-import { apiSlice } from "./apiSlice";
+import { LoginEP } from "./types/LoginEP";
+import { User } from "./types/User";
+import { apiSlice } from "../apiSlice";
 
 
 

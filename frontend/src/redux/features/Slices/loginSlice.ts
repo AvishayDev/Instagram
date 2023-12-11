@@ -1,15 +1,16 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { DataError } from "../../../types/DataError"
 
 
-interface LoginState {
-    username: string;
-    password: string;
+export interface LoginStateType {
+    username: DataError<string>
+    password: DataError<string>
   }
 
 
-const initialState: LoginState = {
-    username:'',
-    password:''
+const initialState: LoginStateType = {
+    username: {data: ''},
+    password: {data: ''}
 }
 
 
@@ -18,13 +19,34 @@ const loginSlice = createSlice({
     initialState,
     reducers:{
         updateUsername: (state, action: PayloadAction<string>) =>{
-            state.username = action.payload;
+            state.username.data = action.payload;
+
+            
         },
         updatePassword: (state, action: PayloadAction<string>) =>{
-            state.password = action.payload;
+            state.password.data = action.payload;
+        },
+        
+        usernameError: (state, action: PayloadAction<string>) =>{
+            state.username.isError = true;
+            state.username.error = action.payload
+        },
+        passwordError: (state, action: PayloadAction<string>) =>{
+            state.password.isError = true;
+            state.password.error = action.payload
+        },
+
+        clearUsernameError: (state)=>{
+            state.username.error = ''
+            state.username.isError = false;
+        },
+
+        clearPasswordError: (state)=>{
+            state.password.error = ''
+            state.password.isError = false;
         }
 
-        
+
     }
 })
 

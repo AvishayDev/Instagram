@@ -1,4 +1,4 @@
-import { useGetAllUsersQuery } from "../redux/features/Api/usersApiSlice";
+import { useGetAllUsersQuery } from "../redux/features/Api/users/usersApiSlice";
 
 function TestPage() {
 
