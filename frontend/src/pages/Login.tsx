@@ -36,10 +36,10 @@ function Login() {
 
         if (!testCheck) return
 
-        const {isSuccess, data} = await trigger({username: username.data, password: password.data});
+        const {isSuccess,isError, data, error} = await trigger({username: username.data, password: password.data});
 
-        console.log(isError,isSuccess,data)
         if (isError) {
+            console.log('in')
             setPasswordError('username or password is incurrect');
             return
         }
