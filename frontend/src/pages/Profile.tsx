@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, ImageList, ImageListItem } from "@mui/material";
+import { Box, Stack, Typography, ImageList, ImageListItem, Button } from "@mui/material";
 import { DEMO_PROFILE_IMAGES } from "../consts/demoData";
 
 
@@ -7,14 +7,21 @@ function Profile() {
 
         <Stack width='100vw'>
                 <Stack spacing={4} alignItems='flex-start' padding={2}>
-                    <Box   
-                            component='div'
-                            sx={{
-                                width:'100px',
-                                height:'100px',
-                                bgcolor:'blue',
-                                borderRadius:'100%'
-                            }}/>
+                    <Stack direction='row' width='100%' alignItems='center' justifyContent='space-between'>
+                        <Box   
+                                component='div'
+                                sx={{
+                                    width:'100px',
+                                    height:'100px',
+                                    bgcolor:'blue',
+                                    borderRadius:'100%'
+                                }}/>
+                        
+                        <Button 
+                            variant="contained">
+                            Logout
+                        </Button>
+                    </Stack>
                     
                     <Stack alignItems='flex-start'>
                         <Typography>Fname Lname</Typography>
