@@ -1,8 +1,9 @@
-import { Box, Stack, Typography, ImageList, ImageListItem, Button } from "@mui/material";
+import { Box, Stack, Typography, ImageList, ImageListItem, Button, ImageListItemBar } from "@mui/material";
 import { DEMO_PROFILE_IMAGES } from "../consts/demoData";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import LinkButton from "../components/LinkButton";
 import { User } from "../redux/features/Api/users/types/User";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 
 function Profile() {
@@ -54,6 +55,7 @@ function Profile() {
                                 DEMO_PROFILE_IMAGES.map((imageData, index)=> (
                                     <ImageListItem key={index}>
                                         <img src={imageData} loading="lazy"/>
+                                        <ImageListItemBar subtitle='123' actionIcon={<FavoriteIcon color="error"/>} sx={{height:30}}/>
                                     </ImageListItem>
                                 ))
                             }
