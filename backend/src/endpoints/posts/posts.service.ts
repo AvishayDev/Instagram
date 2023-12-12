@@ -19,7 +19,13 @@ export class PostsService {
     pageSize=10;
 
     getPostById(postId:number){
-        return this.postsRepository.findOneBy({ id:postId })
+        const post = this.postsRepository.findOneBy({ id:postId })
+
+        if (!post){
+            throw new NotFoundException('postId Doesnt Exists!')
+        }
+
+        return post
     }
 
     getPostsByPage(page:number){
