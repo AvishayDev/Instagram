@@ -4,6 +4,7 @@ import { User } from "src/Tables/User";
 import { Repository } from "typeorm";
 import { CreateUserDB } from "./dbtypes/CreateUser.db";
 import { CheckUsernamePasswordDB } from "./dbtypes/CheckUsernamePassword.db";
+import { getSelectObject, removeKeys } from "../HelpFunctions";
 
 
 
@@ -47,9 +48,14 @@ export class UsersService{
     }
 
     async checkUsernamePassword(checkUsernamePasswordDB:CheckUsernamePasswordDB){
-        const user = await this.usersRepository.findOneBy({
-            username:checkUsernamePasswordDB.username,
-            password:checkUsernamePasswordDB.password
+        const user = await this.usersRepository.findOne({
+            select: getSelectObject(['id','username',
+                                     'profileImageUrl','firstName',
+                                     'lastName','bio']),
+            where: {
+                username:checkUsernamePasswordDB.username,
+                password:checkUsernamePasswordDB.password
+            }
         })
 
         if (!user){
