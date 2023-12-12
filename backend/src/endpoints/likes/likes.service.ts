@@ -27,16 +27,7 @@ export class LikesService {
 
     async checkUserAndPost(userId:number,postId:number){
         const user = await this.usersService.getUserById(userId);
-
-        if (!user){
-            throw new NotFoundException('userId Doesnt Exists!')
-        }
-
         const post = await this.postsService.getPostById(postId);
-
-        if (!post){
-            throw new NotFoundException('postId Doesnt Exists!')
-        }
 
         return {user,post}
     }
