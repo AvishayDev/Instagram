@@ -11,7 +11,7 @@ function getSavedValue<T>(key:string,initialState:T){
 }
 
 
-function useLocalStorage<T>(key:string, initialState:T | string = '') {
+function useLocalStorage<T>(key:string, initialState:T | null = null) {
     const [value,setValue] = useState(()=>getSavedValue(key,initialState));
 
     const setNewValue = ( newValue:T )=>{
