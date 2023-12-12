@@ -21,6 +21,18 @@ export class UsersService{
     }
 
 
+    async checkUsernameExists(username: string){
+        try {
+            await this.getUserByUsername(username)
+        } 
+        catch {
+            return { exists:false };
+        }
+        
+
+        return { exists:true };
+    }
+
     async getUserByUsername(username:string){
         const user = await this.usersRepository.findOneBy({ username })
 

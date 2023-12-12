@@ -11,12 +11,18 @@ function RegisterStep2() {
                 label='Profile Image Url'
                 />
 
-            <Stack spacing={2} direction='row'>
+            <Stack spacing={2} direction='row' justifyContent='space-between' >
                 <TextField
                     label='First Name'
+                    sx={{
+                        width:'50%'
+                    }}
                     />
                 <TextField
                     label='Last Name'
+                    sx={{
+                        width:'50%'
+                    }}
                     />
             </Stack>
         </Stack>

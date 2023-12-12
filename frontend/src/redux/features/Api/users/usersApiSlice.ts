@@ -1,6 +1,7 @@
 import { LoginEP } from "./types/LoginEP";
 import { User } from "./types/User";
 import { apiSlice } from "../apiSlice";
+import { CheckUser } from "./types/CheckUser";
 
 
 
@@ -13,10 +14,10 @@ export const usersApi = apiSlice.injectEndpoints({
                 url:'users', 
                 method: 'GET'
             })
-        }), //mutation for the rest of Rest Api calls
-        checkUsername:builder.query<User,string>({
+        }), 
+        checkUsername:builder.query<CheckUser,string>({
             query: (username:string) => ({
-                url:'user/check',
+                url:'users/check',
                 method:'POST',
                 body:{username}
             })
@@ -32,4 +33,4 @@ export const usersApi = apiSlice.injectEndpoints({
     })
 })
 
-export const {useLazyLoginUserQuery, useGetAllUsersQuery} = usersApi;
+export const {useLazyLoginUserQuery, useLazyCheckUsernameQuery} = usersApi;

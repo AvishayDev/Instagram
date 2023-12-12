@@ -21,7 +21,7 @@ export class UsersController {
     checkUserExists(
         @Body() checkUserExistsDTO:CheckUserExistsDTO
     ){
-        return this.usersService.getUserByUsername(checkUserExistsDTO.username)
+        return this.usersService.checkUsernameExists(checkUserExistsDTO.username)
     }
 
     @Post('register')
