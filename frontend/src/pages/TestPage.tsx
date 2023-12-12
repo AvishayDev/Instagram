@@ -1,10 +1,10 @@
-import { useGetAllUsersQuery } from "../redux/features/Api/users/usersApiSlice";
+// import { useGetAllUsersQuery } from "../redux/features/Api/users/usersApiSlice";
 
 function TestPage() {
 
-    const {data} = useGetAllUsersQuery();
+    // const {data} = useGetAllUsersQuery();
 
-    console.log(data);
+    // console.log(data);
     
     return ( 
         <h1>TestPage</h1> 

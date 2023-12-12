@@ -5,12 +5,12 @@ import { DataError } from "../../../types/DataError"
 export interface LoginStateType {
     username: DataError<string>
     password: DataError<string>
-  }
+}
 
 
 const initialState: LoginStateType = {
-    username: {data: ''},
-    password: {data: ''}
+    username: {data:''},
+    password: {data:''}
 }
 
 
@@ -20,8 +20,6 @@ const loginSlice = createSlice({
     reducers:{
         updateUsername: (state, action: PayloadAction<string>) =>{
             state.username.data = action.payload;
-
-            
         },
         updatePassword: (state, action: PayloadAction<string>) =>{
             state.password.data = action.payload;

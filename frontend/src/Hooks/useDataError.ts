@@ -13,8 +13,8 @@ function useDataError<T>(initialState:T): [DataError<T>, (newValue: T) => void, 
         })
     }
 
-
     const setError = (errorMessage:string) => {
+
         setValue({
             data:value.data,
             isError:true,
@@ -24,7 +24,7 @@ function useDataError<T>(initialState:T): [DataError<T>, (newValue: T) => void, 
 
     const resetError = () =>{
         setValue({
-            data:value.data,
+            ...value,
             isError:false,
             error:''
         })
