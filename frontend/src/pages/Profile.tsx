@@ -5,11 +5,22 @@ import LinkButton from "../components/LinkButton";
 import { User } from "../redux/features/Api/users/types/User";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IMAGES } from "../consts/Images";
+import { useEffect } from "react";
+import { useLazyGetUserPostsQuery } from "../redux/features/Api/users/usersApiSlice";
+import { useStoreDispatch, useStoreSelector } from "../Hooks/storeHooks";
 
 
 function Profile() {
 
     const [user, setUser] = useLocalStorage<User>('user');
+
+    const [trigger,{}] = useLazyGetUserPostsQuery();
+    const dispatch = useStoreDispatch();
+    const {userPosts} = useStoreSelector(state=>state.profile);
+
+    useEffect(()=>{
+
+    },[])
 
     return ( 
 
