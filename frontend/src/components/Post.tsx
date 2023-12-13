@@ -2,6 +2,7 @@ import { Box, Stack, Typography,IconButton } from "@mui/material";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useEffect, useState } from "react";
+import { IMAGES } from "../consts/Images";
 
 interface PostProps {
     userProfileImageUrl:string
@@ -36,7 +37,7 @@ function Post(props :PostProps) {
                             height:'40px',
                             borderRadius:'100%'
                             }}
-                        src={props.userProfileImageUrl}
+                        src={props.userProfileImageUrl === null ? IMAGES.defaultPostImage : props.userProfileImageUrl}
                         >
                             
                     </Box>
