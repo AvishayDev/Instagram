@@ -23,12 +23,5 @@ export class PostsController {
     ){
         return this.postsService.createPost(addPostDTO);
     }
-
-    @Get('user/:id')
-    getUserPosts(
-        @Param('id',ParseIntPipe) userId: number
-    ){
-        return this.postsService.getUserPosts(userId);
-    }
     
 }

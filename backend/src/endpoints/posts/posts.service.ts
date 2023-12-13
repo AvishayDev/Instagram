@@ -48,25 +48,4 @@ export class PostsService {
     }
 
 
-    async getUserPosts(userId:number){
-        return await this.postsRepository.query(`
-                    SELECT
-                        "post"."imageUrl",
-                        COUNT("like"."id") AS "likes"
-                    FROM
-                        "posts" "post"
-                    LEFT JOIN
-                        "likes" "like" ON "like"."postId" = "post"."id" AND "like"."deletedAt" IS NULL
-                    WHERE
-                        "post"."userId" = $1
-                    GROUP BY
-                        "post"."id"
-                    ORDER BY
-                        "post"."createdAt" DESC
-        `,[userId])
-
-
-    }
-
-
 }
