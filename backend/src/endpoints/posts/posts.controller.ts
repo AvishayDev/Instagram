@@ -1,7 +1,6 @@
-import { Body, Controller, DefaultValuePipe, Get, ParseIntPipe, Post, Query } from "@nestjs/common";
+import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Query } from "@nestjs/common";
 import { PostsService } from "./posts.service";
 import { AddPostDTO } from "./dtos/AddPost.dto";
-import { UserPostsDTO } from "./dtos/UserPosts.dto";
 
 
 
@@ -25,11 +24,11 @@ export class PostsController {
         return this.postsService.createPost(addPostDTO);
     }
 
-    @Post('user')
+    @Get('user/:id')
     getUserPosts(
-        @Body() userPostsDTO : UserPostsDTO
+        @Param('id',ParseIntPipe) userId: number
     ){
-        return this.postsService.getUserPosts(userPostsDTO);
+        return this.postsService.getUserPosts(userId);
     }
     
 }

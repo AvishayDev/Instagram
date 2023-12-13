@@ -31,12 +31,4 @@ export class LikesController {
     ){
         return this.likesService.unsignLike(likeSignDTO)
     }
-
-    @Post('posts')
-    getPostsLikes(
-        @Body() postsLikesDTO:PostsLikesDTO
-    ){
-        postsLikesDTO.postIds.sort((a,b)=>b-a);
-        return this.likesService.getPostsLikes(postsLikesDTO)
-    }
 }

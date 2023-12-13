@@ -74,32 +74,6 @@ export class LikesService {
         return await this.likesRepository.softDelete({id:like.id});
     }
 
-    alignPostsLikes(postIds:number[],postLikes:{likesCount:number,postid:number}[]){
 
-        if (postIds.length === postLikes.length) return postLikes
 
-        let postIdsIndex = 0;
-        let postLikesIndex = 0;
-        while (postIdsIndex < postIds.length){
-            if (postIds[postIdsIndex] !== postLikes[postLikesIndex].postid){
-                postLikes.splice(postLikesIndex,0,{likesCount:0,postid:postIds[postIdsIndex]})
-            }
-            postIdsIndex++;
-            postLikesIndex++;        
-        }
-
-        return postLikes
-    }
-
-    async getPostsLikes(postsLikesDB:PostsLikesDB){
-        const postLikes = await this.likesRepository.createQueryBuilder('like')
-                                              .select('COUNT(*) AS likesCount, like.postId AS postId')
-                                              .where('like.postId IN (:...posts)',{posts:postsLikesDB.postIds})
-                                              .groupBy('like.postId')
-                                              .orderBy('like.postId','DESC')
-                                              .getRawMany();
-        return this.alignPostsLikes(postsLikesDB.postIds,postLikes);
-        
-        
-    }
 }
