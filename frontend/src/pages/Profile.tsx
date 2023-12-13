@@ -54,7 +54,7 @@ function Profile() {
                             {
                                 DEMO_PROFILE_IMAGES.map((imageUrl, index)=> (
                                     <ImageListItem key={index}>
-                                        <img src={imageUrl} loading="lazy"/>
+                                        <img src={imageUrl === null ? IMAGES.defaultPostImage : imageUrl} loading="lazy"/>
                                         <ImageListItemBar subtitle='123' actionIcon={<FavoriteIcon color="error"/>} sx={{height:30}}/>
                                     </ImageListItem>
                                 ))
