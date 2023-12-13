@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { ProfilePosts } from "../Api/users/types/profilePosts"
+import { ProfilePosts } from "../Api/users/types/ProfilePosts"
 
 
 interface InitialState {
