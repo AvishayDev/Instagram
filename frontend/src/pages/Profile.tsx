@@ -4,6 +4,7 @@ import useLocalStorage from "../Hooks/useLocalStorage";
 import LinkButton from "../components/LinkButton";
 import { User } from "../redux/features/Api/users/types/User";
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { IMAGES } from "../consts/Images";
 
 
 function Profile() {
@@ -20,11 +21,10 @@ function Profile() {
                                 sx={{
                                     width:'100px',
                                     height:'100px',
-                                    bgcolor:'blue',
-                                    borderRadius:'100%'
-
+                                    borderRadius:'100%',
+                                    boxShadow:3
                                 }}
-                                src={user?.profileImageUrl}
+                                src={user.profileImageUrl === null ? IMAGES.defaultUserProfileImage : user.profileImageUrl}
                                 />
                         
                         <LinkButton 
@@ -52,9 +52,9 @@ function Profile() {
                         overflow:'hidden'
                         }} cols={3} rowHeight={160} >
                             {
-                                DEMO_PROFILE_IMAGES.map((imageData, index)=> (
+                                DEMO_PROFILE_IMAGES.map((imageUrl, index)=> (
                                     <ImageListItem key={index}>
-                                        <img src={imageData} loading="lazy"/>
+                                        <img src={imageUrl} loading="lazy"/>
                                         <ImageListItemBar subtitle='123' actionIcon={<FavoriteIcon color="error"/>} sx={{height:30}}/>
                                     </ImageListItem>
                                 ))
