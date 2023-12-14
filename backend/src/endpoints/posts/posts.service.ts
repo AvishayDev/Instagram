@@ -29,7 +29,7 @@ export class PostsService {
 
     getPostsByPage(page:number){
         return this.postsRepository.find({
-            relations:['user'],
+            relations:['user','likes'],
             order:{
                 createdAt: 'DESC'
             },
