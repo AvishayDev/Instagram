@@ -1,7 +1,6 @@
-import { Body, Controller, DefaultValuePipe, Get, ParseIntPipe, Post, Query } from "@nestjs/common";
+import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Query } from "@nestjs/common";
 import { PostsService } from "./posts.service";
 import { AddPostDTO } from "./dtos/AddPost.dto";
-import { UserPostsDTO } from "./dtos/UserPosts.dto";
 
 
 
@@ -23,13 +22,6 @@ export class PostsController {
         @Body() addPostDTO : AddPostDTO
     ){
         return this.postsService.createPost(addPostDTO);
-    }
-
-    @Post('user')
-    getUserPosts(
-        @Body() userPostsDTO : UserPostsDTO
-    ){
-        return this.postsService.getUserPosts(userPostsDTO);
     }
     
 }

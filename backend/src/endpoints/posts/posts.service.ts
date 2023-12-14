@@ -3,7 +3,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Post } from "src/Tables/Post";
 import { Repository } from "typeorm";
 import { CreatePostDB } from "./dbtypes/CreatePost.db";
-import { UserPostsDB } from "./dbtypes/UserPosts.db";
 import { UsersService } from "../users/users.service";
 
 
@@ -48,25 +47,5 @@ export class PostsService {
         return this.postsRepository.save(newPost);
     }
 
-    async getUserPosts(userPostsDB:UserPostsDB){
-        
-        await this.usersService.getUserById(userPostsDB.userId);
-
-
-        return this.postsRepository.find({
-            select:{
-                imageUrl:true,
-                id:true
-            },
-            where:{
-                user:{
-                    id:userPostsDB.userId
-                }
-            },
-            order:{
-                id: "DESC"
-            }
-        })
-    }
 
 }
