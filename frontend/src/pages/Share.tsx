@@ -4,13 +4,13 @@ import { IMAGES } from "../consts/Images";
 
 function Share() {
     return ( 
-        <Stack spacing={4} marginTop={4}>
+        <Stack spacing={4} marginTop={3}>
             <Typography variant="h4">Let's Post Something!</Typography>
                 <Box   
                     component='img'
                     sx={{
-                        width:'300px',
-                        height:'300px',
+                        width:'200px',
+                        height:'200px',
                         boxShadow:2,
                         alignSelf:'center'
                         
