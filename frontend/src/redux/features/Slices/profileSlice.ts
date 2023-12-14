@@ -1,15 +1,15 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { ProfilePosts } from "../Api/users/types/ProfilePosts"
+import { ProfilePost } from "../Api/users/types/ProfilePosts"
 
 
 interface InitialState {
-    userPosts:ProfilePosts[]
+    userPosts:ProfilePost[] | null
 }
 
 
 
 const initialState: InitialState = {
-    userPosts:[]
+    userPosts: null
 }
 
 
@@ -17,7 +17,7 @@ const profileSlice = createSlice({
     name:'profile',
     initialState,
     reducers:{
-        setUserPosts: (state, action: PayloadAction<ProfilePosts[]>)=>{
+        setUserPosts: (state, action: PayloadAction<ProfilePost[]>)=>{
             state.userPosts = action.payload;
         }
     }

@@ -11,10 +11,10 @@ function getSavedValue<T>(key:string,initialState:T){
 }
 
 
-function useLocalStorage<T>(key:string, initialState:T | null = null) {
+function useLocalStorage<T>(key:string, initialState:T | null = null):[T,(newValue: T | null)=>void] {
     const [value,setValue] = useState(()=>getSavedValue(key,initialState));
 
-    const setNewValue = ( newValue:T )=>{
+    const setNewValue = ( newValue:T | null )=>{
         setValue(newValue);
         localStorage.setItem(key,JSON.stringify(newValue));
     }

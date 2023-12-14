@@ -1,26 +1,37 @@
-import { Box, Stack, Typography, ImageList, ImageListItem, Button, ImageListItemBar } from "@mui/material";
+import { Box, Stack, Typography, ImageList, ImageListItem, Button, ImageListItemBar, IconButton } from "@mui/material";
 import { DEMO_PROFILE_IMAGES } from "../consts/demoData";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import LinkButton from "../components/LinkButton";
 import { User } from "../redux/features/Api/users/types/User";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IMAGES } from "../consts/Images";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLazyGetUserPostsQuery } from "../redux/features/Api/users/usersApiSlice";
 import { useStoreDispatch, useStoreSelector } from "../Hooks/storeHooks";
-
+import { profileActions } from "../redux/features/Slices/profileSlice";
+import CircularProgress from '@mui/material/CircularProgress';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 function Profile() {
 
     const [user, setUser] = useLocalStorage<User>('user');
 
-    const [trigger,{}] = useLazyGetUserPostsQuery();
+    const [trigger,{isLoading, isError}] = useLazyGetUserPostsQuery();
     const dispatch = useStoreDispatch();
     const {userPosts} = useStoreSelector(state=>state.profile);
 
     useEffect(()=>{
+        console.log('Enter useEffect')
+        const loadData = async () =>{
+            if (!userPosts){
+                console.log('Fetch Data')
+                const {data} = await trigger(user.id);
 
-    },[])
+                data && dispatch(profileActions.setUserPosts(data));
+            }
+        }
+        loadData();
+    },[]);
 
     return ( 
 
@@ -35,7 +46,7 @@ function Profile() {
                                     borderRadius:'100%',
                                     boxShadow:3
                                 }}
-                                src={user.profileImageUrl === null ? IMAGES.defaultUserProfileImage : user.profileImageUrl}
+                                src={!user.profileImageUrl ? IMAGES.defaultUserProfileImage : user.profileImageUrl}
                                 />
                         
                         <LinkButton 
@@ -58,19 +69,41 @@ function Profile() {
                     </Stack>
                 </Stack>
                 
-                <ImageList sx={{
-                        borderTop:'#d3d3d3 solid 1px',
-                        overflow:'hidden'
-                        }} cols={3} rowHeight={160} >
-                            {
-                                DEMO_PROFILE_IMAGES.map((imageUrl, index)=> (
-                                    <ImageListItem key={index}>
-                                        <img src={imageUrl === null ? IMAGES.defaultPostImage : imageUrl} loading="lazy"/>
-                                        <ImageListItemBar subtitle='123' actionIcon={<FavoriteIcon color="error"/>} sx={{height:30}}/>
-                                    </ImageListItem>
-                                ))
-                            }
-                </ImageList>
+
+                <Box sx={{ borderTop:'#d3d3d3 solid 1px', }}>
+                    {
+                    isError ? 
+                    <>
+                        <Typography sx={{paddingTop:4}}>
+                            Something goes wrong...
+                        </Typography>
+                        <Typography variant="h5" sx={{paddingBottom:2}}>
+                            Left's refresh the page!
+                        </Typography>
+                        <IconButton
+                            onClick={()=>window.location.reload()}
+                            >
+                            <RefreshIcon/>
+                        </IconButton>
+                    </>
+                    : 
+                        <ImageList sx={{
+                                overflow:'hidden',
+                                justifyItems:'center',
+                                }} cols={3} rowHeight={160} >
+                                    {
+                                        userPosts ? userPosts.map(({imageUrl,likes}, index)=> (
+                                            <ImageListItem key={index}>
+                                                <img src={!imageUrl ? IMAGES.defaultPostImage : imageUrl} loading="lazy"/>
+                                                <ImageListItemBar subtitle={likes} actionIcon={<FavoriteIcon color="error"/>} sx={{height:30}}/>
+                                            </ImageListItem>
+                                        ))
+                                        :
+                                        isLoading && <CircularProgress size={70} sx={{gridColumn:2,padding:4}}/>
+                                    }
+                        </ImageList>
+                    }
+                </Box>
         </Stack>
         
         );

@@ -2,7 +2,7 @@ import { LoginEP } from "./types/LoginEP";
 import { User } from "./types/User";
 import { apiSlice } from "../apiSlice";
 import { CheckUser } from "./types/CheckUser";
-import { ProfilePosts } from "./types/ProfilePosts";
+import { ProfilePost } from "./types/ProfilePosts";
 
 
 
@@ -31,7 +31,7 @@ export const usersApi = apiSlice.injectEndpoints({
                 
             })
         }),
-        getUserPosts: builder.query<ProfilePosts,number>({
+        getUserPosts: builder.query<ProfilePost[],number>({
             query: (userId:number) => ({
                 url:`users/${userId}/posts`
             })
