@@ -40,17 +40,7 @@ export class PostsService {
     // }
 
     async getPostsByPage(page:number, userId:number){
-        /**
-            userProfileImageUrl:string
-            userFirstName:string
-            userLastName:string
-            uploadDate:Date
-            ImageUrl:string
-            text:string
-            isLiked:boolean
-            numOfLikes:number}[] = [
 
-         */
         return await this.postsRepository.createQueryBuilder('post')
             .select([
                 'user.profileImageUrl AS userProfileImageUrl',
@@ -63,8 +53,8 @@ export class PostsService {
                 'COUNT(like.id) AS likes',
                 `COUNT(CASE WHEN like.user.id = :userId THEN 1 ELSE NULL END) AS isLiked`,
             ])
-            .leftJoin('post.likes','like')
             .leftJoin('post.user','user')
+            .leftJoin('post.likes','like')
             .groupBy('post.id, user.id')
             .orderBy('post.createdAt','DESC')
             .offset(this.pageSize*page)
