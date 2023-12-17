@@ -3,22 +3,13 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useEffect, useState } from "react";
 import { IMAGES } from "../consts/Images";
-
-interface PostProps {
-    userProfileImageUrl:string
-    userFirstName:string
-    userLastName:string
-    uploadDate:Date
-    ImageUrl:string
-    text:string
-    isLiked:boolean
-    numOfLikes:number
-}
+import { FeedPost } from "../redux/features/Api/posts/types/FeedPost";
 
 
-function Post(props :PostProps) {
-    const [isLiked,setIsLiked] = useState(props.isLiked)
 
+
+function Post(props :FeedPost) {
+    const [isLiked,setIsLiked] = useState(props.is_liked)
 
     return (
         <Box sx={{ width:'100vw', borderTop:'#d3d3d3 solid 1px'}}>
@@ -37,16 +28,16 @@ function Post(props :PostProps) {
                             height:'40px',
                             borderRadius:'100%'
                             }}
-                        src={props.userProfileImageUrl === null ? IMAGES.defaultPostImage : props.userProfileImageUrl}
+                        src={props.user_profile_image_url ? IMAGES.defaultUserProfileImage : props.user_profile_image_url}
                         >
                             
                     </Box>
                     
-                    <Typography>{props.userFirstName} {props.userLastName}</Typography>
+                    <Typography>{props.user_firstname} {props.user_lastname}</Typography>
                     
                 </Stack>
 
-                <Typography sx={{alignSelf:'center'}}>{props.uploadDate.getFullYear()}</Typography>
+                <Typography sx={{alignSelf:'center'}}>{new Date(props.upload_date).getFullYear()}</Typography>
             </Box>
 
             <Box   
@@ -55,18 +46,18 @@ function Post(props :PostProps) {
                     height:'40vh',
                     width:'100%'
                     }}
-                src={props.ImageUrl}
+                src={props?.image_url}
                 loading="lazy"
                 >
                     
             </Box>
             
             <Stack alignItems='flex-start'>
-                <Typography align="left" sx={{margin:1}}>{props.text}</Typography>
+                <Typography align="left" sx={{margin:1}}>{props?.text}</Typography>
                 
                 <Stack direction='row' alignItems='center'>
                     <IconButton onClick={()=>setIsLiked(!isLiked)}>{isLiked ? <FavoriteIcon/>:<FavoriteBorderIcon/>}</IconButton>
-                    <Typography>{props.numOfLikes} Likes</Typography>
+                    <Typography>{props?.likes} Likes</Typography>
                 </Stack>
             </Stack>
             
