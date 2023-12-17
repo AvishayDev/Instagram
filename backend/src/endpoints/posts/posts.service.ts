@@ -43,15 +43,15 @@ export class PostsService {
 
         return await this.postsRepository.createQueryBuilder('post')
             .select([
-                'user.profileImageUrl AS userProfileImageUrl',
-                'user.firstName AS userFirstName',
-                'user.lastName AS userLastName',
-                'post.createdAt AS uploadDate',
-                'post.imageUrl AS imageUrl',
+                'user.profileImageUrl AS user_profile_image_url',
+                'user.firstName AS user_firstname',
+                'user.lastName AS user_lastname',
+                'post.createdAt AS upload_date',
+                'post.imageUrl AS image_url',
                 'post.text AS text',
-                'post.id AS postId',
+                'post.id AS post_id',
                 'COUNT(like.id) AS likes',
-                `COUNT(CASE WHEN like.user.id = :userId THEN 1 ELSE NULL END) AS isLiked`,
+                `COUNT(CASE WHEN like.user.id = :userId THEN 1 ELSE NULL END)::integer AS is_liked`,
             ])
             .leftJoin('post.user','user')
             .leftJoin('post.likes','like')

@@ -81,26 +81,6 @@ export class UsersService{
     }
 
     async getUserPosts(userId:number){
-        ` Objective Query:
-        SELECT
-            "post"."imageUrl",
-            COUNT("like"."id") AS "likes"
-            
-        FROM
-            (
-                SELECT *
-                FROM
-                    "posts" "post"
-                WHERE
-                    "post"."userId" = $1
-            ) "post"
-        LEFT JOIN
-            "likes" "like" ON "like"."postId" = "post"."id" AND "like"."deletedAt" IS NULL
-        GROUP BY
-            "post"."id", "post"."createdAt","post"."imageUrl"
-        ORDER BY
-            "post"."createdAt" DESC
-        `
 
         return await this.postsRepository.createQueryBuilder('post')
                         .select(['post.imageUrl', 'COUNT(like.id) AS likes'])
