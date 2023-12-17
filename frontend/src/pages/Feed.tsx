@@ -22,10 +22,8 @@ function Feed() {
     const {posts} = useStoreSelector(state=>state.feed);
 
     useEffect(()=>{
-        console.log('Enter useEffect')
         const loadData = async () =>{
             if (!posts){
-                console.log('Fetch Data')
                 const {data} = await trigger({userId:user.id,page:0});
 
                 data && dispatch(feedActions.setPosts(data));
@@ -33,7 +31,7 @@ function Feed() {
         }
         loadData();
     },[]);
-    
+
     return ( 
         <>
             {

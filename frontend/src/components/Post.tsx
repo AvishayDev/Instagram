@@ -1,7 +1,7 @@
 import { Box, Stack, Typography,IconButton } from "@mui/material";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IMAGES } from "../consts/Images";
 import { FeedPost } from "../redux/features/Api/posts/types/FeedPost";
 
@@ -10,9 +10,18 @@ import { FeedPost } from "../redux/features/Api/posts/types/FeedPost";
 
 function Post(props :FeedPost) {
     const [isLiked,setIsLiked] = useState(props.is_liked)
+    const [numOfLikes,setnumOfLikes] = useState(props.likes)
+
+
+    const handleSignLike = () => {
+        
+        setnumOfLikes(isLiked ? numOfLikes - 1 : numOfLikes + 1);
+        setIsLiked(!isLiked)
+
+    }
 
     return (
-        <Box sx={{ width:'100vw', borderTop:'#d3d3d3 solid 1px'}}>
+        <Stack width='100vw' borderTop='#d3d3d3 solid 1px'>
             
             <Box sx={{ 
                 display:'flex',
@@ -39,29 +48,30 @@ function Post(props :FeedPost) {
 
                 <Typography sx={{alignSelf:'center'}}>{new Date(props.upload_date).getFullYear()}</Typography>
             </Box>
-
+            
             <Box   
                 component='img'
                 sx={{
-                    height:'40vh',
-                    width:'100%'
+                    height:'50vh',
+                    width:'50vh',
+                    alignSelf:'center'
                     }}
                 src={props?.image_url}
                 loading="lazy"
                 >
-                    
+                        
             </Box>
             
             <Stack alignItems='flex-start'>
                 <Typography align="left" sx={{margin:1}}>{props?.text}</Typography>
                 
                 <Stack direction='row' alignItems='center'>
-                    <IconButton onClick={()=>setIsLiked(!isLiked)}>{isLiked ? <FavoriteIcon/>:<FavoriteBorderIcon/>}</IconButton>
-                    <Typography>{props?.likes} Likes</Typography>
+                    <IconButton onClick={handleSignLike}>{isLiked ? <FavoriteIcon/>:<FavoriteBorderIcon/>}</IconButton>
+                    <Typography>{numOfLikes} Likes</Typography>
                 </Stack>
             </Stack>
             
-        </Box>
+        </Stack>
         );
 }
 

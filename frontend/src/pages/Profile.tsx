@@ -22,10 +22,8 @@ function Profile() {
     const {userPosts} = useStoreSelector(state=>state.profile);
 
     useEffect(()=>{
-        console.log('Enter useEffect')
         const loadData = async () =>{
             if (!userPosts){
-                console.log('Fetch Data')
                 const {data} = await trigger(user.id);
 
                 data && dispatch(profileActions.setUserPosts(data));

@@ -50,7 +50,7 @@ export class PostsService {
                 'post.imageUrl AS image_url',
                 'post.text AS text',
                 'post.id AS post_id',
-                'COUNT(like.id) AS likes',
+                'COUNT(like.id)::integer AS likes',
                 `COUNT(CASE WHEN like.user.id = :userId THEN 1 ELSE NULL END)::integer AS is_liked`,
             ])
             .leftJoin('post.user','user')
