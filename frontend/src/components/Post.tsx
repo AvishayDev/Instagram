@@ -4,6 +4,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useState } from "react";
 import { IMAGES } from "../consts/Images";
 import { FeedPost } from "../redux/features/Api/posts/types/FeedPost";
+import {formatDistanceToNow} from 'date-fns'
 
 
 
@@ -37,7 +38,7 @@ function Post(props :FeedPost) {
                             height:'40px',
                             borderRadius:'100%'
                             }}
-                        src={props.user_profile_image_url ? IMAGES.defaultUserProfileImage : props.user_profile_image_url}
+                        src={!props.user_profile_image_url ? IMAGES.defaultUserProfileImage : props.user_profile_image_url}
                         >
                             
                     </Box>
@@ -46,7 +47,7 @@ function Post(props :FeedPost) {
                     
                 </Stack>
 
-                <Typography sx={{alignSelf:'center'}}>{new Date(props.upload_date).getFullYear()}</Typography>
+                <Typography sx={{alignSelf:'center'}}>{formatDistanceToNow(new Date(props.upload_date),{addSuffix:true})}</Typography>
             </Box>
             
             <Box   
