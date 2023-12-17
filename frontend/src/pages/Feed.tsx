@@ -14,7 +14,7 @@ import PageError from "../components/PageError";
 
 function Feed() {
 
-    const [user, setUser] = useLocalStorage<User>('user');
+    const [user] = useLocalStorage<User>('user');
 
 
     const [trigger,{isLoading,isError}] = useLazyGetPostsQuery();

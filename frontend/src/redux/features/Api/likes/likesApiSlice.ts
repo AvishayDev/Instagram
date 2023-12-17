@@ -7,21 +7,21 @@ import { SignLikeResult, SignLikeType, UnsignLikeResult } from "./types/signAndU
 export const likesApi = apiSlice.injectEndpoints({
 
     endpoints: (builder)=> ({
-        signLike: builder.mutation<SignLikeResult,SignLikeType>({
+        signLike: builder.query<SignLikeResult,SignLikeType>({
             query: (signLike : SignLikeType) => ({
                 url:'likes/sign',
                 method:'POST',
                 body: {...signLike}
             })
         }),
-        unsignLike: builder.mutation<UnsignLikeResult,SignLikeType>({
+        unsignLike: builder.query<UnsignLikeResult,SignLikeType>({
             query: (unsignLike : SignLikeType) => ({
                 url:'likes/unsign',
-                method:'POST',
+                method:'DELETE',
                 body: {...unsignLike}
             })
         })
     })
 })
 
-export const {useSignLikeMutation,useUnsignLikeMutation} = likesApi;
+export const {useLazySignLikeQuery, useLazyUnsignLikeQuery} = likesApi;
