@@ -1,10 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Post } from "src/Tables/Post";
 import { Repository } from "typeorm";
 import { CreatePostDB } from "./dbtypes/CreatePost.db";
 import { UsersService } from "../users/users.service";
-import { Like } from "src/Tables/Like";
 
 
 
@@ -18,8 +17,8 @@ export class PostsService {
     
     pageSize=10;
 
-    getPostById(postId:number){
-        const post = this.postsRepository.findOneBy({ id:postId })
+    async getPostById(postId:number){
+        const post = await this.postsRepository.findOneBy({ id:postId })
 
         if (!post){
             throw new NotFoundException('postId Doesnt Exists!')
@@ -27,17 +26,6 @@ export class PostsService {
 
         return post
     }
-
-    // getPostsByPage(page:number){
-    //     return this.postsRepository.find({
-    //         relations:['user','likes'],
-    //         order:{
-    //             createdAt: 'DESC'
-    //         },
-    //         skip:this.pageSize*page,
-    //         take:this.pageSize
-    //     })
-    // }
 
     async getPostsByPage(page:number, userId:number){
 

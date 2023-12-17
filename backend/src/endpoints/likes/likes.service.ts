@@ -19,6 +19,7 @@ export class LikesService {
     ){}
 
     getAllLikes(){
+
         return this.likesRepository.find({
             withDeleted:true,
             relations:['user','post']
@@ -26,10 +27,16 @@ export class LikesService {
     }
 
     async checkUserAndPost(userId:number,postId:number){
-        const user = await this.usersService.getUserById(userId);
-        const post = await this.postsService.getPostById(postId);
+        try {
+            
+            const user = await this.usersService.getUserById(userId);
+            const post = await this.postsService.getPostById(postId);
+            return {user,post}
+        
+        } catch (error){
+            throw error;
+        }
 
-        return {user,post}
     }
 
     getLike(signLikeDB:SignLikeDB,withDeleted:boolean){
@@ -59,6 +66,8 @@ export class LikesService {
         } else {
             throw new BadRequestException('You have Already Liked This Post!');
         }
+
+        return { signed:true }
     }
 
 
@@ -71,7 +80,9 @@ export class LikesService {
             throw new BadRequestException("You're dosen't Liked This Post!")
         }
 
-        return await this.likesRepository.softDelete({id:like.id});
+        await this.likesRepository.softDelete({id:like.id});
+
+        return { unsigned:true }
     }
 
 
