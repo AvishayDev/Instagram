@@ -1,5 +1,5 @@
 import { IconButton, Stack, Typography } from "@mui/material";
-import RefreshIcon from '@mui/icons-material/Refresh';
+import RefreshPageIcon from "./RefreshPageIcon";
 
 
 function PageError() {
@@ -11,11 +11,7 @@ function PageError() {
             <Typography variant="h5" sx={{paddingBottom:2}}>
                 Left's refresh the page!
             </Typography>
-            <IconButton sx={{alignSelf:'center'}}
-                onClick={()=>window.location.reload()}
-                >
-                <RefreshIcon/>
-            </IconButton>
+            <RefreshPageIcon sx={{alignSelf:'center'}}/>
         </Stack>
      );
 }

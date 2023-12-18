@@ -3,13 +3,17 @@ import { FeedPost } from "../Api/posts/types/FeedPost"
 
 
 interface InitialState {
-    posts:FeedPost[] | null
+    posts:FeedPost[],
+    page:number,
+    isMorePages:boolean
 }
 
 
 
 const initialState: InitialState = {
-    posts: null
+    posts: [],
+    page:0,
+    isMorePages:true
 }
 
 
@@ -17,11 +21,20 @@ const feedSlice = createSlice({
     name:'feed',
     initialState,
     reducers:{
-        setPosts: (state, action: PayloadAction<FeedPost[]>)=>{
+        setPosts:(state, action: PayloadAction<FeedPost[]>)=>{
             state.posts = action.payload;
+            state.page += 1
         },
+
         addPosts:(state, action: PayloadAction<FeedPost[]>)=>{
-            state.posts && (state.posts = state.posts.concat(action.payload));
+            if (!state.posts) return
+
+            if (action.payload.length === 0)
+                state.isMorePages = false
+            else
+                state.page += 1
+
+            state.posts = state.posts.concat(action.payload);
         },
         updatePost: (state,action:PayloadAction<FeedPost>)=>{
             if (!state.posts) return

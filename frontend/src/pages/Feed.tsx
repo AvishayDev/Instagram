@@ -1,4 +1,4 @@
-import { Box, CircularProgress, List, ListItem, Stack } from "@mui/material";
+import { Box, Button, CircularProgress, List, ListItem, Stack, Typography } from "@mui/material";
 import Post from "../components/Post";
 import { DEMO_DATA } from "../consts/demoData";
 import { maxHeight } from "@mui/system";
@@ -10,6 +10,8 @@ import { User } from "../redux/features/Api/users/types/User";
 import { feedActions } from "../redux/features/Slices/feedSlice";
 import { FeedPost } from "../redux/features/Api/posts/types/FeedPost";
 import PageError from "../components/PageError";
+import { LoadingButton } from "@mui/lab";
+import RefreshPageIcon from "../components/RefreshPageIcon";
 
 
 function Feed() {
@@ -19,18 +21,21 @@ function Feed() {
 
     const [trigger,{isLoading,isError}] = useLazyGetPostsQuery();
     const dispatch = useStoreDispatch();
-    const {posts} = useStoreSelector(state=>state.feed);
+    const {posts, page, isMorePages} = useStoreSelector(state=>state.feed);
+
+    const loadData = async () =>{
+        const {data} = await trigger({userId:user.id,page:page});
+
+        data && dispatch(feedActions.addPosts(data));
+    }
 
     useEffect(()=>{
-        const loadData = async () =>{
-
-            if (!posts){
-                const {data} = await trigger({userId:user.id,page:0});
-
-                data && dispatch(feedActions.setPosts(data));
-            }
+        const loadInitialData = async () =>{
+            const {data} = await trigger({userId:user.id,page:0});
+    
+            data && dispatch(feedActions.setPosts(data));
         }
-        loadData();
+        loadInitialData();
     },[]);
 
     const handleLike = (post:FeedPost)=> dispatch(feedActions.updatePost(post))
@@ -38,13 +43,14 @@ function Feed() {
 
 
     return ( 
-        <>
+        <Stack>
             {
                 isError ?
                     <PageError/>
                 :
+                <>
                     <List sx={ {  overflowY:'hidden'  }}>
-                        {posts ? posts.map((postData, index)=>{
+                        { posts ? posts.map((postData, index)=>{
                                     return (
                                         <ListItem key={index} sx={{padding:0}}>
                                             <Post post={postData} onLike={handleLike}/>
@@ -56,8 +62,28 @@ function Feed() {
 
                            }
                     </List>
+                    {   
+                        isMorePages ? <LoadingButton 
+                                            sx={{
+                                                alignSelf:'center',
+                                                marginBottom:4
+                                            }}
+                                            variant="contained" 
+                                            onClick={loadData}
+                                            loading={isLoading}
+                                            >Load More Posts!
+                                        </LoadingButton>
+                                    : 
+                                      <Stack>
+                                          <Typography variant="h5">
+                                              You've Seen All The Posts..
+                                          </Typography>
+                                          <RefreshPageIcon sx={{marginBottom:4, alignSelf:'center'}}/>
+                                      </Stack>
+                    }
+                </>
             }
-        </>
+        </Stack>
 
         );
 }
