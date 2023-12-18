@@ -25,4 +25,9 @@ export class PostsController {
         return this.postsService.createPost(addPostDTO);
     }
     
+    @Get('test')
+    runTest(){
+        return this.postsService.testEp();
+    }
+
 }

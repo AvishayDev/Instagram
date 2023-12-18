@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
+import { InjectDataSource, InjectRepository } from "@nestjs/typeorm";
 import { Post } from "src/Tables/Post";
-import { Repository } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 import { CreatePostDB } from "./dbtypes/CreatePost.db";
 import { UsersService } from "../users/users.service";
 
@@ -12,10 +12,23 @@ export class PostsService {
 
     constructor(
         @InjectRepository(Post) private postsRepository: Repository<Post>,
-        private readonly usersService: UsersService
+        private readonly usersService: UsersService,
+        @InjectDataSource() private readonly dataSource: DataSource
         ){}
     
     pageSize=10;
+
+
+    async testEp(){
+        return await this.dataSource.createQueryBuilder()
+                                    .select('*')
+                                    .from((qb)=>{
+                                        return qb.select('*')
+                                                .from(Post,'post')
+                                                .where('post.userId = 1')
+                                    },'post')
+                                    .getRawMany();
+    }
 
     async getPostById(postId:number){
         const post = await this.postsRepository.findOneBy({ id:postId })
