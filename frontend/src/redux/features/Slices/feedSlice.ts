@@ -22,7 +22,9 @@ const feedSlice = createSlice({
         },
         addPosts:(state, action: PayloadAction<FeedPost[]>)=>{
             state.posts && (state.posts = state.posts.concat(action.payload));
-        }
+        },
+        
+        reset: ()=>initialState
     }
 })
 

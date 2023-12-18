@@ -7,8 +7,6 @@ import { feedReducer } from '../features/Slices/feedSlice';
 
 const store = configureStore({
     reducer: {
-        login: loginReducer,
-        register:registerReducer,
         profile:profileReducer,
         feed:feedReducer,
         [apiSlice.reducerPath]:apiSlice.reducer,
@@ -17,7 +15,6 @@ const store = configureStore({
 
 
 });
-
 
 
 export default store;
