@@ -60,9 +60,9 @@ export class LikesService {
 
         if (!like){
             const newLike = this.likesRepository.create({...signLikeDB, user ,post});
-            return await this.likesRepository.save(newLike);
+            await this.likesRepository.save(newLike);
         } else if (like.deletedAt){
-            return await this.likesRepository.restore({id:like.id});
+            await this.likesRepository.restore({id:like.id});
         } else {
             throw new BadRequestException('You have Already Liked This Post!');
         }
