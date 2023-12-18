@@ -19,7 +19,9 @@ const profileSlice = createSlice({
     reducers:{
         setUserPosts: (state, action: PayloadAction<ProfilePost[]>)=>{
             state.userPosts = action.payload;
-        }
+        },
+        
+        reset: ()=>initialState
     }
 })
 

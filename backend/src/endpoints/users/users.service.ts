@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/Tables/User";
-import { Repository } from "typeorm";
+import { DataSource, Repository, getManager } from "typeorm";
 import { CreateUserDB } from "./dbtypes/CreateUser.db";
 import { CheckUsernamePasswordDB } from "./dbtypes/CheckUsernamePassword.db";
 import { getSelectObject, removeKeys } from "../HelpFunctions";
@@ -16,7 +16,7 @@ export class UsersService{
     constructor(
         @InjectRepository(User) private usersRepository: Repository<User>,
         @InjectRepository(Post) private postsRepository: Repository<Post>,
-
+        //private readonly dataSource: DataSource
     ){}
     
     getAllUsers(){
@@ -81,21 +81,14 @@ export class UsersService{
     }
 
     async getUserPosts(userId:number){
-        return await this.postsRepository.query(`
-                    SELECT
-                        "post"."imageUrl",
-                        COUNT("like"."id") AS "likes"
-                    FROM
-                        "posts" "post"
-                    LEFT JOIN
-                        "likes" "like" ON "like"."postId" = "post"."id" AND "like"."deletedAt" IS NULL
-                    WHERE
-                        "post"."userId" = $1
-                    GROUP BY
-                        "post"."id"
-                    ORDER BY
-                        "post"."createdAt" DESC
-        `,[userId])
+
+        return await this.postsRepository.createQueryBuilder('post')
+                        .select(['post.imageUrl as image_url', 'COUNT(like.id)::integer AS likes'])
+                        .leftJoin('post.likes','like')
+                        .where('post.userId = :userId',{userId})
+                        .groupBy('post.id')
+                        .orderBy('post.createdAt','DESC')
+                        .getRawMany();
 
 
     }

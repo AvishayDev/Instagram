@@ -13,8 +13,9 @@ export class PostsController {
     @Get()
     getAllPosts(
         @Query('page',new DefaultValuePipe(0),ParseIntPipe) page:number,
+        @Query('userId',new DefaultValuePipe(1),ParseIntPipe) userId:number,
     ){
-        return this.postsService.getPostsByPage(page);
+        return this.postsService.getPostsByPage(page,userId);
     }
 
     @Post('add')
@@ -24,4 +25,9 @@ export class PostsController {
         return this.postsService.createPost(addPostDTO);
     }
     
+    @Get('test')
+    runTest(){
+        return this.postsService.testEp();
+    }
+
 }

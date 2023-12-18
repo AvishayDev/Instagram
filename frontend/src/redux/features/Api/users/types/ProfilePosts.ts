@@ -2,6 +2,6 @@
 
 
 export type ProfilePost ={
-    imageUrl:string,
+    image_url:string,
     likes:number
 }

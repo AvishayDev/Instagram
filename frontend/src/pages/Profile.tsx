@@ -11,6 +11,7 @@ import { useStoreDispatch, useStoreSelector } from "../Hooks/storeHooks";
 import { profileActions } from "../redux/features/Slices/profileSlice";
 import CircularProgress from '@mui/material/CircularProgress';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import PageError from "../components/PageError";
 
 function Profile() {
 
@@ -21,10 +22,8 @@ function Profile() {
     const {userPosts} = useStoreSelector(state=>state.profile);
 
     useEffect(()=>{
-        console.log('Enter useEffect')
         const loadData = async () =>{
             if (!userPosts){
-                console.log('Fetch Data')
                 const {data} = await trigger(user.id);
 
                 data && dispatch(profileActions.setUserPosts(data));
@@ -73,28 +72,16 @@ function Profile() {
                 <Box sx={{ borderTop:'#d3d3d3 solid 1px', }}>
                     {
                     isError ? 
-                    <>
-                        <Typography sx={{paddingTop:4}}>
-                            Something goes wrong...
-                        </Typography>
-                        <Typography variant="h5" sx={{paddingBottom:2}}>
-                            Left's refresh the page!
-                        </Typography>
-                        <IconButton
-                            onClick={()=>window.location.reload()}
-                            >
-                            <RefreshIcon/>
-                        </IconButton>
-                    </>
+                        <PageError/>
                     : 
                         <ImageList sx={{
                                 overflow:'hidden',
                                 justifyItems:'center',
                                 }} cols={3} rowHeight={160} >
                                     {
-                                        userPosts ? userPosts.map(({imageUrl,likes}, index)=> (
+                                        userPosts ? userPosts.map(({image_url,likes}, index)=> (
                                             <ImageListItem key={index}>
-                                                <img src={!imageUrl ? IMAGES.defaultPostImage : imageUrl} loading="lazy"/>
+                                                <img src={!image_url ? IMAGES.defaultPostImage : image_url} loading="lazy"/>
                                                 <ImageListItemBar subtitle={likes} actionIcon={<FavoriteIcon color="error"/>} sx={{height:30}}/>
                                             </ImageListItem>
                                         ))

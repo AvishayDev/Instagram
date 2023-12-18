@@ -3,25 +3,60 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useEffect, useState } from "react";
 import { IMAGES } from "../consts/Images";
+import { FeedPost } from "../redux/features/Api/posts/types/FeedPost";
+import {formatDistanceToNow} from 'date-fns'
+import { useLazySignLikeQuery,useLazyUnsignLikeQuery } from "../redux/features/Api/likes/likesApiSlice";
+import useLocalStorage from "../Hooks/useLocalStorage";
+import { User } from "../redux/features/Api/users/types/User";
+import { SignLikeType } from "../redux/features/Api/likes/types/signAndUnsign";
+import AutoClosePopup from "./AutoClosePopup";
 
 interface PostProps {
-    userProfileImageUrl:string
-    userFirstName:string
-    userLastName:string
-    uploadDate:Date
-    ImageUrl:string
-    text:string
-    isLiked:boolean
-    numOfLikes:number
+    post:FeedPost,
+    onLike:(post:FeedPost)=>void
 }
 
-
 function Post(props :PostProps) {
-    const [isLiked,setIsLiked] = useState(props.isLiked)
+
+    const [user] = useLocalStorage<User>('user');
+
+    const [isLiked,setIsLiked] = useState(props.post.is_liked)
+    const [numOfLikes,setnumOfLikes] = useState(props.post.likes)
+    const [wasError,setWasError] = useState(false)
+
+
+    const signLike:SignLikeType = {userId:user.id, postId:props.post.post_id}
+
+    const [signTrigger] = useLazySignLikeQuery();
+    const [unsignTrigger] = useLazyUnsignLikeQuery();
+
+
+    const handleSignLike = async () => {
+        
+        props.onLike({
+                ...props.post, 
+                is_liked:!isLiked,
+                likes:isLiked ? numOfLikes - 1 : numOfLikes + 1
+            })
+        setnumOfLikes(isLiked ? numOfLikes - 1 : numOfLikes + 1);
+        setIsLiked(!isLiked)
+
+        if (!wasError){
+            const {isError} = isLiked ? await unsignTrigger(signLike) : await signTrigger(signLike);
+            setWasError(isError);
+        } else {
+            setWasError(false)
+        }
+    }
 
 
     return (
-        <Box sx={{ width:'100vw', borderTop:'#d3d3d3 solid 1px'}}>
+        <Stack width='100vw' borderTop='#d3d3d3 solid 1px'>
+            
+            <AutoClosePopup 
+                    message="We has some error, please try again later"
+                    open={wasError}
+                    onClose={()=>setWasError(false)}/>
             
             <Box sx={{ 
                 display:'flex',
@@ -37,40 +72,42 @@ function Post(props :PostProps) {
                             height:'40px',
                             borderRadius:'100%'
                             }}
-                        src={props.userProfileImageUrl === null ? IMAGES.defaultPostImage : props.userProfileImageUrl}
+                        src={!props.post.user_profile_image_url ? IMAGES.defaultUserProfileImage : props.post.user_profile_image_url}
                         >
                             
                     </Box>
                     
-                    <Typography>{props.userFirstName} {props.userLastName}</Typography>
+                    <Typography>{props.post.user_firstname} {props.post.user_lastname}</Typography>
                     
                 </Stack>
 
-                <Typography sx={{alignSelf:'center'}}>{props.uploadDate.getFullYear()}</Typography>
+                <Typography sx={{alignSelf:'center'}}>{formatDistanceToNow(new Date(props.post.upload_date),{addSuffix:true})}</Typography>
             </Box>
-
+            
             <Box   
                 component='img'
                 sx={{
-                    height:'40vh',
-                    width:'100%'
+                    height:'50vh',
+                    width:'50vh',
+                    alignSelf:'center'
                     }}
-                src={props.ImageUrl}
+                src={props?.post.image_url}
                 loading="lazy"
                 >
-                    
+                        
             </Box>
+        
             
             <Stack alignItems='flex-start'>
-                <Typography align="left" sx={{margin:1}}>{props.text}</Typography>
+                <Typography align="left" sx={{margin:1}}>{props?.post.text}</Typography>
                 
                 <Stack direction='row' alignItems='center'>
-                    <IconButton onClick={()=>setIsLiked(!isLiked)}>{isLiked ? <FavoriteIcon/>:<FavoriteBorderIcon/>}</IconButton>
-                    <Typography>{props.numOfLikes} Likes</Typography>
+                    <IconButton onClick={handleSignLike}>{isLiked ? <FavoriteIcon/>:<FavoriteBorderIcon/>}</IconButton>
+                    <Typography>{numOfLikes} Likes</Typography>
                 </Stack>
             </Stack>
             
-        </Box>
+        </Stack>
         );
 }
 
