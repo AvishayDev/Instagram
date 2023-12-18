@@ -1,10 +1,10 @@
-import { Box, CircularProgress, List, ListItem } from "@mui/material";
+import { Box, CircularProgress, List, ListItem, Stack } from "@mui/material";
 import Post from "../components/Post";
 import { DEMO_DATA } from "../consts/demoData";
 import { maxHeight } from "@mui/system";
 import { useLazyGetPostsQuery } from "../redux/features/Api/posts/postsApiSlice";
 import { useStoreDispatch, useStoreSelector } from "../Hooks/storeHooks";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import { User } from "../redux/features/Api/users/types/User";
 import { feedActions } from "../redux/features/Slices/feedSlice";
@@ -23,6 +23,7 @@ function Feed() {
 
     useEffect(()=>{
         const loadData = async () =>{
+
             if (!posts){
                 const {data} = await trigger({userId:user.id,page:0});
 

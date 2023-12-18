@@ -31,7 +31,8 @@ function NavBar() {
                     width:'100%', 
                     position: 'sticky', 
                     borderTop: '#d3d3d3 solid 1px',
-                    bottom:0}}
+                    bottom:0
+                }}
                 value={value}
                 onChange={handleNavigation}>
             <BottomNavigationAction label='Feed' icon={<HomeIcon/>}/>
