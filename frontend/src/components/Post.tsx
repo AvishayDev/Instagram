@@ -11,18 +11,21 @@ import { User } from "../redux/features/Api/users/types/User";
 import { SignLikeType } from "../redux/features/Api/likes/types/signAndUnsign";
 import AutoClosePopup from "./AutoClosePopup";
 
+interface PostProps {
+    post:FeedPost,
+    onLike:(post:FeedPost)=>void
+}
 
-
-function Post(props :FeedPost) {
+function Post(props :PostProps) {
 
     const [user] = useLocalStorage<User>('user');
 
-    const [isLiked,setIsLiked] = useState(props.is_liked)
-    const [numOfLikes,setnumOfLikes] = useState(props.likes)
+    const [isLiked,setIsLiked] = useState(props.post.is_liked)
+    const [numOfLikes,setnumOfLikes] = useState(props.post.likes)
     const [wasError,setWasError] = useState(false)
 
 
-    const signLike:SignLikeType = {userId:user.id, postId:props.post_id}
+    const signLike:SignLikeType = {userId:user.id, postId:props.post.post_id}
 
     const [signTrigger] = useLazySignLikeQuery();
     const [unsignTrigger] = useLazyUnsignLikeQuery();
@@ -30,6 +33,11 @@ function Post(props :FeedPost) {
 
     const handleSignLike = async () => {
         
+        props.onLike({
+                ...props.post, 
+                is_liked:!isLiked,
+                likes:isLiked ? numOfLikes - 1 : numOfLikes + 1
+            })
         setnumOfLikes(isLiked ? numOfLikes - 1 : numOfLikes + 1);
         setIsLiked(!isLiked)
 
@@ -64,16 +72,16 @@ function Post(props :FeedPost) {
                             height:'40px',
                             borderRadius:'100%'
                             }}
-                        src={!props.user_profile_image_url ? IMAGES.defaultUserProfileImage : props.user_profile_image_url}
+                        src={!props.post.user_profile_image_url ? IMAGES.defaultUserProfileImage : props.post.user_profile_image_url}
                         >
                             
                     </Box>
                     
-                    <Typography>{props.user_firstname} {props.user_lastname}</Typography>
+                    <Typography>{props.post.user_firstname} {props.post.user_lastname}</Typography>
                     
                 </Stack>
 
-                <Typography sx={{alignSelf:'center'}}>{formatDistanceToNow(new Date(props.upload_date),{addSuffix:true})}</Typography>
+                <Typography sx={{alignSelf:'center'}}>{formatDistanceToNow(new Date(props.post.upload_date),{addSuffix:true})}</Typography>
             </Box>
             
             <Box   
@@ -83,7 +91,7 @@ function Post(props :FeedPost) {
                     width:'50vh',
                     alignSelf:'center'
                     }}
-                src={props?.image_url}
+                src={props?.post.image_url}
                 loading="lazy"
                 >
                         
@@ -91,7 +99,7 @@ function Post(props :FeedPost) {
         
             
             <Stack alignItems='flex-start'>
-                <Typography align="left" sx={{margin:1}}>{props?.text}</Typography>
+                <Typography align="left" sx={{margin:1}}>{props?.post.text}</Typography>
                 
                 <Stack direction='row' alignItems='center'>
                     <IconButton onClick={handleSignLike}>{isLiked ? <FavoriteIcon/>:<FavoriteBorderIcon/>}</IconButton>

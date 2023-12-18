@@ -33,6 +33,10 @@ function Feed() {
         loadData();
     },[]);
 
+    const handleLike = (post:FeedPost)=> dispatch(feedActions.updatePost(post))
+    
+
+
     return ( 
         <>
             {
@@ -43,7 +47,7 @@ function Feed() {
                         {posts ? posts.map((postData, index)=>{
                                     return (
                                         <ListItem key={index} sx={{padding:0}}>
-                                            <Post {...postData}/>
+                                            <Post post={postData} onLike={handleLike}/>
                                         </ListItem>
                                     )
                                 })
