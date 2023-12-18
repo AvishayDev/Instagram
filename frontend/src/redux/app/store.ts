@@ -1,9 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { loginReducer } from '../features/Slices/loginSlice';
 import { apiSlice } from '../features/Api/apiSlice';
-import { registerReducer } from '../features/Slices/registerSlice';
-import { profileReducer } from '../features/Slices/profileSlice';
-import { feedReducer } from '../features/Slices/feedSlice';
+import { profileActions, profileReducer } from '../features/Slices/profileSlice';
+import { feedActions, feedReducer } from '../features/Slices/feedSlice';
 
 const store = configureStore({
     reducer: {
@@ -15,6 +13,12 @@ const store = configureStore({
 
 
 });
+
+
+export const resetStore = (dispatch: DispatchType)=>{
+    dispatch(profileActions.reset())
+    dispatch(feedActions.reset())
+}
 
 
 export default store;

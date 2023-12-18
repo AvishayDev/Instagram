@@ -12,6 +12,7 @@ import { profileActions } from "../redux/features/Slices/profileSlice";
 import CircularProgress from '@mui/material/CircularProgress';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import PageError from "../components/PageError";
+import { resetStore } from "../redux/app/store";
 
 function Profile() {
 
@@ -32,6 +33,11 @@ function Profile() {
         loadData();
     },[]);
 
+    const handleLogout = ()=>{
+        setUser(null)
+        resetStore(dispatch)
+    }
+
     return ( 
 
         <Stack width='100vw'>
@@ -51,7 +57,7 @@ function Profile() {
                         <LinkButton 
                             to="/login"
                             variant="contained"
-                            onClick={()=>setUser(null)}
+                            onClick={handleLogout}
                             >
                             Logout
                         </LinkButton>
