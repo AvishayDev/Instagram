@@ -13,7 +13,6 @@ import AutoClosePopup from "./AutoClosePopup";
 
 interface PostProps {
     post:FeedPost,
-    onLike:(post:FeedPost)=>void
 }
 
 function Post(props :PostProps) {
@@ -33,11 +32,7 @@ function Post(props :PostProps) {
 
     const handleSignLike = async () => {
         
-        props.onLike({
-                ...props.post, 
-                is_liked:!isLiked,
-                likes:isLiked ? numOfLikes - 1 : numOfLikes + 1
-            })
+
         setnumOfLikes(isLiked ? numOfLikes - 1 : numOfLikes + 1);
         setIsLiked(!isLiked)
 
@@ -56,7 +51,9 @@ function Post(props :PostProps) {
             <AutoClosePopup 
                     message="We has some error, please try again later"
                     open={wasError}
-                    onClose={()=>setWasError(false)}/>
+                    onClose={()=>setWasError(false)}
+                    color="error"
+                    />
             
             <Box sx={{ 
                 display:'flex',
@@ -73,6 +70,7 @@ function Post(props :PostProps) {
                             borderRadius:'100%'
                             }}
                         src={!props.post.user_profile_image_url ? IMAGES.defaultUserProfileImage : props.post.user_profile_image_url}
+                        loading="lazy"
                         >
                             
                     </Box>
@@ -91,11 +89,10 @@ function Post(props :PostProps) {
                     width:'50vh',
                     alignSelf:'center'
                     }}
-                src={props?.post.image_url}
+                src={!props.post.image_url ? IMAGES.defaultPostImage : props.post.image_url}
                 loading="lazy"
-                >
-                        
-            </Box>
+                onDoubleClick={handleSignLike}
+                />
         
             
             <Stack alignItems='flex-start'>

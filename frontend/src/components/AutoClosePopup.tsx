@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+import Alert, { AlertColor } from '@mui/material/Alert';
 
 
 interface AutoClosePopupProps {
     message?:string,
     open?:boolean,
-    onClose?:()=>void
+    onClose?:()=>void,
+    color?: AlertColor
 }
 
 
@@ -36,7 +37,7 @@ const AutoClosePopup = (props:AutoClosePopupProps) => {
         onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         >
-        <Alert color='error' onClose={handleClose} severity="info">
+        <Alert color={props.color} onClose={handleClose} severity="info">
           {props.message}
         </Alert>
       </Snackbar>

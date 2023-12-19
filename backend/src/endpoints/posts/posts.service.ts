@@ -42,26 +42,28 @@ export class PostsService {
 
     async getPostsByPage(page:number, userId:number){
 
-        return await this.postsRepository.createQueryBuilder('post')
-            .select([
-                'user.profileImageUrl AS user_profile_image_url',
-                'user.firstName AS user_firstname',
-                'user.lastName AS user_lastname',
-                'post.createdAt AS upload_date',
-                'post.imageUrl AS image_url',
-                'post.text AS text',
-                'post.id AS post_id',
-                'COUNT(like.id)::integer AS likes',
-                `COUNT(CASE WHEN like.user.id = :userId THEN 1 ELSE NULL END)::integer AS is_liked`,
-            ])
-            .leftJoin('post.user','user')
-            .leftJoin('post.likes','like')
-            .groupBy('post.id, user.id')
-            .orderBy('post.createdAt','DESC')
-            .offset(this.pageSize*page)
-            .limit(this.pageSize)
-            .setParameters({ userId })
-            .getRawMany()
+        const posts = await this.postsRepository.createQueryBuilder('post')
+                    .select([
+                        'user.profileImageUrl AS user_profile_image_url',
+                        'user.firstName AS user_firstname',
+                        'user.lastName AS user_lastname',
+                        'post.createdAt AS upload_date',
+                        'post.imageUrl AS image_url',
+                        'post.text AS text',
+                        'post.id AS post_id',
+                        'COUNT(like.id)::integer AS likes',
+                        `COUNT(CASE WHEN like.user.id = :userId THEN 1 ELSE NULL END)::integer AS is_liked`,
+                    ])
+                    .leftJoin('post.user','user')
+                    .leftJoin('post.likes','like')
+                    .groupBy('post.id, user.id')
+                    .orderBy('post.createdAt','DESC')
+                    .offset(this.pageSize*page)
+                    .limit(this.pageSize)
+                    .setParameters({ userId })
+                    .getRawMany();
+        
+        return {posts, hasNext:posts.length === this.pageSize}
     }
 
     async createPost(createPostDB: CreatePostDB){
@@ -70,7 +72,9 @@ export class PostsService {
 
         const newPost = this.postsRepository.create({...createPostDB, user});
 
-        return this.postsRepository.save(newPost);
+        await this.postsRepository.save(newPost);
+
+        return
     }
 
 

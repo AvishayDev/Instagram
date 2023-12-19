@@ -1,6 +1,8 @@
 import { apiSlice } from "../apiSlice";
+import { ProfilePost } from "../../../../types/ProfilePost";
 import { FeedPost } from "./types/FeedPost";
 import { GetFeedPosts } from "./types/GetPosts";
+import { SharePost } from "./types/SharePost";
 
 
 
@@ -8,12 +10,19 @@ import { GetFeedPosts } from "./types/GetPosts";
 
 export const postsApi = apiSlice.injectEndpoints({
     endpoints:(builder)=>({
-        getPosts:builder.query<FeedPost[],GetFeedPosts>({
+        getPosts:builder.query<{posts:FeedPost[],hasNext:boolean},GetFeedPosts>({
             query: (getFeedPosts:GetFeedPosts) => ({
                 url:`posts?page=${getFeedPosts.page}&userId=${getFeedPosts.userId}`
             }),
+        }),
+        sharePost: builder.query<void,SharePost>({
+            query: (sharePostArgs: SharePost) => ({
+                url: 'posts/add',
+                method:"POST",
+                body: sharePostArgs
+            })
         })
     })
 })
 
-export const {useLazyGetPostsQuery} = postsApi;
+export const {useLazyGetPostsQuery,useLazySharePostQuery} = postsApi;

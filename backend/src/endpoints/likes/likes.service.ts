@@ -82,7 +82,7 @@ export class LikesService {
 
         await this.likesRepository.softDelete({id:like.id});
 
-        return { unsigned:true }
+        return { signed:false }
     }
 
 
