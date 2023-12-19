@@ -13,7 +13,6 @@ import AutoClosePopup from "./AutoClosePopup";
 
 interface PostProps {
     post:FeedPost,
-    onLike:(post:FeedPost)=>void
 }
 
 function Post(props :PostProps) {
@@ -33,11 +32,7 @@ function Post(props :PostProps) {
 
     const handleSignLike = async () => {
         
-        props.onLike({
-                ...props.post, 
-                is_liked:!isLiked,
-                likes:isLiked ? numOfLikes - 1 : numOfLikes + 1
-            })
+
         setnumOfLikes(isLiked ? numOfLikes - 1 : numOfLikes + 1);
         setIsLiked(!isLiked)
 
@@ -73,6 +68,7 @@ function Post(props :PostProps) {
                             borderRadius:'100%'
                             }}
                         src={!props.post.user_profile_image_url ? IMAGES.defaultUserProfileImage : props.post.user_profile_image_url}
+                        loading="lazy"
                         >
                             
                     </Box>
@@ -93,9 +89,8 @@ function Post(props :PostProps) {
                     }}
                 src={props?.post.image_url}
                 loading="lazy"
-                >
-                        
-            </Box>
+                onDoubleClick={handleSignLike}
+                />
         
             
             <Stack alignItems='flex-start'>

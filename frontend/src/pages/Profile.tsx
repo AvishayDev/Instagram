@@ -24,13 +24,12 @@ function Profile() {
 
     useEffect(()=>{
         const loadData = async () =>{
-            if (!userPosts){
-                const {data} = await trigger(user.id);
+            const {data} = await trigger(user.id);
 
-                data && dispatch(profileActions.setUserPosts(data));
-            }
+            data && dispatch(profileActions.setUserPosts(data));
+
         }
-        loadData();
+        !userPosts && loadData();
     },[]);
 
     const handleLogout = ()=>{

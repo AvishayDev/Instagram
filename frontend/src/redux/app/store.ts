@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { apiSlice } from '../features/Api/apiSlice';
 import { profileActions, profileReducer } from '../features/Slices/profileSlice';
-import { feedActions, feedReducer } from '../features/Slices/feedSlice';
 
 const store = configureStore({
     reducer: {
         profile:profileReducer,
-        feed:feedReducer,
         [apiSlice.reducerPath]:apiSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
@@ -17,7 +15,6 @@ const store = configureStore({
 
 export const resetStore = (dispatch: DispatchType)=>{
     dispatch(profileActions.reset())
-    dispatch(feedActions.reset())
 }
 
 
