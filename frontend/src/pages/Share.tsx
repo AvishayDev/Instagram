@@ -7,6 +7,7 @@ import { useLazySharePostQuery } from "../redux/features/Api/posts/postsApiSlice
 import useLocalStorage from "../Hooks/useLocalStorage";
 import { User } from "../redux/features/Api/users/types/User";
 import AutoClosePopup from "../components/AutoClosePopup";
+import { useState } from "react";
 
 interface FormErrors {
     imageUrl?:string,
@@ -18,25 +19,35 @@ interface FormErrors {
 function Share() {
 
     const [user] = useLocalStorage<User>('user');
-    const [trigger,{isError, isSuccess}] = useLazySharePostQuery();
+    const [trigger,] = useLazySharePostQuery();
+    
+    const [openError,setOpenError] = useState(false);
+    const [openSuccess,setOpenSuccess] = useState(false);
 
     const formik = useFormik({
             initialValues: {
                 imageUrl:'',
                 postText:''
             },
-            onSubmit: async (values)=>{
+            onSubmit: async (values, formikHelpers)=>{
                 
                 const sendValues = Object.fromEntries(
                                         Object.entries(values)
                                           .filter(([_,value]) => value)
                                                 );
                                                       
-                const {error}= await trigger({
+                const {isError, isSuccess}= await trigger({
                                 userId:user.id,
                                 ...sendValues
                             });
-                console.log(error)
+                
+                setOpenError(isError)
+                setOpenSuccess(isSuccess)
+                
+                if (isSuccess)
+                    formikHelpers.resetForm()
+
+                    
             },
             validate: (values) => {
                 const errors:FormErrors = {};
@@ -52,13 +63,15 @@ function Share() {
         <>
             <AutoClosePopup 
                 message="Something went wrong, Please try again.."
-                open={isError}
+                open={openError}
                 color="error"
+                onClose={()=>setOpenError(false)}
                 />
             <AutoClosePopup 
                 message="Yeah! You're Post is Uploaded!"
-                open={isSuccess}
+                open={openSuccess}
                 color="success"
+                onClose={()=>setOpenSuccess(false)}
                 />
             <Stack spacing={4} marginTop={3}>
 
