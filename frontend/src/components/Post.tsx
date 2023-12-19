@@ -10,6 +10,7 @@ import useLocalStorage from "../Hooks/useLocalStorage";
 import { User } from "../redux/features/Api/users/types/User";
 import { SignLikeType } from "../redux/features/Api/likes/types/signAndUnsign";
 import AutoClosePopup from "./AutoClosePopup";
+import PostImage from "./PostImages";
 
 interface PostProps {
     post:FeedPost,
@@ -82,7 +83,7 @@ function Post(props :PostProps) {
                 <Typography sx={{alignSelf:'center'}}>{formatDistanceToNow(new Date(props.post.upload_date),{addSuffix:true})}</Typography>
             </Box>
             
-            <Box   
+            {/* <Box   
                 component='img'
                 sx={{
                     height:'50vh',
@@ -92,7 +93,14 @@ function Post(props :PostProps) {
                 src={!props.post.image_url ? IMAGES.defaultPostImage : props.post.image_url}
                 loading="lazy"
                 onDoubleClick={handleSignLike}
+                /> */}
+            <Box sx={{alignSelf:'center'}}>
+                <PostImage
+                        imageUrl={props.post.image_url}
+                        onLike={handleSignLike}
+                        isLiked={isLiked}
                 />
+            </Box>
         
             
             <Stack alignItems='flex-start'>
