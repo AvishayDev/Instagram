@@ -83,7 +83,7 @@ export class UsersService{
     async getUserPosts(userId:number){
 
         return await this.postsRepository.createQueryBuilder('post')
-                        .select(['post.imageUrl as image_url', 'COUNT(like.id)::integer AS likes'])
+                        .select(['post.imageUrl as image_url', 'COUNT(like.id) AS likes'])
                         .leftJoin('post.likes','like')
                         .where('post.userId = :userId',{userId})
                         .groupBy('post.id')
