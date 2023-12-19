@@ -3,75 +3,86 @@ import {IMAGES} from '../consts/Images'
 import LinkButton from "../components/LinkButton";
 import { useLazyLoginUserQuery } from "../redux/features/Api/users/usersApiSlice";
 import { LoadingButton } from "@mui/lab";
-import { isAlphanumeric, isNotEmpty } from "class-validator";
+import { isAlphanumeric, isEmpty, isNotEmpty } from "class-validator";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
-import useDataError from "../Hooks/useDataError";
+import { useFormik } from "formik";
+import AutoClosePopup from "../components/AutoClosePopup";
+import { useState } from "react";
+
+
+interface FormErrors {
+    username?:string,
+    password?:string
+}
+
 
 function Login() {
-
-
-    const [username,setUsername,setUsernameError,resetUsernameError] = useDataError('');
-    const [password,setPassword,setPasswordError,resetPasswordError] = useDataError('');
+    
     const [ _, setUser] = useLocalStorage('user');
     const navigate = useNavigate();
-
-    const [trigger,{isLoading, isError}] = useLazyLoginUserQuery();
-
-    const handleLogin = async () =>{
-
-        let testCheck = true;
-        if (!isAlphanumeric(username.data)){
-            setUsernameError('username can be only letters and numbers');
-            testCheck = false;
-        } else resetUsernameError();
-
-        if (!isNotEmpty(password.data)){
-            setPasswordError("password can't be empty");
-            testCheck = false;
-        } else resetPasswordError();
+    const [openError,setOpenError] = useState(false)
 
 
-        if (!testCheck) return
+    const [trigger,{isLoading}] = useLazyLoginUserQuery();
 
-        const {isSuccess,isError, data, error} = await trigger({username: username.data, password: password.data});
+    const formik = useFormik({
+        initialValues:{
+            username:'',
+            password:''
+        },
+        onSubmit: async (values)=>{
+            const {isSuccess, data} = await trigger(values);
 
-        if (isError) {
-            console.log('in')
-            setPasswordError('username or password is incurrect');
-            return
+            if (isSuccess){
+                setUser(data)
+                navigate('/feed')
+            } else
+                setOpenError(true)
+        },
+        validate: (values)=>{
+            const errors:FormErrors = {}
+
+            if(values.username && !isAlphanumeric(values.username))
+                errors.username = 'username can be only letters and numbers'
+            if(isEmpty(values.password))
+                errors.password = "password can't be empty"
+
+            return errors;
         }
-
-        if (isSuccess){
-            setUser(data);
-            navigate('/feed');
-        }
-
-
-    }
+    })
+    
 
     return ( 
         <>  
+            <AutoClosePopup
+                message="username or password are incorrect"
+                color="error"
+                open={openError}
+                onClose={()=>setOpenError(false)}
+                />
             <Stack  spacing={4} 
                     flex={1} 
                     alignSelf='center' 
                     padding={8}
-                    onKeyDown={event => event.key === 'Enter' && handleLogin()}>
+                    onKeyDown={event => event.key === 'Enter' && formik.handleSubmit()}>
                 
                 <Typography variant="h4" >Let's Login!</Typography>
                 
                 <TextField
                     label='Username'
-                    error={isError || username.isError}
-                    onChange={(event)=>setUsername(event.target.value)}
-                    helperText={username.error}
+                    name="username"
+                    error={!!formik.errors.username}
+                    onChange={formik.handleChange}
+                    helperText={formik.errors.username}
                     />
                 <TextField
                     type="password"
                     label='Password'
-                    error={password.isError || isError}
-                    onChange={(event)=>setPassword(event.target.value)}
-                    helperText={password.error}
+                    name="password"
+                    error={!!formik.errors.password}
+                    onChange={formik.handleChange}
+                    helperText={formik.errors.password}
                     />
                 <Stack spacing={2} direction='row'>
                     <LinkButton 
@@ -84,8 +95,8 @@ function Login() {
                     <LoadingButton 
                         variant="contained" 
                         fullWidth
-                        onClick={handleLogin}
                         loading={isLoading}
+                        onClick={()=>formik.handleSubmit()}
                         >
                         Login
                     </LoadingButton>
