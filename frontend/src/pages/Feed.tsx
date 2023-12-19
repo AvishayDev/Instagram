@@ -1,9 +1,6 @@
 import { Box, Button, CircularProgress, List, ListItem, Stack, Typography } from "@mui/material";
 import Post from "../components/Post";
-import { DEMO_DATA } from "../consts/demoData";
-import { maxHeight } from "@mui/system";
 import { useLazyGetPostsQuery } from "../redux/features/Api/posts/postsApiSlice";
-import { useStoreDispatch, useStoreSelector } from "../Hooks/storeHooks";
 import { useEffect, useRef, useState } from "react";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import { User } from "../redux/features/Api/users/types/User";
@@ -44,15 +41,10 @@ function Feed() {
             const {data} = await trigger({userId:user.id,page:page});
 
             data && setNewPosts(data.posts,data.hasNext)
+            console.log(data)
         }
         loadInitialData();
     },[]);
-
-
-    useEffect(()=>{
-        console.log(posts,page,isMorePages)
-    },[posts,page,isMorePages])
-    
 
 
     return ( 
@@ -61,41 +53,43 @@ function Feed() {
                 isError ?
                     <PageError/>
                 :
-                <>
-                    <List sx={ {  overflowY:'hidden'  }}>
-                        { posts ? posts.map((postData, index)=>{
-                                    return (
-                                        <ListItem key={index} sx={{padding:0}}>
-                                            <Post post={postData}/>
-                                        </ListItem>
-                                    )
-                                })
-                                :
-                                isLoading && <CircularProgress size={70} sx={{gridColumn:2,padding:4}}/>
+                posts ?
+                        <>
+                            <List sx={ {  overflowY:'hidden'  }}>
+                                { posts.map((postData, index)=>{
+                                            return (
+                                                <ListItem key={index} sx={{padding:0}}>
+                                                    <Post post={postData}/>
+                                                </ListItem>
+                                            )
+                                        })
 
-                           }
-                    </List>
-                    {   
-                        posts && (isMorePages ? 
-                                    <LoadingButton 
-                                        sx={{
-                                            alignSelf:'center',
-                                            marginBottom:4
-                                        }}
-                                        variant="contained" 
-                                        onClick={loadData}
-                                        loading={isLoading}
-                                        >Load More Posts!
-                                    </LoadingButton>
-                                            : 
-                                    <Stack>
-                                        <Typography variant="h5">
-                                            You've Seen All The Posts..
-                                        </Typography>
-                                        <RefreshPageIcon sx={{marginBottom:4, alignSelf:'center'}}/>
-                                    </Stack>)
-                    }
-                </>
+                                }
+                            </List>                    
+                                
+                            {isMorePages ? 
+                                <LoadingButton 
+                                    sx={{
+                                        alignSelf:'center',
+                                        marginBottom:4
+                                    }}
+                                    variant="contained" 
+                                    onClick={loadData}
+                                    loading={isLoading}
+                                    >Load More Posts!
+                                </LoadingButton>
+                                        : 
+                                <Stack>
+                                    <Typography variant="h5">
+                                        You've Seen All The Posts..
+                                    </Typography>
+                                    <RefreshPageIcon sx={{marginBottom:4, alignSelf:'center'}}/>
+                                </Stack>
+                                    }
+                        </>
+                    :
+                    isLoading && <CircularProgress size={70} sx={{gridColumn:2,padding:4}}/>
+
             }
         </Stack>
 

@@ -1,5 +1,4 @@
 import { Box, Stack, Typography, ImageList, ImageListItem, Button, ImageListItemBar, IconButton } from "@mui/material";
-import { DEMO_PROFILE_IMAGES } from "../consts/demoData";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import LinkButton from "../components/LinkButton";
 import { User } from "../redux/features/Api/users/types/User";
@@ -79,21 +78,25 @@ function Profile() {
                     isError ? 
                         <PageError/>
                     : 
+                        userPosts ? 
+                        
                         <ImageList sx={{
                                 overflow:'hidden',
                                 justifyItems:'center',
                                 }} cols={3} rowHeight={160} >
                                     {
-                                        userPosts ? userPosts.map(({image_url,likes}, index)=> (
+                                        userPosts.map(({image_url,likes}, index)=> (
                                             <ImageListItem key={index}>
                                                 <img src={!image_url ? IMAGES.defaultPostImage : image_url} loading="lazy"/>
                                                 <ImageListItemBar subtitle={likes} actionIcon={<FavoriteIcon color="error"/>} sx={{height:30}}/>
                                             </ImageListItem>
                                         ))
-                                        :
-                                        isLoading && <CircularProgress size={70} sx={{gridColumn:2,padding:4}}/>
                                     }
                         </ImageList>
+                        :
+                        isLoading && <CircularProgress size={70} sx={{gridColumn:2,padding:4}}/>
+
+                    
                     }
                 </Box>
         </Stack>

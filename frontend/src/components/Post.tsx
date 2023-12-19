@@ -51,7 +51,9 @@ function Post(props :PostProps) {
             <AutoClosePopup 
                     message="We has some error, please try again later"
                     open={wasError}
-                    onClose={()=>setWasError(false)}/>
+                    onClose={()=>setWasError(false)}
+                    color="error"
+                    />
             
             <Box sx={{ 
                 display:'flex',
@@ -87,7 +89,7 @@ function Post(props :PostProps) {
                     width:'50vh',
                     alignSelf:'center'
                     }}
-                src={props?.post.image_url}
+                src={!props.post.image_url ? IMAGES.defaultPostImage : props.post.image_url}
                 loading="lazy"
                 onDoubleClick={handleSignLike}
                 />

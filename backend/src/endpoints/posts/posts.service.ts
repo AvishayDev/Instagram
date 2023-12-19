@@ -72,7 +72,9 @@ export class PostsService {
 
         const newPost = this.postsRepository.create({...createPostDB, user});
 
-        return this.postsRepository.save(newPost);
+        await this.postsRepository.save(newPost);
+
+        return
     }
 
 

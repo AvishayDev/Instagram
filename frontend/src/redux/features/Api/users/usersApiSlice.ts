@@ -2,7 +2,7 @@ import { LoginEP } from "./types/LoginEP";
 import { User } from "./types/User";
 import { apiSlice } from "../apiSlice";
 import { CheckUser } from "./types/CheckUser";
-import { ProfilePost } from "./types/ProfilePosts";
+import { ProfilePost } from "../../../../types/ProfilePost";
 
 
 
