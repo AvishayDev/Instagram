@@ -41,7 +41,6 @@ function Feed() {
             const {data} = await trigger({userId:user.id,page:page});
 
             data && setNewPosts(data.posts,data.hasNext)
-            console.log(data)
         }
         loadInitialData();
     },[]);
