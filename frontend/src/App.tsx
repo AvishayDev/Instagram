@@ -29,11 +29,7 @@ function App() {
               
               <Route element={<Layout hasNavbar={false}/>}>
                 <Route path='login' element={<Login/>}/>
-                <Route path='register' element={<Register/>}>
-                  <Route path='1' element={<RegisterStep1/>}/>
-                  <Route path='2' element={<RegisterStep2/>}/>
-                  <Route path='3' element={<RegisterStep3/>}/>
-                </Route>
+                <Route path='register' element={<Register/>}/>
               </Route>
 
               <Route element={<Layout hasNavbar={true}/>}>

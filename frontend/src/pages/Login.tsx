@@ -87,7 +87,7 @@ function Login() {
                 <Stack spacing={2} direction='row'>
                     <LinkButton 
                             variant="outlined" 
-                            to="/register/1"
+                            to="/register"
                             fullWidth
                             >
                         Register

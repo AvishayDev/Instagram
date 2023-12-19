@@ -11,9 +11,7 @@ import { useStoreSelector } from "../../Hooks/storeHooks";
 function RegisterStep1() {
 
     const [trigger,{isLoading}] = useLazyCheckUsernameQuery();
-
-    //const {username,password,rePassword} = useStoreSelector(state=>state.register);
-
+    
     const [username,setUsername,setUsernameError,resetUsernameError] = useDataError('');
     const [password,setPassword,setPasswordError,resetPasswordError] = useDataError('');
     const [rePassword,setRePassword,setRePasswordError,resetRePasswordError] = useDataError('');
