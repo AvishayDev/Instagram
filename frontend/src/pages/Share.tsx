@@ -73,7 +73,7 @@ function Share() {
                 color="success"
                 onClose={()=>setOpenSuccess(false)}
                 />
-            <Stack spacing={4} marginTop={3}>
+            <Stack spacing={3} marginTop={3}>
 
                 <Typography variant="h4">Let's Post Something!</Typography>
                     <Box   
@@ -87,8 +87,6 @@ function Share() {
                         }}
                         src={isURL(formik.values.imageUrl) ? formik.values.imageUrl : IMAGES.defaultPostImage}
                         />
-                <form onSubmit={formik.handleSubmit}>
-                    <Stack spacing={2}>
                         <TextField
                             label='Image Url'
                             name="imageUrl"
@@ -105,11 +103,9 @@ function Share() {
                             onChange={formik.handleChange}
                             value={formik.values.postText}
                             />
-                        <Button variant="contained" type="submit">
+                        <Button variant="contained" onClick={()=>formik.handleSubmit()}>
                             Publish!
-                        </Button>
-                    </Stack>
-                </form>
+                        </Button>       
             </Stack>
         </>
         );
