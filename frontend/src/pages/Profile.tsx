@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, ImageList, ImageListItem, Button, ImageListItemBar, IconButton } from "@mui/material";
+import { Box, Stack, Typography, ImageList, ImageListItem, ImageListItemBar, IconButton } from "@mui/material";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import LinkButton from "../components/LinkButton";
 import { User } from "../redux/features/Api/users/types/User";
@@ -6,29 +6,29 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IMAGES } from "../consts/Images";
 import { useEffect, useState } from "react";
 import { useLazyGetUserPostsQuery } from "../redux/features/Api/users/usersApiSlice";
-import { useStoreDispatch, useStoreSelector } from "../Hooks/storeHooks";
-import { profileActions } from "../redux/features/Slices/profileSlice";
+import { useStoreDispatch } from "../Hooks/storeHooks";
 import CircularProgress from '@mui/material/CircularProgress';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import PageError from "../components/PageError";
 import { resetStore } from "../redux/app/store";
+import { ProfilePost } from "../types/ProfilePost";
 
 function Profile() {
 
     const [user, setUser] = useLocalStorage<User>('user');
 
     const [trigger,{isLoading, isError}] = useLazyGetUserPostsQuery();
-    const dispatch = useStoreDispatch();
-    const {userPosts} = useStoreSelector(state=>state.profile);
+    const [userPosts,setUserPosts] = useState<ProfilePost[] | null>(null)
+    const dispatch = useStoreDispatch()
+
 
     useEffect(()=>{
         const loadData = async () =>{
             const {data} = await trigger(user.id);
 
-            data && dispatch(profileActions.setUserPosts(data));
+            data && setUserPosts(data);
 
         }
-        !userPosts && loadData();
+        loadData();
     },[]);
 
     const handleLogout = ()=>{
