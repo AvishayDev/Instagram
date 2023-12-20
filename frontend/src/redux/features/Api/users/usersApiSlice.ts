@@ -39,4 +39,4 @@ export const usersApi = apiSlice.injectEndpoints({
     })
 })
 
-export const {useLazyGetUserPostsQuery, useLazyLoginUserQuery, useLazyCheckUsernameQuery} = usersApi;
+export const {useLazyGetUserPostsQuery, useGetUserPostsQuery, useLazyLoginUserQuery, useLazyCheckUsernameQuery} = usersApi;
