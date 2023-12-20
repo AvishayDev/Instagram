@@ -1,20 +1,21 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { IMAGES } from "../consts/Images";
-import { useFormik } from "formik";
+import { FormikErrors, useFormik } from "formik";
 import { isEmpty, isNotEmpty, isURL } from "class-validator";
 import { useLazySharePostQuery } from "../redux/features/Api/posts/postsApiSlice";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import { User } from "../redux/features/Api/users/types/User";
 import AutoClosePopup from "../components/AutoClosePopup";
 import { useState } from "react";
-
-interface FormErrors {
-    imageUrl?:string,
-    postText?:string
-}
+import * as Yup from 'yup';
 
 
+const validationSchema = Yup.object({
+    imageUrl: Yup.string()
+                    .url('Please provide valid URL')
+                    .max(512,'URL is too long, please provide short one')
+})
 
 function Share() {
 
@@ -49,14 +50,7 @@ function Share() {
 
                     
             },
-            validate: (values) => {
-                const errors:FormErrors = {};
-
-                if (values.imageUrl && !isURL(values.imageUrl))
-                    errors.imageUrl = 'Please provide valid URL'
-
-                return errors;
-            },
+            validationSchema
     });
 
     return ( 

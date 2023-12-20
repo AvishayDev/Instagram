@@ -6,16 +6,25 @@ import { LoadingButton } from "@mui/lab";
 import { isAlphanumeric, isEmpty, isNotEmpty } from "class-validator";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
+import { FormikErrors, useFormik } from "formik";
 import AutoClosePopup from "../components/AutoClosePopup";
 import { useState } from "react";
+import * as Yup from 'yup';
 
+const validationSchema = Yup.object({
+    username: Yup.string()
+                .required('Did you forget something?')
+                .max(50,"it's too long!")
+                .test('isAlphanumeric',
+                    'username can be only letters and numbers',
+                    (value)=>isAlphanumeric(value)),
+    
+    password: Yup.string()
+                .required('Did you forget something?')
+                .max(100,"it's too long!")
 
-interface FormErrors {
-    username?:string,
-    password?:string
-}
-
+        
+})
 
 function Login() {
     
@@ -40,16 +49,8 @@ function Login() {
             } else
                 setOpenError(true)
         },
-        validate: (values)=>{
-            const errors:FormErrors = {}
-
-            if(values.username && !isAlphanumeric(values.username))
-                errors.username = 'username can be only letters and numbers'
-            if(isEmpty(values.password))
-                errors.password = "password can't be empty"
-
-            return errors;
-        }
+        validationSchema
+        
     })
     
 
@@ -80,9 +81,9 @@ function Login() {
                     type="password"
                     label='Password'
                     name="password"
-                    error={!!formik.errors.password}
+                    error={formik.touched.password && !!formik.errors.password}
                     onChange={formik.handleChange}
-                    helperText={formik.errors.password}
+                    helperText={formik.touched.password && formik.errors.password}
                     />
                 <Stack spacing={2} direction='row'>
                     <LinkButton 
