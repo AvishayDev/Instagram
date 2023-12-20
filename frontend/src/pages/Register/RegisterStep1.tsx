@@ -3,98 +3,95 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useLazyCheckUsernameQuery } from "../../redux/features/Api/users/usersApiSlice";
 import useDataError from "../../Hooks/useDataError";
 import { equals, isAlphanumeric, isNotEmpty } from "class-validator";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import CheckIcon from '@mui/icons-material/Check';
 import { useStoreSelector } from "../../Hooks/storeHooks";
+import { FormikProps } from "formik";
+import { RegisterUser } from "../../redux/features/Api/users/types/RegisterUser";
 
 
-function RegisterStep1() {
+interface RegisterStep1Props {
+    formik: FormikProps<RegisterUser>
+}
 
-    const [trigger,{isLoading}] = useLazyCheckUsernameQuery();
-    
-    const [username,setUsername,setUsernameError,resetUsernameError] = useDataError('');
-    const [password,setPassword,setPasswordError,resetPasswordError] = useDataError('');
-    const [rePassword,setRePassword,setRePasswordError,resetRePasswordError] = useDataError('');
+function RegisterStep1(props:RegisterStep1Props) {
 
-    const [isSuccess,setIsSuccess] = useState(false);
+    const [trigger,{isLoading,isError,data,isSuccess}] = useLazyCheckUsernameQuery();
 
-    const checkUsername = async (usernameTest:string) => {
+    const {formik} = props;
 
-        setIsSuccess(false)
+    // const firstTime = useRef(2)
+    // useLayoutEffect(()=>{
+    //     if (firstTime.current> 0){
+    //         firstTime.current--;
+    //         return
+    //     }
+    //     console.log('koko')
+    //     const checkUsername = async ()=>{
 
-        if (!isAlphanumeric(usernameTest)){
-            setUsernameError('username can be only letters and numbers');
-            return
-        } else resetUsernameError();
-
-        const {isError, data} = await trigger(usernameTest);
+    //         await trigger(formik.values.username)
+    //     }
+    //     !formik.errors.username && checkUsername()
+    // },[formik.errors.username])
 
 
-        if (isError){
-            return setUsernameError('internal error, please try again later');
-        } else resetUsernameError();
+    // useEffect(()=>{
+    //     console.log('useEffect')
+    //     console.log(formik.touched.username)
+    //     console.log(formik.errors.username)
+    //     const checkUsername = async ()=>{
+    //         console.log('trigger')
+    //         await trigger(formik.values.username)
+    //     }
 
-        if (data?.exists)
-            return setUsernameError('username already exists');
-        else
-            setIsSuccess(true)
+    //     if (formik.touched.username && !formik.errors.username)
+    //         checkUsername()
+    // },[formik.touched.username])
+
+
+    const checkUsername = async ()=>{
+        if (formik.touched.username && !formik.errors.username) {
+            console.log('trigger')
+            await trigger(formik.values.username)
+        }
     }
-
-
-    const validatePasswords = (passwordTest:string,rePasswordTest:string)=>{
-        
-        let testCheck = true;
-        if (!isNotEmpty(passwordTest)){
-            setPasswordError("password can't be empty");
-            testCheck = false;
-        } else resetPasswordError();
-
-        if (!equals(passwordTest,rePasswordTest)){
-            setRePasswordError('password and re-password have to match.');
-            testCheck = false;
-        } else resetRePasswordError();
-
-        if (!testCheck) return // add disable to redux
-
-        // add to redux and continue
-    }
-
-
-    useEffect(()=>{
-        validatePasswords(password.data,rePassword.data)
-    },[password.data, rePassword.data])
-
 
     return ( 
         <Stack spacing={4}>
             <TextField
                 label='Username'
-                error={username.isError}
+                name="username"
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            {isLoading && <CircularProgress size={25}/>}
-                            {isSuccess && <CheckIcon/>}
+                            {(!formik.errors.username && !isError && !data?.exists) &&
+                            <>
+                                {isLoading && <CircularProgress size={25}/>}
+                                {isSuccess && <CheckIcon/>}
+                            </>}
                         </InputAdornment>
                     )
                 }}
-                onBlur={(event)=>checkUsername(event.target.value)}
-                onChange={(event)=>setUsername(event.target.value)}
-                helperText={username.error}
+                error={isError || !!formik.errors.username || data?.exists}
+                onBlur={(error)=>{formik.handleBlur(error);checkUsername()}}
+                onChange={formik.handleChange}
+                helperText={isError || data?.exists  ? 'Username already Exists' : formik.errors.username}
                     />
             <TextField
                 type="password"
                 label='Password'
-                onChange={(event)=>setPassword(event.target.value)}
-                error={password.isError}
-                helperText={password.error}
+                name='password'
+                onChange={formik.handleChange}
+                error={formik.touched.password && !!formik.errors.password}
+                helperText={formik.touched.password && formik.errors.password}
                 />
             <TextField
                 type="password"
                 label='Re-password'
-                onChange={(event)=>setRePassword(event.target.value)}
-                error={rePassword.isError}
-                helperText={rePassword.error}
+                name="rePassword"
+                onChange={formik.handleChange}
+                error={formik.touched.rePassword && !!formik.errors.rePassword}
+                helperText={formik.touched.rePassword && formik.errors.rePassword}
                 />
         </Stack> 
         );
