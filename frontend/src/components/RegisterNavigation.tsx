@@ -1,11 +1,13 @@
+import { LoadingButton } from "@mui/lab";
 import { Box, Button } from "@mui/material";
-import { useFormikContext } from "formik";
 
 
 
 interface RegisterNavigationProps {
     onBack?: ()=> void
     onNext?: ()=> void
+    isLoading?: boolean
+    currentPage?:number
 }
 
 
@@ -24,13 +26,14 @@ function RegisterNavigation(props:RegisterNavigationProps) {
                     >
                         Back
                 </Button>
-                <Button 
+                <LoadingButton 
                     variant="contained" 
                     sx={{height:'40px'}}
                     onClick={props.onNext}
+                    loading={props.isLoading}
                     >
-                        Next
-                </Button>
+                        {props.currentPage === 3 ? 'Done' : 'Next'}
+                </LoadingButton>
         </Box>
      );
 }

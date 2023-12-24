@@ -1,7 +1,7 @@
-import { Box, Typography } from "@mui/material";
+import { Box, LinearProgress, Typography } from "@mui/material";
 import { Outlet } from "react-router";
 import RegisterNavigation from "../../components/RegisterNavigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RegisterStep1 from "./RegisterStep1";
 import RegisterStep2 from "./RegisterStep2";
 import RegisterStep3 from "./RegisterStep3";
@@ -10,6 +10,11 @@ import { Formik, FormikContext, FormikErrors, FormikValues, useFormik,yupToFormE
 import { isAlpha, isAlphanumeric, isURL } from "class-validator";
 import * as Yup from 'yup';
 import { RegisterUser } from "../../redux/features/Api/users/types/RegisterUser";
+import { useLazyRegisterUserQuery } from "../../redux/features/Api/users/usersApiSlice";
+import useLocalStorage from "../../Hooks/useLocalStorage";
+import { User } from "../../redux/features/Api/users/types/User";
+import AutoClosePopup from "../../components/AutoClosePopup";
+import { clearFormValues } from "../../HelpFunctions";
 
 function validateYupSchemaSync<T extends FormikValues>(values : T ,schema:Yup.AnyObjectSchema) : FormikErrors<T> {
 
@@ -56,12 +61,16 @@ const validationSchemaStep2 = Yup.object({
 })
 
 const initialPage = 1;
-const endPage = 3;
 
 function Register() {
 
     const [currentPage,setCurrentPage] = useState(initialPage);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [registerTrigger, {isLoading,isError}] = useLazyRegisterUserQuery();
+    const [_,setUser]=useLocalStorage<User>('user');
+
+    const [openError,setOpenError] = useState(false);
+    useEffect(()=>setOpenError(isError),[isError])
 
     const formik = useFormik<RegisterUser>({
         initialValues: {
@@ -89,13 +98,26 @@ function Register() {
 
             return errors
         },
-        onSubmit: (values,formikHelpers)=>{
-            formikHelpers.setTouched({username:true,password:true,rePassword:true})
-            if (currentPage === endPage)
-                setCurrentPage(initialPage)
-            else
-            setCurrentPage(currentPage + 1)
+        onSubmit: async (values,formikHelpers)=>{
 
+            if (currentPage === 1){
+                formikHelpers.setTouched({username:true,password:true,rePassword:true})
+                setCurrentPage(currentPage + 1)
+            } else if (currentPage === 2){
+                setCurrentPage(currentPage + 1)
+            } else {
+                const sendValues = clearFormValues(values) as RegisterUser;
+
+                const {data,isSuccess,error} = await registerTrigger({...sendValues});
+
+                console.log(error)
+
+                if (isSuccess){
+                    setUser(data);
+                    navigate('/feed')
+                }
+
+            }
         },
         validateOnBlur:true
     })
@@ -107,35 +129,51 @@ function Register() {
             navigate('/login')
     }
 
-    console.log(formik.touched)
 
     return ( 
-        <Box sx={{width:'50vw', marginTop:4}}>
+        <>
+            <AutoClosePopup 
+                message="Something went wrong, Please try again.."
+                open={openError}
+                color="error"
+                onClose={()=>setOpenError(false)}
+                />
 
-            <Box sx={{marginBottom:4}}>
-                <Typography variant="h4" >Let's Register!</Typography>
-                <Typography variant="subtitle1">Just Few Steps and Your'e In!</Typography>
+            <Box sx={{width:'50vw', marginTop:4}}>
+
+                <Box sx={{marginBottom:4}}>
+                    <Typography variant="h4" >Let's Register!</Typography>
+                    <Typography variant="subtitle1">Just Few Steps and Your'e In!</Typography>
+                </Box>
+
+                <FormikContext.Provider value={formik}>
+                    {currentPage === 1 && 
+                            <RegisterStep1
+                                />}
+                    {currentPage === 2 && 
+                            <RegisterStep2
+                                
+                                /> }
+                    {currentPage === 3 && 
+                            <RegisterStep3
+                                
+                                /> }
+                </FormikContext.Provider>
+                
+                <RegisterNavigation 
+                        onBack={handleBack}
+                        onNext={formik.handleSubmit}
+                        isLoading={isLoading}
+                        currentPage={currentPage}
+                        />
             </Box>
-
-            <FormikContext.Provider value={formik}>
-                {currentPage === 1 && 
-                        <RegisterStep1
-                            />}
-                {currentPage === 2 && 
-                        <RegisterStep2
-                            
-                            /> }
-                {currentPage === 3 && 
-                        <RegisterStep3
-                            
-                            /> }
-            </FormikContext.Provider>
-            
-            <RegisterNavigation 
-                    onBack={handleBack}
-                    onNext={formik.handleSubmit}
-                    />
-        </Box>
+            <LinearProgress sx={{ 
+                    width:'100%', 
+                    position:'absolute', 
+                    bottom:10
+                
+                }} variant="determinate" value={currentPage * 33} />
+        </>
      );
 }
 
