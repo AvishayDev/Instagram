@@ -7,9 +7,9 @@ export type RegisterUser = {
     password:string,
     rePassword:string,
 
-    profileImageUrl:string,
+    profileImageUrl?:string,
     firstName:string,
     lastName:string,
 
-    bio:string
+    bio?:string
 }
