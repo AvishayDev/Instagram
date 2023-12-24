@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Post } from "@nestjs/common";
 import { LikesService } from "./likes.service";
 import { SignLikeDTO } from "./dtos/SignLike.dto";
-import { PostsLikesDTO } from "./dtos/PostsLikes.dto";
 
 
 

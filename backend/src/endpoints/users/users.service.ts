@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/Tables/User";
-import { DataSource, Repository, getManager } from "typeorm";
+import { Repository } from "typeorm";
 import { CreateUserDB } from "./dbtypes/CreateUser.db";
 import { CheckUsernamePasswordDB } from "./dbtypes/CheckUsernamePassword.db";
-import { getSelectObject, removeKeys } from "../HelpFunctions";
+import { getSelectObject } from "../HelpFunctions";
 import { Post } from "src/Tables/Post";
 
 

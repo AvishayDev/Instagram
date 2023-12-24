@@ -1,4 +1,4 @@
-import { IsAlpha, IsAlphanumeric, IsDefined, IsNotEmpty, IsOptional, IsString, IsStrongPassword, IsUrl, Min, ValidateBy } from "class-validator";
+import { IsAlpha, IsAlphanumeric, IsOptional, IsString, IsStrongPassword, IsUrl } from "class-validator";
 
 
 export class addUserDTO {

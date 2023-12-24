@@ -1,4 +1,4 @@
-import { IsAlphanumeric, IsDefined, IsNotEmpty } from "class-validator";
+import { IsAlphanumeric } from "class-validator";
 
 
 
