@@ -1,5 +1,4 @@
 import { Stack, TextField, Typography, Box } from "@mui/material";
-import { TextareaAutosize } from '@mui/base';
 import { useFormikContext } from "formik";
 import { RegisterUser } from "../../redux/features/Api/users/types/RegisterUser";
 import { IMAGES } from "../../consts/Images";

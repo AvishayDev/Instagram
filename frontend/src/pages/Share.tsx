@@ -1,8 +1,7 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { IMAGES } from "../consts/Images";
-import { FormikErrors, useFormik } from "formik";
-import { isEmpty, isNotEmpty, isURL } from "class-validator";
+import { useFormik } from "formik";
 import { useLazySharePostQuery } from "../redux/features/Api/posts/postsApiSlice";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import { User } from "../redux/features/Api/users/types/User";

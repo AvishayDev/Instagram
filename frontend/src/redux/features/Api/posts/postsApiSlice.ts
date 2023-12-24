@@ -1,5 +1,4 @@
 import { apiSlice } from "../apiSlice";
-import { ProfilePost } from "../../../../types/ProfilePost";
 import { FeedPost } from "./types/FeedPost";
 import { GetFeedPosts } from "./types/GetPosts";
 import { SharePost } from "./types/SharePost";

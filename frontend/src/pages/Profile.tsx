@@ -1,17 +1,15 @@
-import { Box, Stack, Typography, ImageList, ImageListItem, ImageListItemBar, IconButton } from "@mui/material";
+import { Box, Stack, Typography, ImageList, ImageListItem, ImageListItemBar } from "@mui/material";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import LinkButton from "../components/LinkButton";
 import { User } from "../redux/features/Api/users/types/User";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IMAGES } from "../consts/Images";
-import { useEffect, useState } from "react";
-import { useGetUserPostsQuery, useLazyGetUserPostsQuery } from "../redux/features/Api/users/usersApiSlice";
+import { useEffect } from "react";
+import { useLazyGetUserPostsQuery } from "../redux/features/Api/users/usersApiSlice";
 import { useStoreDispatch } from "../Hooks/storeHooks";
 import CircularProgress from '@mui/material/CircularProgress';
 import PageError from "../components/PageError";
 import { resetStore } from "../redux/app/store";
-import { ProfilePost } from "../types/ProfilePost";
-import { useLazyGetPostsQuery } from "../redux/features/Api/posts/postsApiSlice";
 
 function Profile() {
 
