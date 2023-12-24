@@ -7,7 +7,7 @@ import RegisterStep2 from "./RegisterStep2";
 import RegisterStep3 from "./RegisterStep3";
 import { useNavigate } from "react-router-dom";
 import { Formik, FormikContext, FormikErrors, FormikValues, useFormik,yupToFormErrors } from "formik";
-import { isAlpha, isAlphanumeric, isURL } from "class-validator";
+import { isAlpha, isAlphanumeric, isStrongPassword, isURL } from "class-validator";
 import * as Yup from 'yup';
 import { RegisterUser } from "../../redux/features/Api/users/types/RegisterUser";
 import { useLazyRegisterUserQuery } from "../../redux/features/Api/users/usersApiSlice";
@@ -40,12 +40,15 @@ const validationSchemaStep1 = Yup.object({
                     .test('isAlphanumeric',
                         'Username can be only letters and numbers',
                         (value)=> isAlphanumeric(value)),
+    password: Yup.string()
+                    .required('Did you forget something?')
+                    .test('isStrongPassword',
+                            '8 characters, 1 Capital, 1 Special (!,@,#...)',
+                            (value)=>isStrongPassword(value))
+                    .max(100,"it's too long!"),
     rePassword: Yup.string()
                     .required('Did you forget something?')
                     .oneOf([Yup.ref('password')],"Passwords dosen't match."),
-    password: Yup.string()
-                    .required('Did you forget something?')
-                    .max(100,"it's too long!"),
     
 });
 
