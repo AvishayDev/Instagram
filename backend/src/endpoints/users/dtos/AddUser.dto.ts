@@ -1,4 +1,4 @@
-import { IsAlpha, IsAlphanumeric, IsDefined, IsNotEmpty, IsOptional, IsString, IsUrl, Min, ValidateBy } from "class-validator";
+import { IsAlpha, IsAlphanumeric, IsDefined, IsNotEmpty, IsOptional, IsString, IsStrongPassword, IsUrl, Min, ValidateBy } from "class-validator";
 
 
 export class addUserDTO {
@@ -12,7 +12,7 @@ export class addUserDTO {
     @IsAlphanumeric()
     username:string;
 
-    @IsString()
+    @IsStrongPassword()
     password:string;
 
     @IsString()
