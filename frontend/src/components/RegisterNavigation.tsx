@@ -1,10 +1,11 @@
 import { Box, Button } from "@mui/material";
+import { useFormikContext } from "formik";
 
 
 
 interface RegisterNavigationProps {
-    onBack: ()=> void
-    onNext: ()=> void
+    onBack?: ()=> void
+    onNext?: ()=> void
 }
 
 

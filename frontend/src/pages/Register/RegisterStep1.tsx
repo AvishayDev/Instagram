@@ -1,61 +1,39 @@
-import { InputAdornment, Stack, TextField, TextFieldPropsColorOverrides } from "@mui/material";
+import { IconButton, InputAdornment, Stack, TextField } from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLazyCheckUsernameQuery } from "../../redux/features/Api/users/usersApiSlice";
-import useDataError from "../../Hooks/useDataError";
-import { equals, isAlphanumeric, isNotEmpty } from "class-validator";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import CheckIcon from '@mui/icons-material/Check';
-import { useStoreSelector } from "../../Hooks/storeHooks";
-import { FormikProps } from "formik";
+import { useFormikContext } from "formik";
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { RegisterUser } from "../../redux/features/Api/users/types/RegisterUser";
 
 
-interface RegisterStep1Props {
-    formik: FormikProps<RegisterUser>
-}
 
-function RegisterStep1(props:RegisterStep1Props) {
+function RegisterStep1() {
+    
+    const [trigger,{isFetching :isServerLoading,isError,data,isSuccess}] = useLazyCheckUsernameQuery();
+    const [isLoading,setIsLoading] = useState(false)
+    const [typingTimeout,setTypingTimeout] = useState<NodeJS.Timeout>();
+    
+    const formik = useFormikContext<RegisterUser>();
 
-    const [trigger,{isLoading,isError,data,isSuccess}] = useLazyCheckUsernameQuery();
+    useEffect(()=>{
+        clearTimeout(typingTimeout);
 
-    const {formik} = props;
+        (isLoading && !formik.errors.username) && setTypingTimeout(setTimeout(()=> callServer()
+        ,1000))
 
-    // const firstTime = useRef(2)
-    // useLayoutEffect(()=>{
-    //     if (firstTime.current> 0){
-    //         firstTime.current--;
-    //         return
-    //     }
-    //     console.log('koko')
-    //     const checkUsername = async ()=>{
+        return () => clearTimeout(typingTimeout)
+    },[formik.values.username,formik.errors.username])
 
-    //         await trigger(formik.values.username)
-    //     }
-    //     !formik.errors.username && checkUsername()
-    // },[formik.errors.username])
+    useEffect(()=>{
+        formik.errors.username && clearTimeout(typingTimeout)
+    }, [formik.errors.username, typingTimeout])
 
 
-    // useEffect(()=>{
-    //     console.log('useEffect')
-    //     console.log(formik.touched.username)
-    //     console.log(formik.errors.username)
-    //     const checkUsername = async ()=>{
-    //         console.log('trigger')
-    //         await trigger(formik.values.username)
-    //     }
-
-    //     if (formik.touched.username && !formik.errors.username)
-    //         checkUsername()
-    // },[formik.touched.username])
-
-
-    const checkUsername = async ()=>{
-        if (formik.touched.username && !formik.errors.username) {
-            console.log('trigger')
-            await trigger(formik.values.username)
-        }
-    }
-
+    const callServer = async ()=> !formik.errors.username && await trigger(formik.values.username);
+    useEffect(()=>setIsLoading(isServerLoading),[isServerLoading])
+    
     return ( 
         <Stack spacing={4}>
             <TextField
@@ -64,18 +42,24 @@ function RegisterStep1(props:RegisterStep1Props) {
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            {(!formik.errors.username && !isError && !data?.exists) &&
-                            <>
-                                {isLoading && <CircularProgress size={25}/>}
-                                {isSuccess && <CheckIcon/>}
-                            </>}
+                            {(isError && <IconButton onClick={callServer}><RefreshIcon/></IconButton>)||
+                            ((!formik.errors.username && !data?.exists) &&
+                                <>
+                                    {isLoading ? <CircularProgress size={25}/>
+                                     : (isSuccess && <CheckIcon/>)}
+                                </>)
+                            }
                         </InputAdornment>
                     )
                 }}
                 error={isError || !!formik.errors.username || data?.exists}
-                onBlur={(error)=>{formik.handleBlur(error);checkUsername()}}
-                onChange={formik.handleChange}
-                helperText={isError || data?.exists  ? 'Username already Exists' : formik.errors.username}
+                
+                onChange={(event)=>{formik.handleChange(event); setIsLoading(true);}}
+                onBlur={formik.handleBlur}
+                helperText={formik.errors.username ||
+                            (isError && "Sorry.. we have server error.. please try again") || 
+                            (data?.exists  && 'Username already Exists')}
+                value={formik.values.username}
                     />
             <TextField
                 type="password"
@@ -84,6 +68,7 @@ function RegisterStep1(props:RegisterStep1Props) {
                 onChange={formik.handleChange}
                 error={formik.touched.password && !!formik.errors.password}
                 helperText={formik.touched.password && formik.errors.password}
+                value={formik.values.password}
                 />
             <TextField
                 type="password"
@@ -92,7 +77,10 @@ function RegisterStep1(props:RegisterStep1Props) {
                 onChange={formik.handleChange}
                 error={formik.touched.rePassword && !!formik.errors.rePassword}
                 helperText={formik.touched.rePassword && formik.errors.rePassword}
+                value={formik.values.rePassword}
                 />
+
+
         </Stack> 
         );
 }

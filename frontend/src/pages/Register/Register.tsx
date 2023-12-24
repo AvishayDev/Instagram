@@ -6,7 +6,7 @@ import RegisterStep1 from "./RegisterStep1";
 import RegisterStep2 from "./RegisterStep2";
 import RegisterStep3 from "./RegisterStep3";
 import { useNavigate } from "react-router-dom";
-import { FormikErrors, FormikValues, useFormik,yupToFormErrors } from "formik";
+import { Formik, FormikContext, FormikErrors, FormikValues, useFormik,yupToFormErrors } from "formik";
 import { isAlpha, isAlphanumeric, isURL } from "class-validator";
 import * as Yup from 'yup';
 import { RegisterUser } from "../../redux/features/Api/users/types/RegisterUser";
@@ -25,6 +25,7 @@ function validateYupSchemaSync<T extends FormikValues>(values : T ,schema:Yup.An
 async function validateYupSchema<T extends FormikValues>(values : T ,schema:Yup.AnyObjectSchema) : Promise<FormikErrors<T>>{
 
     return await schema.validate(values,{ abortEarly: false })
+                        .then(()=>({}))
                         .catch(error => yupToFormErrors(error))    
 }
 
@@ -80,7 +81,6 @@ function Register() {
             if (currentPage === 1){
                 const {username,password,rePassword} = values;
                 errors = await validateYupSchema({username,password,rePassword}, validationSchemaStep1)
-                console.log('validated')
             } else if (currentPage === 2){
 
                 const {firstName,lastName,profileImageUrl} = values;
@@ -106,7 +106,6 @@ function Register() {
             navigate('/login')
     }
 
-    console.log(formik.errors)
     return ( 
         <Box sx={{width:'50vw', marginTop:4}}>
 
@@ -115,21 +114,19 @@ function Register() {
                 <Typography variant="subtitle1">Just Few Steps and Your'e In!</Typography>
             </Box>
 
-            {currentPage === 1 && 
-                    <RegisterStep1
-                        formik={formik}
-                        />
-            }
-            {currentPage === 2 && 
-                    <RegisterStep2
-                        
-                        />
-            }
-            {currentPage === 3 && 
-                    <RegisterStep3
-                        
-                        />
-            }
+            <FormikContext.Provider value={formik}>
+                {currentPage === 1 && 
+                        <RegisterStep1
+                            />}
+                {currentPage === 2 && 
+                        <RegisterStep2
+                            
+                            /> }
+                {currentPage === 3 && 
+                        <RegisterStep3
+                            
+                            /> }
+            </FormikContext.Provider>
             
             <RegisterNavigation 
                     onBack={handleBack}
