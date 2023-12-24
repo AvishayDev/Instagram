@@ -1,28 +1,32 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { IMAGES } from "../consts/Images";
-import { useFormik } from "formik";
+import { FormikErrors, useFormik } from "formik";
 import { isEmpty, isNotEmpty, isURL } from "class-validator";
 import { useLazySharePostQuery } from "../redux/features/Api/posts/postsApiSlice";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import { User } from "../redux/features/Api/users/types/User";
 import AutoClosePopup from "../components/AutoClosePopup";
 import { useState } from "react";
-
-interface FormErrors {
-    imageUrl?:string,
-    postText?:string
-}
+import * as Yup from 'yup';
+import { clearFormValues } from "../HelpFunctions";
 
 
+const validationSchema = Yup.object({
+    imageUrl: Yup.string()
+                    .url('Please provide valid URL')
+                    .max(512,'URL is too long, please provide short one')
+})
 
 function Share() {
 
     const [user] = useLocalStorage<User>('user');
-    const [trigger,] = useLazySharePostQuery();
+    const [trigger] = useLazySharePostQuery();
     
     const [openError,setOpenError] = useState(false);
     const [openSuccess,setOpenSuccess] = useState(false);
+    const [disableShare,setDisableShare] = useState(false)
+
 
     const formik = useFormik({
             initialValues: {
@@ -31,10 +35,7 @@ function Share() {
             },
             onSubmit: async (values, formikHelpers)=>{
                 
-                const sendValues = Object.fromEntries(
-                                        Object.entries(values)
-                                          .filter(([_,value]) => value)
-                                                );
+                const sendValues = clearFormValues(values);
                                                       
                 const {isError, isSuccess}= await trigger({
                                 userId:user.id,
@@ -44,19 +45,15 @@ function Share() {
                 setOpenError(isError)
                 setOpenSuccess(isSuccess)
                 
-                if (isSuccess)
+                if (isSuccess){
                     formikHelpers.resetForm()
-
+                    setDisableShare(true)
+                    setTimeout(()=>setDisableShare(false),5000)
+                }
+                
                     
             },
-            validate: (values) => {
-                const errors:FormErrors = {};
-
-                if (values.imageUrl && !isURL(values.imageUrl))
-                    errors.imageUrl = 'Please provide valid URL'
-
-                return errors;
-            },
+            validationSchema
     });
 
     return ( 
@@ -73,7 +70,7 @@ function Share() {
                 color="success"
                 onClose={()=>setOpenSuccess(false)}
                 />
-            <Stack spacing={3} marginTop={3}>
+            <Stack spacing={3} marginTop={3} onKeyDown={event => event.key === 'Enter' && formik.handleSubmit()}>
 
                 <Typography variant="h4">Let's Post Something!</Typography>
                     <Box   
@@ -85,7 +82,7 @@ function Share() {
                             alignSelf:'center'
                             
                         }}
-                        src={isURL(formik.values.imageUrl) ? formik.values.imageUrl : IMAGES.defaultPostImage}
+                        src={(formik.values.imageUrl && !formik.errors.imageUrl) ? formik.values.imageUrl : IMAGES.defaultPostImage}
                         />
                         <TextField
                             label='Image Url'
@@ -103,8 +100,8 @@ function Share() {
                             onChange={formik.handleChange}
                             value={formik.values.postText}
                             />
-                        <Button variant="contained" onClick={()=>formik.handleSubmit()}>
-                            Publish!
+                        <Button disabled={disableShare} variant="contained" onClick={()=>formik.handleSubmit()}>
+                            {disableShare ? 'Wait 5 sesonds to publish again': 'Publish!'}
                         </Button>       
             </Stack>
         </>

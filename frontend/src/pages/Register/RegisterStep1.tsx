@@ -1,103 +1,86 @@
-import { InputAdornment, Stack, TextField, TextFieldPropsColorOverrides } from "@mui/material";
+import { IconButton, InputAdornment, Stack, TextField } from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLazyCheckUsernameQuery } from "../../redux/features/Api/users/usersApiSlice";
-import useDataError from "../../Hooks/useDataError";
-import { equals, isAlphanumeric, isNotEmpty } from "class-validator";
 import { useEffect, useState } from "react";
 import CheckIcon from '@mui/icons-material/Check';
-import { useStoreSelector } from "../../Hooks/storeHooks";
+import { useFormikContext } from "formik";
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { RegisterUser } from "../../redux/features/Api/users/types/RegisterUser";
+
 
 
 function RegisterStep1() {
-
-    const [trigger,{isLoading}] = useLazyCheckUsernameQuery();
-
-    //const {username,password,rePassword} = useStoreSelector(state=>state.register);
-
-    const [username,setUsername,setUsernameError,resetUsernameError] = useDataError('');
-    const [password,setPassword,setPasswordError,resetPasswordError] = useDataError('');
-    const [rePassword,setRePassword,setRePasswordError,resetRePasswordError] = useDataError('');
-
-    const [isSuccess,setIsSuccess] = useState(false);
-
-    const checkUsername = async (usernameTest:string) => {
-
-        setIsSuccess(false)
-
-        if (!isAlphanumeric(usernameTest)){
-            setUsernameError('username can be only letters and numbers');
-            return
-        } else resetUsernameError();
-
-        const {isError, data} = await trigger(usernameTest);
-
-
-        if (isError){
-            return setUsernameError('internal error, please try again later');
-        } else resetUsernameError();
-
-        if (data?.exists)
-            return setUsernameError('username already exists');
-        else
-            setIsSuccess(true)
-    }
-
-
-    const validatePasswords = (passwordTest:string,rePasswordTest:string)=>{
-        
-        let testCheck = true;
-        if (!isNotEmpty(passwordTest)){
-            setPasswordError("password can't be empty");
-            testCheck = false;
-        } else resetPasswordError();
-
-        if (!equals(passwordTest,rePasswordTest)){
-            setRePasswordError('password and re-password have to match.');
-            testCheck = false;
-        } else resetRePasswordError();
-
-        if (!testCheck) return // add disable to redux
-
-        // add to redux and continue
-    }
-
+    
+    const [trigger,{isFetching :isServerLoading,isError,data,isSuccess}] = useLazyCheckUsernameQuery();
+    const [isLoading,setIsLoading] = useState(false)
+    const [typingTimeout,setTypingTimeout] = useState<NodeJS.Timeout>();
+    
+    const formik = useFormikContext<RegisterUser>();
 
     useEffect(()=>{
-        validatePasswords(password.data,rePassword.data)
-    },[password.data, rePassword.data])
+        clearTimeout(typingTimeout);
+
+        (isLoading && !formik.errors.username) && setTypingTimeout(setTimeout(()=> callServer()
+        ,1000))
+
+        return () => clearTimeout(typingTimeout)
+    },[formik.values.username,formik.errors.username])
+
+    useEffect(()=>{
+        formik.errors.username && clearTimeout(typingTimeout)
+    }, [formik.errors.username, typingTimeout])
 
 
+    const callServer = async ()=> !formik.errors.username && await trigger(formik.values.username);
+    useEffect(()=>setIsLoading(isServerLoading),[isServerLoading])
+    
     return ( 
         <Stack spacing={4}>
             <TextField
                 label='Username'
-                error={username.isError}
+                name="username"
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            {isLoading && <CircularProgress size={25}/>}
-                            {isSuccess && <CheckIcon/>}
+                            {(isError && <IconButton onClick={callServer}><RefreshIcon/></IconButton>)||
+                            ((!formik.errors.username && !data?.exists) &&
+                                <>
+                                    {isLoading ? <CircularProgress size={25}/>
+                                     : (isSuccess && <CheckIcon/>)}
+                                </>)
+                            }
                         </InputAdornment>
                     )
                 }}
-                onBlur={(event)=>checkUsername(event.target.value)}
-                onChange={(event)=>setUsername(event.target.value)}
-                helperText={username.error}
+                error={isError || !!formik.errors.username || data?.exists}
+                
+                onChange={(event)=>{formik.handleChange(event); setIsLoading(true);}}
+                onBlur={formik.handleBlur}
+                helperText={formik.errors.username ||
+                            (isError && "Sorry.. we have server error.. please try again") || 
+                            (data?.exists  && 'Username already Exists')}
+                value={formik.values.username}
                     />
             <TextField
                 type="password"
                 label='Password'
-                onChange={(event)=>setPassword(event.target.value)}
-                error={password.isError}
-                helperText={password.error}
+                name='password'
+                onChange={formik.handleChange}
+                error={formik.touched.password && !!formik.errors.password}
+                helperText={formik.touched.password && formik.errors.password}
+                value={formik.values.password}
                 />
             <TextField
                 type="password"
                 label='Re-password'
-                onChange={(event)=>setRePassword(event.target.value)}
-                error={rePassword.isError}
-                helperText={rePassword.error}
+                name="rePassword"
+                onChange={formik.handleChange}
+                error={formik.touched.rePassword && !!formik.errors.rePassword}
+                helperText={formik.touched.rePassword && formik.errors.rePassword}
+                value={formik.values.rePassword}
                 />
+
+
         </Stack> 
         );
 }

@@ -1,25 +1,17 @@
+import { LoadingButton } from "@mui/lab";
 import { Box, Button } from "@mui/material";
-import LinkButton from "./LinkButton";
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-
-function RegisterNavigation() {
-
-    const registerFlow = [
-        '/login',
-        '/register/1',
-        '/register/2',
-        '/register/3',
-        '/feed'
-    ]
-    const location = useLocation();
-
-    const [currentPage,setCurrentPage] = useState(registerFlow.findIndex((path)=>(path === location.pathname)))
 
 
-    useEffect(()=>{
-        setCurrentPage(registerFlow.findIndex((path)=>(path === location.pathname)))
-    },[location])
+
+interface RegisterNavigationProps {
+    onBack?: ()=> void
+    onNext?: ()=> void
+    isLoading?: boolean
+    currentPage?:number
+}
+
+
+function RegisterNavigation(props:RegisterNavigationProps) {
 
     return ( 
         <Box sx={{
@@ -27,12 +19,21 @@ function RegisterNavigation() {
             justifyContent: 'space-between',
             marginTop: 4
             }}>
-            <LinkButton to={registerFlow[currentPage - 1]}
-                        variant="outlined"  
-                        sx={{height:'40px'}}>Back</LinkButton>
-            <LinkButton to={registerFlow[currentPage + 1]}
-                        variant="contained" 
-                        sx={{height:'40px'}}>{currentPage === 3 ? 'Done': 'Next'}</LinkButton>
+                <Button 
+                    variant="outlined" 
+                    sx={{height:'40px'}}
+                    onClick={props.onBack}
+                    >
+                        Back
+                </Button>
+                <LoadingButton 
+                    variant="contained" 
+                    sx={{height:'40px'}}
+                    onClick={props.onNext}
+                    loading={props.isLoading}
+                    >
+                        {props.currentPage === 3 ? 'Done' : 'Next'}
+                </LoadingButton>
         </Box>
      );
 }

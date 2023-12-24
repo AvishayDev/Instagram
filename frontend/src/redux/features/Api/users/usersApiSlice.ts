@@ -3,6 +3,7 @@ import { User } from "./types/User";
 import { apiSlice } from "../apiSlice";
 import { CheckUser } from "./types/CheckUser";
 import { ProfilePost } from "../../../../types/ProfilePost";
+import { RegisterUser } from "./types/RegisterUser";
 
 
 
@@ -35,8 +36,15 @@ export const usersApi = apiSlice.injectEndpoints({
             query: (userId:number) => ({
                 url:`users/${userId}/posts`
             })
+        }),
+        registerUser: builder.query<User,RegisterUser>({
+            query:(registerUser:RegisterUser)=>({
+                url:'users/register',
+                method:'POST',
+                body:{...registerUser}
+            })
         })
     })
 })
 
-export const {useLazyGetUserPostsQuery, useLazyLoginUserQuery, useLazyCheckUsernameQuery} = usersApi;
+export const {useLazyGetUserPostsQuery,useLazyRegisterUserQuery, useGetUserPostsQuery, useLazyLoginUserQuery, useLazyCheckUsernameQuery} = usersApi;
