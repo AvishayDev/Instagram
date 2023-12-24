@@ -12,6 +12,7 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
+    
     type:'postgres',
     host:'localhost',
     port:5432,
@@ -21,7 +22,7 @@ import { ConfigModule } from '@nestjs/config';
     entities:[User,Post,Like],
     synchronize:true,
   }),
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({isGlobal:true}),
     UsersModule, PostsModule, LikesModule],
   controllers: [AppController],
   providers: [AppService],
