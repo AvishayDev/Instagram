@@ -3,13 +3,14 @@ import {IMAGES} from '../consts/Images'
 import LinkButton from "../components/LinkButton";
 import { useLazyLoginUserQuery } from "../redux/features/Api/users/usersApiSlice";
 import { LoadingButton } from "@mui/lab";
-import { isAlphanumeric } from "class-validator";
+import { isAlphanumeric, isEmpty, isNotEmpty } from "class-validator";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
+import { FormikErrors, useFormik } from "formik";
 import AutoClosePopup from "../components/AutoClosePopup";
 import { useState } from "react";
 import * as Yup from 'yup';
+import { User } from "../redux/features/Api/users/types/User";
 
 const validationSchema = Yup.object({
     username: Yup.string()
@@ -26,10 +27,13 @@ const validationSchema = Yup.object({
         
 })
 
-function Login() {
+interface LoginProps{
+    onLogin:(user:User)=>void
+}
+
+
+function Login(props:LoginProps) {
     
-    const [ _, setUser] = useLocalStorage('user');
-    const navigate = useNavigate();
     const [openError,setOpenError] = useState(false)
 
 
@@ -44,8 +48,7 @@ function Login() {
             const {isSuccess, data} = await trigger(values);
 
             if (isSuccess){
-                setUser(data)
-                navigate('/feed')
+                props.onLogin(data)
             } else
                 setOpenError(true)
         },

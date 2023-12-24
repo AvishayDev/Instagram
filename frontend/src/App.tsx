@@ -8,11 +8,20 @@ import Profile from './pages/Profile';
 import Layout from './pages/Layout';
 import Register from './pages/Register/Register';
 import TestPage from './pages/TestPage';
+import useLocalStorage from './Hooks/useLocalStorage';
+import ProtectedRoute from './ProtectedRoute';
+import { useLazyLoginUserQuery } from './redux/features/Api/users/usersApiSlice';
+import { User } from './redux/features/Api/users/types/User';
 
 
 
 function App() {
 
+  const [user,setUser] = useLocalStorage<User>('user')
+
+  const login = (user:User) => setUser(user);
+  const logout = () => setUser(null);
+  
 
   return (
     <div className="App">
@@ -22,15 +31,17 @@ function App() {
               
               <Route path='test' element={<TestPage/>}/>
               
-              <Route element={<Layout hasNavbar={false}/>}>
-                <Route path='login' element={<Login/>}/>
+              <Route element={<ProtectedRoute isAllowed={!user} redirectPath='/feed'>
+                                <Layout hasNavbar={false}/>
+                              </ProtectedRoute>}>
+                <Route path='login' element={<Login onLogin={login}/>}/>
                 <Route path='register' element={<Register/>}/>
               </Route>
 
-              <Route element={<Layout hasNavbar={true}/>}>
+              <Route element={<ProtectedRoute isAllowed={!!user} redirectPath='/login'><Layout hasNavbar={true}/></ProtectedRoute>}>
                 <Route path='feed' element={<Feed/>}/>
                 <Route path='share' element={<Share/>}/>
-                <Route path='profile' element={<Profile/>}/>
+                <Route path='profile' element={<Profile onLogout={logout}/>}/>
               </Route>
 
             </Route>

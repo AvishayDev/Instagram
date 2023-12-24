@@ -15,8 +15,12 @@ function useLocalStorage<T>(key:string, initialState:T | null = null):[T,(newVal
     const [value,setValue] = useState(()=>getSavedValue(key,initialState));
 
     const setNewValue = ( newValue:T | null )=>{
+
         setValue(newValue);
         localStorage.setItem(key,JSON.stringify(newValue));
+        
+        if (newValue === null)
+            localStorage.removeItem(key);
     }
 
 

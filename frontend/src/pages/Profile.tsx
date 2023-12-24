@@ -1,35 +1,34 @@
-import { Box, Stack, Typography, ImageList, ImageListItem, ImageListItemBar } from "@mui/material";
+import { Box, Stack, Typography, ImageList, ImageListItem, ImageListItemBar, IconButton, Button } from "@mui/material";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import LinkButton from "../components/LinkButton";
 import { User } from "../redux/features/Api/users/types/User";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IMAGES } from "../consts/Images";
 import { useEffect } from "react";
-import { useLazyGetUserPostsQuery } from "../redux/features/Api/users/usersApiSlice";
+import {  useLazyGetUserPostsQuery } from "../redux/features/Api/users/usersApiSlice";
 import { useStoreDispatch } from "../Hooks/storeHooks";
 import CircularProgress from '@mui/material/CircularProgress';
 import PageError from "../components/PageError";
 import { resetStore } from "../redux/app/store";
 
-function Profile() {
 
-    const [user, setUser] = useLocalStorage<User>('user');
+
+interface ProfileProps{
+    onLogout:()=>void
+}
+
+function Profile(props:ProfileProps) {
+
+    const [user] = useLocalStorage<User>('user');
 
     const [trigger,{isLoading, isError, data:userPosts}] = useLazyGetUserPostsQuery();
     
-    const dispatch = useStoreDispatch()
-
 
 
     useEffect(()=>{
-        const loadData = async ()=> await trigger(user.id);
+        const loadData = async ()=> {user && await trigger(user.id)};
         loadData();
     },[])
-
-    const handleLogout = ()=>{
-        setUser(null)
-        resetStore(dispatch)
-    }
 
     return ( 
 
@@ -44,16 +43,15 @@ function Profile() {
                                     borderRadius:'100%',
                                     boxShadow:3
                                 }}
-                                src={!user.profileImageUrl ? IMAGES.defaultUserProfileImage : user.profileImageUrl}
+                                src={!user?.profileImageUrl ? IMAGES.defaultUserProfileImage : user.profileImageUrl}
                                 />
                         
-                        <LinkButton 
-                            to="/login"
+                        <Button 
                             variant="contained"
-                            onClick={handleLogout}
+                            onClick={props.onLogout}
                             >
                             Logout
-                        </LinkButton>
+                        </Button>
                     </Stack>
                     
                     <Stack alignItems='flex-start'>
