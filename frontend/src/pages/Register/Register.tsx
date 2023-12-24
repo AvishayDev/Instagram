@@ -89,7 +89,8 @@ function Register() {
 
             return errors
         },
-        onSubmit: (values)=>{
+        onSubmit: (values,formikHelpers)=>{
+            formikHelpers.setTouched({username:true,password:true,rePassword:true})
             if (currentPage === endPage)
                 setCurrentPage(initialPage)
             else
@@ -105,6 +106,8 @@ function Register() {
         else
             navigate('/login')
     }
+
+    console.log(formik.touched)
 
     return ( 
         <Box sx={{width:'50vw', marginTop:4}}>
