@@ -20,7 +20,7 @@ function RegisterStep2() {
                 onBlur={formik.handleBlur}
                 value={formik.values.profileImageUrl}
                 error={!!formik.errors.profileImageUrl}
-                helperText={formik.errors.profileImageUrl ? formik.errors.profileImageUrl : "You don't have to, but it's cool!"}
+                helperText={formik.values.profileImageUrl ? formik.errors.profileImageUrl : "You don't have to, but it's cool!"}
                 />
 
             <Stack spacing={2} direction='row' justifyContent='space-between' >
