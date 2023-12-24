@@ -16,16 +16,6 @@ import { User } from "../../redux/features/Api/users/types/User";
 import AutoClosePopup from "../../components/AutoClosePopup";
 import { clearFormValues } from "../../HelpFunctions";
 
-function validateYupSchemaSync<T extends FormikValues>(values : T ,schema:Yup.AnyObjectSchema) : FormikErrors<T> {
-
-    try {
-        schema.validateSync(values,{abortEarly:false})
-    } catch (error){
-        if(error instanceof Yup.ValidationError) return yupToFormErrors(error)
-    }
-    return {}
-}
-
 
 async function validateYupSchema<T extends FormikValues>(values : T ,schema:Yup.AnyObjectSchema) : Promise<FormikErrors<T>>{
 
