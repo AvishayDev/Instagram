@@ -1,7 +1,7 @@
 import { Box, Stack, Typography,IconButton } from "@mui/material";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IMAGES } from "../consts/Images";
 import { FeedPost } from "../redux/features/Api/posts/types/FeedPost";
 import {formatDistanceToNow} from 'date-fns'
@@ -83,17 +83,6 @@ function Post(props :PostProps) {
                 <Typography sx={{alignSelf:'center'}}>{formatDistanceToNow(new Date(props.post.upload_date),{addSuffix:true})}</Typography>
             </Box>
             
-            {/* <Box   
-                component='img'
-                sx={{
-                    height:'50vh',
-                    width:'50vh',
-                    alignSelf:'center'
-                    }}
-                src={!props.post.image_url ? IMAGES.defaultPostImage : props.post.image_url}
-                loading="lazy"
-                onDoubleClick={handleSignLike}
-                /> */}
             <Box sx={{alignSelf:'center'}}>
                 <PostImage
                         imageUrl={props.post.image_url}

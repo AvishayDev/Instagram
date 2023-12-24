@@ -1,13 +1,12 @@
 import { Box, LinearProgress, Typography } from "@mui/material";
-import { Outlet } from "react-router";
 import RegisterNavigation from "../../components/RegisterNavigation";
 import { useEffect, useState } from "react";
 import RegisterStep1 from "./RegisterStep1";
 import RegisterStep2 from "./RegisterStep2";
 import RegisterStep3 from "./RegisterStep3";
 import { useNavigate } from "react-router-dom";
-import { Formik, FormikContext, FormikErrors, FormikValues, useFormik,yupToFormErrors } from "formik";
-import { isAlpha, isAlphanumeric, isStrongPassword, isURL } from "class-validator";
+import { FormikContext, FormikErrors, FormikValues, useFormik,yupToFormErrors } from "formik";
+import { isAlpha, isAlphanumeric, isStrongPassword } from "class-validator";
 import * as Yup from 'yup';
 import { RegisterUser } from "../../redux/features/Api/users/types/RegisterUser";
 import { useLazyRegisterUserQuery } from "../../redux/features/Api/users/usersApiSlice";

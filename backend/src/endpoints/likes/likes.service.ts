@@ -1,11 +1,10 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Like } from "src/Tables/Like";
-import { IsNull, Not, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { SignLikeDB } from "./dbtypes/SignLike.db";
 import { UsersService } from "../users/users.service";
 import { PostsService } from "../posts/posts.service";
-import { PostsLikesDB } from "./dbtypes/PostsLikes.db";
 
 
 
