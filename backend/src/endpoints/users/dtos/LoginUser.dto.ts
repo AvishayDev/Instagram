@@ -1,4 +1,4 @@
-import { IsAlphanumeric, IsString, IsStrongPassword, MaxLength, MinLength } from "class-validator";
+import { IsAlphanumeric, IsStrongPassword, MaxLength, MinLength } from "class-validator";
 import { MaxLengths, MinLengths } from "src/consts/MinMax";
 
 

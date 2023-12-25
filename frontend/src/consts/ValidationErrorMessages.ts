@@ -7,6 +7,7 @@
 export const ValidationMessages ={
     REQUIRED: 'Did you forget something?',
     TOO_LONG: "it's too long!",
+    TOO_SHORT:"it's too short!",
     LETTERS_AND_NUMBERS: ' can be only letters and numbers',
     VALID_URL:'Please provide valid URL',
     TOO_LONG_URL:'URL is too long, please provide short one',

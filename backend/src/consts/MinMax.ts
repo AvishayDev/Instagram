@@ -6,12 +6,12 @@
 
 export const MaxLengths = {
     IMAGE_URL:512,
-    POST_TEXT:1024,
+    POST_TEXT:256,
     FIRSTNAME:50,
     LASTNAME:50,
     USERNAME:50,
     PASSWORD:100,
-    BIO:128
+    BIO:256
 
 }
 

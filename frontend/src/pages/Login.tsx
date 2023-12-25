@@ -16,19 +16,20 @@ import { ButtonsText } from "../consts/enums/ButtonsText";
 import { Colors } from "../consts/enums/Colors";
 import { Paths } from "../consts/enums/Paths";
 import { ValidationMessages } from "../consts/ValidationErrorMessages";
-import { MaxLength } from "../consts/MinMax";
+import { MaxLengths, MinLengths } from "../consts/MinMax";
 
 const validationSchema = Yup.object({
     username: Yup.string()
                 .required(ValidationMessages.REQUIRED)
-                .max(MaxLength.USERNAME,ValidationMessages.TOO_LONG)
+                .min(MinLengths.USERNAME,ValidationMessages.TOO_SHORT)
+                .max(MaxLengths.USERNAME,ValidationMessages.TOO_LONG)
                 .test('isAlphanumeric',
                     'Username' + ValidationMessages.LETTERS_AND_NUMBERS,
                     (value)=>isAlphanumeric(value)),
     
     password: Yup.string()
                 .required(ValidationMessages.REQUIRED)
-                .max(MaxLength.PASSWORD,ValidationMessages.TOO_LONG)
+                .max(MaxLengths.PASSWORD,ValidationMessages.TOO_LONG)
 
         
 })
