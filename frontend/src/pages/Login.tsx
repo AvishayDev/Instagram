@@ -16,6 +16,7 @@ import { ButtonsText } from "../consts/enums/ButtonsText";
 import { Colors } from "../consts/enums/Colors";
 import { Paths } from "../consts/enums/Paths";
 import { ValidationMessages } from "../consts/ValidationErrorMessages";
+import { MaxValues } from "../consts/MinMax";
 
 const validationSchema = Yup.object({
     username: Yup.string()

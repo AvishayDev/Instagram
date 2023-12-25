@@ -15,6 +15,7 @@ import { Titles } from "../consts/enums/Titles";
 import { ButtonsText } from "../consts/enums/ButtonsText";
 import { Colors } from "../consts/enums/Colors";
 import { ValidationMessages } from "../consts/ValidationErrorMessages";
+import { MaxValues } from "../consts/MinMax";
 
 
 const validationSchema = Yup.object({
