@@ -54,7 +54,12 @@ const validationSchemaStep2 = Yup.object({
 
 const initialPage = 1;
 
-function Register() {
+
+interface RegisterProps {
+    onRegister:(user: User)=>void
+}
+
+function Register(props: RegisterProps) {
 
     const [currentPage,setCurrentPage] = useState(initialPage);
     const navigate = useNavigate();
@@ -104,10 +109,8 @@ function Register() {
 
                 console.log(error)
 
-                if (isSuccess){
-                    setUser(data);
-                    navigate('/feed')
-                }
+                if (isSuccess)
+                    props.onRegister(data);
 
             }
         },

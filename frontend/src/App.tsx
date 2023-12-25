@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login';
@@ -7,46 +7,50 @@ import Share from './pages/Share';
 import Profile from './pages/Profile';
 import Layout from './pages/Layout';
 import Register from './pages/Register/Register';
-import TestPage from './pages/TestPage';
 import useLocalStorage from './Hooks/useLocalStorage';
 import ProtectedRoute from './ProtectedRoute';
-import { useLazyLoginUserQuery } from './redux/features/Api/users/usersApiSlice';
 import { User } from './redux/features/Api/users/types/User';
+import HowDidYouGetHere from './pages/How Did You Get Here/How did You Get Here';
+import { useNavigate } from 'react-router-dom';
 
 
 
 function App() {
 
-  const [user,setUser] = useLocalStorage<User>('user')
+  const [user,setUser] = useLocalStorage<User>('user');
 
   const login = (user:User) => setUser(user);
   const logout = () => setUser(null);
+
+  const navigate = useNavigate();
+  useEffect(() => navigate('/login'), []);
+
   
 
   return (
     <div className="App">
-      <Router>
         <Routes>
           <Route path='/'>
-              
-              <Route path='test' element={<TestPage/>}/>
               
               <Route element={<ProtectedRoute isAllowed={!user} redirectPath='/feed'>
                                 <Layout hasNavbar={false}/>
                               </ProtectedRoute>}>
-                <Route path='login' element={<Login onLogin={login}/>}/>
-                <Route path='register' element={<Register/>}/>
+                <Route index path='login' element={<Login onLogin={login}/>}/>
+                <Route path='register' element={<Register onRegister={login}/>}/>
               </Route>
 
-              <Route element={<ProtectedRoute isAllowed={!!user} redirectPath='/login'><Layout hasNavbar={true}/></ProtectedRoute>}>
+              <Route element={<ProtectedRoute isAllowed={!!user} redirectPath='/login'>
+                                <Layout hasNavbar={true}/>
+                              </ProtectedRoute>}>
                 <Route path='feed' element={<Feed/>}/>
                 <Route path='share' element={<Share/>}/>
                 <Route path='profile' element={<Profile onLogout={logout}/>}/>
               </Route>
 
+              <Route path='*' element={<HowDidYouGetHere/>}/>
+
             </Route>
         </Routes>
-      </Router>
     </div>
   );
 }
