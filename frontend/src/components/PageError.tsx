@@ -1,15 +1,17 @@
 import { Stack, Typography } from "@mui/material";
 import RefreshPageIcon from "./RefreshPageIcon";
+import { Messages } from "../consts/enums/Messages";
+
 
 
 function PageError() {
     return ( 
         <Stack>
             <Typography sx={{paddingTop:4}}>
-                Something goes wrong...
+                {Messages.ServerError}
             </Typography>
             <Typography variant="h5" sx={{paddingBottom:2}}>
-                Left's refresh the page!
+                {Messages.Refresh}
             </Typography>
             <RefreshPageIcon sx={{alignSelf:'center'}}/>
         </Stack>

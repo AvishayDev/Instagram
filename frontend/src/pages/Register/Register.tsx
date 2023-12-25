@@ -14,6 +14,12 @@ import useLocalStorage from "../../Hooks/useLocalStorage";
 import { User } from "../../redux/features/Api/users/types/User";
 import AutoClosePopup from "../../components/AutoClosePopup";
 import { clearFormValues } from "../../HelpFunctions";
+import { Messages } from "../../consts/enums/Messages";
+import { Titles } from "../../consts/enums/Titles";
+import { Colors } from "../../consts/enums/Colors";
+import { Paths } from "../../consts/enums/Paths";
+import { ValidationMessages } from "../../consts/ValidationErrorMessages";
+import { MaxValues } from "../../consts/MinMax";
 
 
 async function validateYupSchema<T extends FormikValues>(values : T ,schema:Yup.AnyObjectSchema) : Promise<FormikErrors<T>>{
@@ -25,31 +31,32 @@ async function validateYupSchema<T extends FormikValues>(values : T ,schema:Yup.
 
 const validationSchemaStep1 = Yup.object({
     username: Yup.string()
-                    .required('Did you forget something?')
+                    .required(ValidationMessages.REQUIRED)
+                    .max(MaxValues.USERNAME,ValidationMessages.TOO_LONG)
                     .test('isAlphanumeric',
-                        'Username can be only letters and numbers',
+                        'Username' + ValidationMessages.LETTERS_AND_NUMBERS,
                         (value)=> isAlphanumeric(value)),
     password: Yup.string()
-                    .required('Did you forget something?')
+                    .required(ValidationMessages.REQUIRED)
                     .test('isStrongPassword',
-                            '8 characters, 1 Capital, 1 Special (!,@,#...)',
+                            ValidationMessages.STRONG_PASSWORD,
                             (value)=>isStrongPassword(value))
-                    .max(100,"it's too long!"),
+                    .max(MaxValues.PASSWORD,ValidationMessages.TOO_LONG),
     rePassword: Yup.string()
-                    .required('Did you forget something?')
-                    .oneOf([Yup.ref('password')],"Passwords dosen't match."),
+                    .required(ValidationMessages.REQUIRED)
+                    .oneOf([Yup.ref('password')],ValidationMessages.MATCH_PASSWORDS),
     
 });
 
 const validationSchemaStep2 = Yup.object({
     profileImageUrl: Yup.string()
-                        .url('Please provide valid URL'),
+                        .url(ValidationMessages.VALID_URL),
     firstName: Yup.string()
-                    .required('What is Your name again..?')
-                    .test('isAlpha','First name can be only letters',(value)=>isAlpha(value)),
+                    .required(ValidationMessages.NAME_REQUIRED)
+                    .test('isAlpha','First name' + ValidationMessages.LETTERS,(value)=>isAlpha(value)),
     lastName: Yup.string()
-                    .required('What is Your name again..?')
-                    .test('isAlpha','First name can be only letters',(value)=>isAlpha(value))
+                    .required(ValidationMessages.NAME_REQUIRED)
+                    .test('isAlpha','Last name' + ValidationMessages.LETTERS,(value)=>isAlpha(value))
 })
 
 const initialPage = 1;
@@ -64,7 +71,6 @@ function Register(props: RegisterProps) {
     const [currentPage,setCurrentPage] = useState(initialPage);
     const navigate = useNavigate();
     const [registerTrigger, {isLoading,isError}] = useLazyRegisterUserQuery();
-    const [_,setUser]=useLocalStorage<User>('user');
 
     const [openError,setOpenError] = useState(false);
     useEffect(()=>setOpenError(isError),[isError])
@@ -121,24 +127,24 @@ function Register(props: RegisterProps) {
         if (currentPage > initialPage)
             setCurrentPage(currentPage - 1)
         else
-            navigate('/login')
+            navigate(Paths.LOGIN)
     }
 
 
     return ( 
         <>
             <AutoClosePopup 
-                message="Something went wrong, Please try again.."
+                message={Messages.ServerError}
                 open={openError}
-                color="error"
+                color={Colors.ERROR}
                 onClose={()=>setOpenError(false)}
                 />
 
             <Box sx={{width:'50vw', marginTop:4}}>
 
                 <Box sx={{marginBottom:4}}>
-                    <Typography variant="h4" >Let's Register!</Typography>
-                    <Typography variant="subtitle1">Just Few Steps and Your'e In!</Typography>
+                    <Typography variant="h4" >{Titles.RegisterTitle1}</Typography>
+                    <Typography variant="subtitle1">{Titles.RegisterTitle2}</Typography>
                 </Box>
 
                 <FormikContext.Provider value={formik}>

@@ -1,11 +1,12 @@
 import { Body, Controller, DefaultValuePipe, Get, ParseIntPipe, Post, Query } from "@nestjs/common";
 import { PostsService } from "./posts.service";
 import { AddPostDTO } from "./dtos/AddPost.dto";
+import { EndPoints, PostsEndPoints } from "src/consts/EndPoints";
 
 
 
 
-@Controller('posts')
+@Controller(EndPoints.POSTS)
 export class PostsController {
 
     constructor(private readonly postsService: PostsService){}
@@ -18,16 +19,11 @@ export class PostsController {
         return this.postsService.getPostsByPage(page,userId);
     }
 
-    @Post('add')
+    @Post(PostsEndPoints.ADD)
     addPost(
         @Body() addPostDTO : AddPostDTO
     ){
         return this.postsService.createPost(addPostDTO);
-    }
-    
-    @Get('test')
-    runTest(){
-        return this.postsService.testEp();
     }
 
 }

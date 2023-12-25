@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Fade, IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IMAGES } from '../consts/Images';
+import { Colors } from '../consts/enums/Colors';
 
 
 interface PostImageProps {
@@ -35,7 +36,7 @@ const PostImage = (props:PostImageProps) => {
           height: '50vh',
           width: '50vh',
         }}
-        src={props.imageUrl ? props.imageUrl : IMAGES.defaultPostImage}
+        src={props.imageUrl || IMAGES.defaultPostImage}
         loading="lazy"
         onDoubleClick={handleSignLike}
       />
@@ -46,7 +47,7 @@ const PostImage = (props:PostImageProps) => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            color: 'red',
+            color: Colors.RED,
             background: 'transparent',
             width:'20%',
             height:'20%'

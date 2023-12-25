@@ -9,7 +9,9 @@ import {  useLazyGetUserPostsQuery } from "../redux/features/Api/users/usersApiS
 import { useStoreDispatch } from "../Hooks/storeHooks";
 import CircularProgress from '@mui/material/CircularProgress';
 import PageError from "../components/PageError";
-import { resetStore } from "../redux/app/store";
+import { ButtonsText } from "../consts/enums/ButtonsText";
+import { Titles } from "../consts/enums/Titles";
+import { Colors } from "../consts/enums/Colors";
 
 
 
@@ -43,14 +45,14 @@ function Profile(props:ProfileProps) {
                                     borderRadius:'100%',
                                     boxShadow:3
                                 }}
-                                src={!user.profileImageUrl ? IMAGES.defaultUserProfileImage : user.profileImageUrl}
+                                src={user.profileImageUrl || IMAGES.defaultUserProfileImage }
                                 />
                         
                         <Button 
                             variant="contained"
                             onClick={props.onLogout}
                             >
-                            Logout
+                            {ButtonsText.LOGOUT}
                         </Button>
                     </Stack>
                     
@@ -60,7 +62,7 @@ function Profile(props:ProfileProps) {
                     </Stack >
                     
                     <Stack alignItems='flex-start'>
-                        <Typography>Bio</Typography>
+                        <Typography>{Titles.BIO}</Typography>
                         <Typography variant="body2" align="left" sx={{width:'50vw'}}>{user.bio}</Typography>
                     </Stack>
                 </Stack>
@@ -81,7 +83,7 @@ function Profile(props:ProfileProps) {
                                         userPosts.map(({image_url,likes}, index)=> (
                                             <ImageListItem key={index}>
                                                 <img src={!image_url ? IMAGES.defaultPostImage : image_url} loading="lazy"/>
-                                                <ImageListItemBar subtitle={likes} actionIcon={<FavoriteIcon color="error"/>} sx={{height:30}}/>
+                                                <ImageListItemBar subtitle={likes} actionIcon={<FavoriteIcon sx={{color:Colors.RED}}/>} sx={{height:30}}/>
                                             </ImageListItem>
                                         ))
                                     }

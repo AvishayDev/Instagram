@@ -5,6 +5,7 @@ import { Repository } from "typeorm";
 import { SignLikeDB } from "./dbtypes/SignLike.db";
 import { UsersService } from "../users/users.service";
 import { PostsService } from "../posts/posts.service";
+import { LikesErrors } from "src/consts/errors/likes";
 
 
 
@@ -16,14 +17,6 @@ export class LikesService {
         private readonly usersService: UsersService,
         private readonly postsService: PostsService
     ){}
-
-    getAllLikes(){
-
-        return this.likesRepository.find({
-            withDeleted:true,
-            relations:['user','post']
-        });
-    }
 
     async checkUserAndPost(userId:number,postId:number){
         try {
@@ -63,7 +56,7 @@ export class LikesService {
         } else if (like.deletedAt){
             await this.likesRepository.restore({id:like.id});
         } else {
-            throw new BadRequestException('You have Already Liked This Post!');
+            throw new BadRequestException(LikesErrors.PostLikedError);
         }
 
         return { signed:true }
@@ -76,7 +69,7 @@ export class LikesService {
         const like = await this.getLike(signLikeDB, false);
 
         if (!like){
-            throw new BadRequestException("You're dosen't Liked This Post!")
+            throw new BadRequestException(LikesErrors.PostUnlikeError)
         }
 
         await this.likesRepository.softDelete({id:like.id});

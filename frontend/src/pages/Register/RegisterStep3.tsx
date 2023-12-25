@@ -2,6 +2,7 @@ import { Stack, TextField, Typography, Box } from "@mui/material";
 import { useFormikContext } from "formik";
 import { RegisterUser } from "../../redux/features/Api/users/types/RegisterUser";
 import { IMAGES } from "../../consts/Images";
+import { Messages } from "../../consts/enums/Messages";
 
 
 
@@ -23,7 +24,7 @@ function RegisterStep3() {
                     boxShadow:3
                     }}
                 loading="lazy"
-                src={formik.values.profileImageUrl ? formik.values.profileImageUrl : IMAGES.defaultUserProfileImage}    
+                src={formik.values.profileImageUrl || IMAGES.defaultUserProfileImage}    
                 />
             
             <Box>
@@ -41,7 +42,7 @@ function RegisterStep3() {
                     onBlur={formik.handleBlur}
                     value={formik.values.bio}
                     error={!!formik.errors.bio}
-                    helperText={!formik.values.bio && "You don't have to, but it's cool!"}
+                    helperText={!formik.values.bio && Messages.NotHaveTo}
     
                     />
 

@@ -8,7 +8,12 @@ import { FeedPost } from "../redux/features/Api/posts/types/FeedPost";
 import PageError from "../components/PageError";
 import { LoadingButton } from "@mui/lab";
 import RefreshPageIcon from "../components/RefreshPageIcon";
+import { ButtonsText } from "../consts/enums/ButtonsText";
+import { Messages } from "../consts/enums/Messages";
 
+
+
+const initialPages = 0;
 
 function Feed() {
 
@@ -18,7 +23,7 @@ function Feed() {
     const [trigger,{isLoading,isError}] = useLazyGetPostsQuery();
     
     const [posts,setPosts] = useState<FeedPost[] | null>(null);
-    const [page,setPage] = useState(0);
+    const [page,setPage] = useState(initialPages);
     const [isMorePages,setIsMorePages] = useState(true);
 
 
@@ -75,12 +80,12 @@ function Feed() {
                                     variant="contained" 
                                     onClick={loadData}
                                     loading={isLoading}
-                                    >Load More Posts!
+                                    >{ButtonsText.LoadMorePosts}
                                 </LoadingButton>
                                         : 
                                 <Stack>
                                     <Typography variant="h5">
-                                        You've Seen All The Posts..
+                                        {Messages.SeenAllPosts}
                                     </Typography>
                                     <RefreshPageIcon sx={{marginBottom:4, alignSelf:'center'}}/>
                                 </Stack>
