@@ -1,6 +1,6 @@
 
 
-export enum RoutesToPagesNameMapper {
+export enum RoutesPageNames {
     '/login'='Login',
     '/feed'='Feed',
     '/share'='Share',

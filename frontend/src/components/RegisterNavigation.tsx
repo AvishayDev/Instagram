@@ -1,5 +1,6 @@
 import { LoadingButton } from "@mui/lab";
 import { Box, Button } from "@mui/material";
+import { ButtonsText } from "../consts/enums/ButtonsText";
 
 
 
@@ -24,7 +25,7 @@ function RegisterNavigation(props:RegisterNavigationProps) {
                     sx={{height:'40px'}}
                     onClick={props.onBack}
                     >
-                        Back
+                        {ButtonsText.BACK}
                 </Button>
                 <LoadingButton 
                     variant="contained" 
@@ -32,7 +33,7 @@ function RegisterNavigation(props:RegisterNavigationProps) {
                     onClick={props.onNext}
                     loading={props.isLoading}
                     >
-                        {props.currentPage === 3 ? 'Done' : 'Next'}
+                        {props.currentPage === 3 ? ButtonsText.DONE : ButtonsText.NEXT}
                 </LoadingButton>
         </Box>
      );

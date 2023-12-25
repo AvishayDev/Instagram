@@ -11,10 +11,6 @@ const store = configureStore({
 });
 
 
-export const resetStore = (dispatch: DispatchType)=>{
-}
-
-
 export default store;
 export type StateType = ReturnType<typeof store.getState>;
 export type DispatchType = typeof store.dispatch;

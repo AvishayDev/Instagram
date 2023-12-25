@@ -1,6 +1,7 @@
 import { Stack, TextField, Typography } from "@mui/material";
 import { useFormikContext } from "formik";
 import { RegisterUser } from "../../redux/features/Api/users/types/RegisterUser";
+import { Messages } from "../../consts/enums/Messages";
 
 
 function RegisterStep2() {
@@ -20,7 +21,7 @@ function RegisterStep2() {
                 onBlur={formik.handleBlur}
                 value={formik.values.profileImageUrl}
                 error={!!formik.errors.profileImageUrl}
-                helperText={formik.values.profileImageUrl ? formik.errors.profileImageUrl : "You don't have to, but it's cool!"}
+                helperText={formik.values.profileImageUrl ? formik.errors.profileImageUrl : Messages.NotHaveTo}
                 />
 
             <Stack spacing={2} direction='row' justifyContent='space-between' >

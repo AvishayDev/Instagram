@@ -4,13 +4,20 @@ import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import PersonIcon from '@mui/icons-material/Person';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Paths } from '../consts/enums/Paths';
 
 
 const NavigateValues: string[] = [
-    '/feed',
-    '/share',
-    '/profile'
+    Paths.FEED,
+    Paths.SHARE,
+    Paths.PROFILE
 ]
+
+enum Labels {
+    FEED='Feed', 
+    SHARE='Share', 
+    PROFILE='Profile'
+}
 
 
 function NavBar() {
@@ -35,9 +42,9 @@ function NavBar() {
                 }}
                 value={value}
                 onChange={handleNavigation}>
-            <BottomNavigationAction label='Feed' icon={<HomeIcon/>}/>
-            <BottomNavigationAction label='Share' icon={<AddToPhotosIcon/>}/>
-            <BottomNavigationAction label='Profile' icon={<PersonIcon/>}/>
+            <BottomNavigationAction label={Labels.FEED}    icon={<HomeIcon/>}/>
+            <BottomNavigationAction label={Labels.SHARE}   icon={<AddToPhotosIcon/>}/>
+            <BottomNavigationAction label={Labels.PROFILE} icon={<PersonIcon/>}/>
         </BottomNavigation>
      );
 }

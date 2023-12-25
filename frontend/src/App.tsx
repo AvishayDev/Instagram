@@ -12,6 +12,7 @@ import ProtectedRoute from './ProtectedRoute';
 import { User } from './redux/features/Api/users/types/User';
 import HowDidYouGetHere from './pages/How Did You Get Here/How did You Get Here';
 import { useNavigate } from 'react-router-dom';
+import { Paths } from './consts/enums/Paths';
 
 
 
@@ -24,29 +25,29 @@ function App() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  useEffect(() => {location.pathname === '/' && navigate('/login')}, []);
+  useEffect(() => {location.pathname === Paths.BASE && navigate(Paths.LOGIN)}, []);
 
   return (
     <div className="App">
         <Routes>
-          <Route path='/'>
+          <Route path={Paths.BASE}>
               
-              <Route element={<ProtectedRoute isAllowed={!user} redirectPath='/feed'>
+              <Route element={<ProtectedRoute isAllowed={!user} redirectPath={Paths.FEED}>
                                 <Layout hasNavbar={false}/>
                               </ProtectedRoute>}>
-                <Route index path='login' element={<Login onLogin={login}/>}/>
-                <Route path='register' element={<Register onRegister={login}/>}/>
+                <Route index path={Paths.LOGIN} element={<Login onLogin={login}/>}/>
+                <Route path={Paths.REGISTER} element={<Register onRegister={login}/>}/>
               </Route>
 
-              <Route element={<ProtectedRoute isAllowed={!!user} redirectPath='/login'>
+              <Route element={<ProtectedRoute isAllowed={!!user} redirectPath={Paths.LOGIN}>
                                 <Layout hasNavbar={true}/>
                               </ProtectedRoute>}>
-                <Route path='feed' element={<Feed/>}/>
-                <Route path='share' element={<Share/>}/>
-                <Route path='profile' element={<Profile onLogout={logout}/>}/>
+                <Route path={Paths.FEED} element={<Feed/>}/>
+                <Route path={Paths.SHARE} element={<Share/>}/>
+                <Route path={Paths.PROFILE} element={<Profile onLogout={logout}/>}/>
               </Route>
 
-              <Route path='*' element={<HowDidYouGetHere/>}/>
+              <Route path={Paths.STAR} element={<HowDidYouGetHere/>}/>
 
             </Route>
         </Routes>

@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertColor } from '@mui/material/Alert';
+import { Timings } from '../consts/enums/Timings';
 
 
 interface AutoClosePopupProps {
     message?:string,
     open?:boolean,
     onClose?:()=>void,
-    color?: AlertColor
+    color?: AlertColor,
+    closeDuration?:number
 }
 
 
 const AutoClosePopup = (props:AutoClosePopupProps) => {
   const [open, setOpen] = useState(false);
 
+  const closeDuration = props.closeDuration || Timings.AutoClosePopup;
+
   const handleOpen = () => {
 
     setOpen(true);
-    setTimeout(() => handleClose(), 3000);
+    setTimeout(() => handleClose(), closeDuration);
   };
 
   const handleClose = () => {

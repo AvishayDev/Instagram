@@ -9,12 +9,18 @@ import AutoClosePopup from "../components/AutoClosePopup";
 import { useState } from "react";
 import * as Yup from 'yup';
 import { clearFormValues } from "../HelpFunctions";
+import { Timings } from "../consts/enums/Timings";
+import { Messages } from "../consts/enums/Messages";
+import { Titles } from "../consts/enums/Titles";
+import { ButtonsText } from "../consts/enums/ButtonsText";
+import { Colors } from "../consts/enums/Colors";
+import { ValidationMessages } from "../consts/ValidationErrorMessages";
 
 
 const validationSchema = Yup.object({
     imageUrl: Yup.string()
-                    .url('Please provide valid URL')
-                    .max(512,'URL is too long, please provide short one')
+                    .url(ValidationMessages.VALID_URL)
+                    .max(MaxValues.IMAGE_URL,ValidationMessages.TOO_LONG_URL)
 })
 
 function Share() {
@@ -47,7 +53,7 @@ function Share() {
                 if (isSuccess){
                     formikHelpers.resetForm()
                     setDisableShare(true)
-                    setTimeout(()=>setDisableShare(false),5000)
+                    setTimeout(()=>setDisableShare(false),Timings.DisableShare)
                 }
                 
                     
@@ -58,20 +64,20 @@ function Share() {
     return ( 
         <>
             <AutoClosePopup 
-                message="Something went wrong, Please try again.."
+                message={Messages.ServerError}
                 open={openError}
-                color="error"
+                color={Colors.ERROR}
                 onClose={()=>setOpenError(false)}
                 />
             <AutoClosePopup 
-                message="Yeah! You're Post is Uploaded!"
+                message={Messages.PostUploaded}
                 open={openSuccess}
-                color="success"
+                color={Colors.SUCCESS}
                 onClose={()=>setOpenSuccess(false)}
                 />
             <Stack spacing={3} marginTop={3} onKeyDown={event => event.key === 'Enter' && formik.handleSubmit()}>
 
-                <Typography variant="h4">Let's Post Something!</Typography>
+                <Typography variant="h4">{Titles.Share1}</Typography>
                     <Box   
                         component='img'
                         sx={{
@@ -95,12 +101,12 @@ function Share() {
                         <TextField
                             label='Write Something...'
                             name="postText"
-                            helperText="You dosen't have to.. but, its recommended!"
+                            helperText={Messages.NotHaveTo}
                             onChange={formik.handleChange}
                             value={formik.values.postText}
                             />
                         <Button disabled={disableShare} variant={disableShare ? 'outlined' : "contained"} onClick={()=>formik.handleSubmit()}>
-                            {disableShare ? 'Wait 5 sesonds to publish again': 'Publish!'}
+                            {disableShare ? ButtonsText.ShareDisable : ButtonsText.ShareActive}
                         </Button>       
             </Stack>
         </>

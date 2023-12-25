@@ -6,6 +6,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import { useFormikContext } from "formik";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { RegisterUser } from "../../redux/features/Api/users/types/RegisterUser";
+import { Timings } from "../../consts/enums/Timings";
+import { Messages } from "../../consts/enums/Messages";
 
 
 
@@ -21,7 +23,7 @@ function RegisterStep1() {
         clearTimeout(typingTimeout);
 
         (isLoading && !formik.errors.username) && setTypingTimeout(setTimeout(()=> callServer()
-        ,1000))
+        ,Timings.ServerCheckUser))
 
         return () => clearTimeout(typingTimeout)
     },[formik.values.username,formik.errors.username])
@@ -57,7 +59,7 @@ function RegisterStep1() {
                 onChange={(event)=>{formik.handleChange(event); setIsLoading(true);}}
                 onBlur={formik.handleBlur}
                 helperText={formik.errors.username ||
-                            (isError && "Sorry.. we have server error.. please try again") || 
+                            (isError && Messages.ServerError) || 
                             (data?.exists  && 'Username already Exists')}
                 value={formik.values.username}
                     />

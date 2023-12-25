@@ -11,18 +11,23 @@ import AutoClosePopup from "../components/AutoClosePopup";
 import { useState } from "react";
 import * as Yup from 'yup';
 import { User } from "../redux/features/Api/users/types/User";
+import { Titles } from "../consts/enums/Titles";
+import { ButtonsText } from "../consts/enums/ButtonsText";
+import { Colors } from "../consts/enums/Colors";
+import { Paths } from "../consts/enums/Paths";
+import { ValidationMessages } from "../consts/ValidationErrorMessages";
 
 const validationSchema = Yup.object({
     username: Yup.string()
-                .required('Did you forget something?')
-                .max(50,"it's too long!")
+                .required(ValidationMessages.REQUIRED)
+                .max(MaxValues.USERNAME,ValidationMessages.TOO_LONG)
                 .test('isAlphanumeric',
-                    'username can be only letters and numbers',
+                    'Username' + ValidationMessages.LETTERS_AND_NUMBERS,
                     (value)=>isAlphanumeric(value)),
     
     password: Yup.string()
-                .required('Did you forget something?')
-                .max(100,"it's too long!")
+                .required(ValidationMessages.REQUIRED)
+                .max(MaxValues.PASSWORD,ValidationMessages.TOO_LONG)
 
         
 })
@@ -61,7 +66,7 @@ function Login(props:LoginProps) {
         <>  
             <AutoClosePopup
                 message="username or password are incorrect"
-                color="error"
+                color={Colors.ERROR}
                 open={openError}
                 onClose={()=>setOpenError(false)}
                 />
@@ -71,7 +76,7 @@ function Login(props:LoginProps) {
                     padding={8}
                     onKeyDown={event => event.key === 'Enter' && formik.handleSubmit()}>
                 
-                <Typography variant="h4" >Let's Login!</Typography>
+                <Typography variant="h4" >{Titles.Login1}</Typography>
                 
                 <TextField
                     label='Username'
@@ -91,10 +96,10 @@ function Login(props:LoginProps) {
                 <Stack spacing={2} direction='row'>
                     <LinkButton 
                             variant="outlined" 
-                            to="/register"
+                            to={Paths.REGISTER}
                             fullWidth
                             >
-                        Register
+                        {ButtonsText.REGISTER}
                     </LinkButton>
                     <LoadingButton 
                         variant="contained" 
@@ -102,7 +107,7 @@ function Login(props:LoginProps) {
                         loading={isLoading}
                         onClick={()=>formik.handleSubmit()}
                         >
-                        Login
+                        {ButtonsText.LOGIN}
                     </LoadingButton>
                 </Stack>
                 <Box>

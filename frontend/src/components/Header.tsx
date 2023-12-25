@@ -1,16 +1,17 @@
 import { AppBar, Toolbar, Typography } from "@mui/material";
 import { useLocation } from "react-router";
-import { RoutesToPagesNameMapper } from "../consts/mappers/RoutesToPagesNameMapper";
+import { RoutesPageNames } from "../consts/enums/RoutesPageNames";
+import { Colors } from "../consts/enums/Colors";
 
 
 function Header() {
     const location = useLocation();
-    const routeKey = location.pathname as keyof typeof RoutesToPagesNameMapper;
+    const routeKey = location.pathname as keyof typeof RoutesPageNames;
 
     return ( 
-        <AppBar position="static" sx={{bgcolor:'#EFEFEF',color:'#151515',alignItems:'center',marginBottom:1}}>
+        <AppBar position="static" sx={{bgcolor:Colors.LIGHT_GRAY,color:Colors.BLACK,alignItems:'center',marginBottom:1}}>
             <Toolbar>
-                <Typography variant="h5">{RoutesToPagesNameMapper[routeKey]}</Typography>
+                <Typography variant="h5">{RoutesPageNames[routeKey]}</Typography>
             </Toolbar>
         </AppBar>
      );

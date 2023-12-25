@@ -1,5 +1,7 @@
 import {  Stack, Typography } from "@mui/material";
 import LinkButton from "../../components/LinkButton";
+import { Messages } from "../../consts/enums/Messages";
+import { Paths } from "../../consts/enums/Paths";
 
 function HowDidYouGetHere() {
 
@@ -11,8 +13,8 @@ function HowDidYouGetHere() {
             </Typography> */}
 
 
-            <LinkButton to="/login" variant="contained">
-                Let's Return to SAFE place...
+            <LinkButton to={Paths.LOGIN} variant="contained">
+                {Messages.Page404}
             </LinkButton>
         
         </Stack> );

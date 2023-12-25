@@ -11,6 +11,8 @@ import { User } from "../redux/features/Api/users/types/User";
 import { SignLikeType } from "../redux/features/Api/likes/types/signAndUnsign";
 import AutoClosePopup from "./AutoClosePopup";
 import PostImage from "./PostImages";
+import { Messages } from "../consts/enums/Messages";
+import { Colors } from "../consts/enums/Colors";
 
 interface PostProps {
     post:FeedPost,
@@ -20,12 +22,14 @@ function Post(props :PostProps) {
 
     const [user] = useLocalStorage<User>('user');
 
-    const [isLiked,setIsLiked] = useState(props.post.is_liked)
-    const [numOfLikes,setnumOfLikes] = useState(props.post.likes)
+    const {post} = props;
+
+    const [isLiked,setIsLiked] = useState(post.is_liked)
+    const [numOfLikes,setnumOfLikes] = useState(post.likes)
     const [wasError,setWasError] = useState(false)
 
 
-    const signLike:SignLikeType = {userId:user.id, postId:props.post.post_id}
+    const signLike:SignLikeType = {userId:user.id, postId:post.post_id}
 
     const [signTrigger] = useLazySignLikeQuery();
     const [unsignTrigger] = useLazyUnsignLikeQuery();
@@ -50,10 +54,10 @@ function Post(props :PostProps) {
         <Stack width='100vw' borderTop='#d3d3d3 solid 1px'>
             
             <AutoClosePopup 
-                    message="We has some error, please try again later"
+                    message={Messages.ServerError}
                     open={wasError}
                     onClose={()=>setWasError(false)}
-                    color="error"
+                    color={Colors.ERROR}
                     />
             
             <Box sx={{ 
@@ -70,22 +74,22 @@ function Post(props :PostProps) {
                             height:'40px',
                             borderRadius:'100%'
                             }}
-                        src={!props.post.user_profile_image_url ? IMAGES.defaultUserProfileImage : props.post.user_profile_image_url}
+                        src={post.user_profile_image_url || IMAGES.defaultUserProfileImage}
                         loading="lazy"
                         >
                             
                     </Box>
                     
-                    <Typography>{props.post.user_firstname} {props.post.user_lastname}</Typography>
+                    <Typography>{post.user_firstname} {post.user_lastname}</Typography>
                     
                 </Stack>
 
-                <Typography sx={{alignSelf:'center'}}>{formatDistanceToNow(new Date(props.post.upload_date),{addSuffix:true})}</Typography>
+                <Typography sx={{alignSelf:'center'}}>{formatDistanceToNow(new Date(post.upload_date),{addSuffix:true})}</Typography>
             </Box>
             
             <Box sx={{alignSelf:'center'}}>
                 <PostImage
-                        imageUrl={props.post.image_url}
+                        imageUrl={post.image_url}
                         onLike={handleSignLike}
                         isLiked={isLiked}
                 />
@@ -93,10 +97,10 @@ function Post(props :PostProps) {
         
             
             <Stack alignItems='flex-start'>
-                <Typography align="left" sx={{margin:1}}>{props?.post.text}</Typography>
+                <Typography align="left" sx={{margin:1}}>{post.text}</Typography>
                 
                 <Stack direction='row' alignItems='center'>
-                    <IconButton onClick={handleSignLike}>{isLiked ? <FavoriteIcon/>:<FavoriteBorderIcon/>}</IconButton>
+                    <IconButton onClick={handleSignLike}>{isLiked ? <FavoriteIcon sx={{color:Colors.RED}}/>:<FavoriteBorderIcon/>}</IconButton>
                     <Typography>{numOfLikes} Likes</Typography>
                 </Stack>
             </Stack>
