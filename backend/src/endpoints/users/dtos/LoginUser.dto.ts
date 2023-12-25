@@ -1,10 +1,14 @@
-import { IsAlphanumeric, IsString } from "class-validator";
+import { IsAlphanumeric, IsString, IsStrongPassword, MaxLength, MinLength } from "class-validator";
+import { MaxLengths, MinLengths } from "src/consts/MinMax";
 
 
 export class LoginUserDTO {
     @IsAlphanumeric()
+    @MinLength(MinLengths.USERNAME)
+    @MaxLength(MaxLengths.USERNAME)
     username:string;
 
-    @IsString()
+    @IsStrongPassword()
+    @MaxLength(MaxLengths.PASSWORD)
     password:string;
 }

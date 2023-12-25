@@ -19,7 +19,7 @@ import { Titles } from "../../consts/enums/Titles";
 import { Colors } from "../../consts/enums/Colors";
 import { Paths } from "../../consts/enums/Paths";
 import { ValidationMessages } from "../../consts/ValidationErrorMessages";
-import { MaxValues } from "../../consts/MinMax";
+import { MaxLength } from "../../consts/MinMax";
 
 
 async function validateYupSchema<T extends FormikValues>(values : T ,schema:Yup.AnyObjectSchema) : Promise<FormikErrors<T>>{
@@ -32,7 +32,7 @@ async function validateYupSchema<T extends FormikValues>(values : T ,schema:Yup.
 const validationSchemaStep1 = Yup.object({
     username: Yup.string()
                     .required(ValidationMessages.REQUIRED)
-                    .max(MaxValues.USERNAME,ValidationMessages.TOO_LONG)
+                    .max(MaxLength.USERNAME,ValidationMessages.TOO_LONG)
                     .test('isAlphanumeric',
                         'Username' + ValidationMessages.LETTERS_AND_NUMBERS,
                         (value)=> isAlphanumeric(value)),
@@ -41,7 +41,7 @@ const validationSchemaStep1 = Yup.object({
                     .test('isStrongPassword',
                             ValidationMessages.STRONG_PASSWORD,
                             (value)=>isStrongPassword(value))
-                    .max(MaxValues.PASSWORD,ValidationMessages.TOO_LONG),
+                    .max(MaxLength.PASSWORD,ValidationMessages.TOO_LONG),
     rePassword: Yup.string()
                     .required(ValidationMessages.REQUIRED)
                     .oneOf([Yup.ref('password')],ValidationMessages.MATCH_PASSWORDS),

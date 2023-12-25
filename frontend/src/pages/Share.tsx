@@ -15,13 +15,13 @@ import { Titles } from "../consts/enums/Titles";
 import { ButtonsText } from "../consts/enums/ButtonsText";
 import { Colors } from "../consts/enums/Colors";
 import { ValidationMessages } from "../consts/ValidationErrorMessages";
-import { MaxValues } from "../consts/MinMax";
+import { MaxLength } from "../consts/MinMax";
 
 
 const validationSchema = Yup.object({
     imageUrl: Yup.string()
                     .url(ValidationMessages.VALID_URL)
-                    .max(MaxValues.IMAGE_URL,ValidationMessages.TOO_LONG_URL)
+                    .max(MaxLength.IMAGE_URL,ValidationMessages.TOO_LONG_URL)
 })
 
 function Share() {
