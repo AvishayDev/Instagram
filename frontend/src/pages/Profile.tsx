@@ -12,6 +12,7 @@ import PageError from "../components/PageError";
 import { ButtonsText } from "../consts/enums/ButtonsText";
 import { Titles } from "../consts/enums/Titles";
 import { Colors } from "../consts/enums/Colors";
+import UserNotHasPosts from "../components/UserNotHasPosts";
 
 
 
@@ -74,7 +75,7 @@ function Profile(props:ProfileProps) {
                         <PageError/>
                     : 
                         userPosts ? 
-                        
+                        (userPosts.length === 0 ? <UserNotHasPosts/> :
                         <ImageList sx={{
                                 overflow:'hidden',
                                 justifyItems:'center',
@@ -87,7 +88,7 @@ function Profile(props:ProfileProps) {
                                             </ImageListItem>
                                         ))
                                     }
-                        </ImageList>
+                        </ImageList>)
                         :
                         isLoading && <CircularProgress size={70} sx={{gridColumn:2,padding:4}}/>
 
