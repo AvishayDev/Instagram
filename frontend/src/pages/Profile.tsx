@@ -43,7 +43,7 @@ function Profile(props:ProfileProps) {
                                     borderRadius:'100%',
                                     boxShadow:3
                                 }}
-                                src={!user?.profileImageUrl ? IMAGES.defaultUserProfileImage : user.profileImageUrl}
+                                src={!user.profileImageUrl ? IMAGES.defaultUserProfileImage : user.profileImageUrl}
                                 />
                         
                         <Button 
@@ -55,13 +55,13 @@ function Profile(props:ProfileProps) {
                     </Stack>
                     
                     <Stack alignItems='flex-start'>
-                        <Typography>{user?.firstName} {user?.lastName}</Typography>
-                        <Typography>{user?.username}</Typography>
+                        <Typography>{user.firstName} {user.lastName}</Typography>
+                        <Typography>{user.username}</Typography>
                     </Stack >
                     
                     <Stack alignItems='flex-start'>
                         <Typography>Bio</Typography>
-                        <Typography variant="body2" align="left" sx={{width:'50vw'}}>{user?.bio}</Typography>
+                        <Typography variant="body2" align="left" sx={{width:'50vw'}}>{user.bio}</Typography>
                     </Stack>
                 </Stack>
                 
