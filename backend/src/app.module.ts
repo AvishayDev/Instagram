@@ -8,23 +8,29 @@ import { LikesModule } from './endpoints/likes/likes.module';
 import { User } from './Tables/User';
 import { Post } from './Tables/Post';
 import { Like } from './Tables/Like';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
-    
-    type:'postgres',
-    host:'localhost',
-    port:5432,
-    username:'postgres',
-    password:'AvishayDEV19',
-    database:'instagram',
-    entities:[User,Post,Like],
-    synchronize:true,
+  imports: [TypeOrmModule.forRootAsync({
+    useFactory: async (configService: ConfigService) =>({
+      type:'postgres',
+      host:configService.get<string>('DATABASE_HOST'),
+      port:configService.get<number>('DATABASE_PORT'),
+      username:configService.get<string>('DATABASE_USER_NAME'),
+      password:configService.get<string>('DATABASE_PASSWORD'),
+      database:configService.get<string>('DATABASE_NAME'),
+      entities:[User,Post,Like],
+      synchronize:true,
+    }),
+    inject:[ConfigService]
   }),
     ConfigModule.forRoot({isGlobal:true}),
-    UsersModule, PostsModule, LikesModule],
+    UsersModule, 
+    PostsModule, 
+    LikesModule],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
+
+
