@@ -12,6 +12,7 @@ export const MaxLengths = {
     USERNAME:50,
     PASSWORD:100,
     BIO:256
+
 }
 
 

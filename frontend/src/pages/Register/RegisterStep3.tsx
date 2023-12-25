@@ -42,7 +42,7 @@ function RegisterStep3() {
                     onBlur={formik.handleBlur}
                     value={formik.values.bio}
                     error={!!formik.errors.bio}
-                    helperText={!formik.values.bio && Messages.NotHaveTo}
+                    helperText={formik.values.bio ? formik.errors.bio : Messages.NotHaveTo}
     
                     />
 

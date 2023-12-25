@@ -6,7 +6,7 @@ import { useLazySharePostQuery } from "../redux/features/Api/posts/postsApiSlice
 import useLocalStorage from "../Hooks/useLocalStorage";
 import { User } from "../redux/features/Api/users/types/User";
 import AutoClosePopup from "../components/AutoClosePopup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as Yup from 'yup';
 import { clearFormValues } from "../HelpFunctions";
 import { Timings } from "../consts/enums/Timings";
@@ -15,13 +15,14 @@ import { Titles } from "../consts/enums/Titles";
 import { ButtonsText } from "../consts/enums/ButtonsText";
 import { Colors } from "../consts/enums/Colors";
 import { ValidationMessages } from "../consts/ValidationErrorMessages";
-import { MaxValues } from "../consts/MinMax";
+import { MaxLengths } from "../consts/MinMax";
 
 
 const validationSchema = Yup.object({
     imageUrl: Yup.string()
                     .url(ValidationMessages.VALID_URL)
-                    .max(MaxValues.IMAGE_URL,ValidationMessages.TOO_LONG_URL)
+                    .max(MaxLengths.IMAGE_URL,ValidationMessages.TOO_LONG_URL),
+    postText: Yup.string().max(MaxLengths.POST_TEXT,ValidationMessages.TOO_LONG)
 })
 
 function Share() {
@@ -40,9 +41,8 @@ function Share() {
                 postText:''
             },
             onSubmit: async (values, formikHelpers)=>{
-                
-                const sendValues = clearFormValues(values);
-                                                      
+                const sendValues = clearFormValues({imageUrl:values.imageUrl,text:values.postText});
+                            
                 const {isError, isSuccess}= await trigger({
                                 userId:user.id,
                                 ...sendValues
@@ -96,14 +96,16 @@ function Share() {
                             helperText={formik.errors.imageUrl}
                             error={!!formik.errors.imageUrl}
                             onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
                             value={formik.values.imageUrl}
                             />
                         
                         <TextField
                             label='Write Something...'
                             name="postText"
-                            helperText={Messages.NotHaveTo}
+                            helperText={formik.values.postText ? formik.errors.postText : Messages.NotHaveTo}
                             onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
                             value={formik.values.postText}
                             />
                         <Button disabled={disableShare} variant={disableShare ? 'outlined' : "contained"} onClick={()=>formik.handleSubmit()}>

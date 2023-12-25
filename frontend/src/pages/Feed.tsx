@@ -50,7 +50,6 @@ function Feed() {
         loadInitialData();
     },[]);
 
-
     return ( 
         <Stack>
             {

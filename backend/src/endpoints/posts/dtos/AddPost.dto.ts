@@ -1,9 +1,11 @@
-import { IsNumber, IsOptional, IsString, IsUrl } from "class-validator";
+import { IsNumber, IsOptional, IsString, IsUrl, Max, MaxLength } from "class-validator";
+import { MaxLengths } from "src/consts/MinMax";
 
 
 
 export class AddPostDTO{
     @IsUrl()
+    @MaxLength(MaxLengths.IMAGE_URL)
     @IsOptional()
     imageUrl:string;
 
@@ -11,6 +13,7 @@ export class AddPostDTO{
     userId:number;
 
     @IsString()
+    @MaxLength(MaxLengths.POST_TEXT)
     @IsOptional()
     text:string;
 }
