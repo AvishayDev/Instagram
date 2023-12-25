@@ -99,7 +99,7 @@ function Share() {
                             onChange={formik.handleChange}
                             value={formik.values.postText}
                             />
-                        <Button disabled={disableShare} variant="contained" onClick={()=>formik.handleSubmit()}>
+                        <Button disabled={disableShare} variant={disableShare ? 'outlined' : "contained"} onClick={()=>formik.handleSubmit()}>
                             {disableShare ? 'Wait 5 sesonds to publish again': 'Publish!'}
                         </Button>       
             </Stack>
