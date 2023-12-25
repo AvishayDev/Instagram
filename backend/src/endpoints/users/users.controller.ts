@@ -4,34 +4,31 @@ import { CheckUserExistsDTO } from "./dtos/CheckUserExistence.dto";
 import { addUserDTO } from "./dtos/AddUser.dto";
 import { LoginUserDTO } from "./dtos/LoginUser.dto";
 import { PasswordValidationPipe } from "./pips/PasswordMatch.pip";
+import { EndPoints, UsersEndPoints } from "src/consts/EndPoints";
 
 
 
-@Controller('users')
+@Controller(EndPoints.USERS)
 export class UsersController {
 
     constructor(private readonly usersService: UsersService){}
+    
 
-    @Get()
-    getAllUsers(){
-        return this.usersService.getAllUsers();
-    }
-
-    @Post('check')
+    @Post(UsersEndPoints.CHECK)
     checkUserExists(
         @Body() checkUserExistsDTO:CheckUserExistsDTO
     ){
         return this.usersService.checkUsernameExists(checkUserExistsDTO.username)
     }
 
-    @Post('register')
+    @Post(UsersEndPoints.REGISTER)
     addUser(
         @Body(new PasswordValidationPipe())addUserDTO:addUserDTO
     ){
         return this.usersService.createUser(addUserDTO)
     }
 
-    @Post('login')
+    @Post(UsersEndPoints.LOGIN)
     loginUser(
         @Body()loginUserDTO:LoginUserDTO
     ){

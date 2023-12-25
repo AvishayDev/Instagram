@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Login from './pages/Login';
 import Feed from './pages/Feed';
 import Share from './pages/Share';
@@ -23,9 +23,8 @@ function App() {
   const logout = () => setUser(null);
 
   const navigate = useNavigate();
-  useEffect(() => navigate('/login'), []);
-
-  
+  const location = useLocation();
+  useEffect(() => {location.pathname === '/' && navigate('/login')}, []);
 
   return (
     <div className="App">

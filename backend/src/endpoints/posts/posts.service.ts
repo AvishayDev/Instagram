@@ -4,6 +4,7 @@ import { Post } from "src/Tables/Post";
 import { DataSource, Repository } from "typeorm";
 import { CreatePostDB } from "./dbtypes/CreatePost.db";
 import { UsersService } from "../users/users.service";
+import { PostsErrors } from "src/consts/errors/posts";
 
 
 
@@ -19,22 +20,11 @@ export class PostsService {
     pageSize=10;
 
 
-    async testEp(){
-        return await this.dataSource.createQueryBuilder()
-                                    .select('*')
-                                    .from((qb)=>{
-                                        return qb.select('*')
-                                                .from(Post,'post')
-                                                .where('post.userId = 1')
-                                    },'post')
-                                    .getRawMany();
-    }
-
     async getPostById(postId:number){
         const post = await this.postsRepository.findOneBy({ id:postId })
 
         if (!post){
-            throw new NotFoundException('postId Doesnt Exists!')
+            throw new NotFoundException(PostsErrors.PostIdNotExists)
         }
 
         return post

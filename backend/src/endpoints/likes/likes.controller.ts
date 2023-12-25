@@ -1,30 +1,26 @@
 import { Body, Controller, Delete, Get, Post } from "@nestjs/common";
 import { LikesService } from "./likes.service";
 import { SignLikeDTO } from "./dtos/SignLike.dto";
+import { EndPoints, LikesEndPoints } from "src/consts/EndPoints";
 
 
 
-@Controller('likes')
+@Controller(EndPoints.LIKES)
 export class LikesController {
 
     constructor(
         private likesService: LikesService,
     ){}
 
-    @Get()
-    getAllLikes(){
-        return this.likesService.getAllLikes();
-    }
 
-
-    @Post('sign')
+    @Post(LikesEndPoints.SIGN)
     signLike(
         @Body() likeSignDTO:SignLikeDTO
     ){
         return this.likesService.signLike(likeSignDTO)
     }
 
-    @Delete('unsign')
+    @Delete(LikesEndPoints.UNSIGN)
     unsignLike(
         @Body() likeSignDTO:SignLikeDTO
     ){

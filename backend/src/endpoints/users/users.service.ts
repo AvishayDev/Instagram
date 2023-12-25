@@ -6,6 +6,7 @@ import { CreateUserDB } from "./dbtypes/CreateUser.db";
 import { CheckUsernamePasswordDB } from "./dbtypes/CheckUsernamePassword.db";
 import { getSelectObject } from "../HelpFunctions";
 import { Post } from "src/Tables/Post";
+import { UsersErrors } from "src/consts/errors/users";
 
 
 
@@ -16,12 +17,7 @@ export class UsersService{
     constructor(
         @InjectRepository(User) private usersRepository: Repository<User>,
         @InjectRepository(Post) private postsRepository: Repository<Post>,
-        //private readonly dataSource: DataSource
     ){}
-    
-    getAllUsers(){
-        return this.usersRepository.find();
-    }
 
 
     async checkUsernameExists(username: string){
@@ -40,7 +36,7 @@ export class UsersService{
         const user = await this.usersRepository.findOneBy({ username })
 
         if (!user){
-            throw new NotFoundException('Username Doesnt Exists!')
+            throw new NotFoundException(UsersErrors.UsernameNotExists)
         }
 
         return user;
@@ -50,7 +46,7 @@ export class UsersService{
         const user = await this.usersRepository.findOneBy({ id:userId })
 
         if (!user){
-            throw new NotFoundException('userId Doesnt Exists!')
+            throw new NotFoundException(UsersErrors.UserIdNotExists)
         }
 
         return user;
@@ -74,7 +70,7 @@ export class UsersService{
         })
 
         if (!user){
-            throw new NotFoundException('username or password incurrent')
+            throw new NotFoundException(UsersErrors.UsernameOrPasswordIncurrent)
         }
 
         return user;
