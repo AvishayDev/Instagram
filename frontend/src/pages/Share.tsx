@@ -16,6 +16,7 @@ import { ButtonsText } from "../consts/enums/ButtonsText";
 import { Colors } from "../consts/enums/Colors";
 import { ValidationMessages } from "../consts/ValidationErrorMessages";
 import { MaxLengths } from "../consts/MinMax";
+import { Urls } from "../consts/Urls";
 
 
 const validationSchema = Yup.object({
@@ -89,6 +90,7 @@ function Share() {
                             
                         }}
                         src={(formik.values.imageUrl && !formik.errors.imageUrl) ? formik.values.imageUrl : IMAGES.defaultPostImage}
+                        onDoubleClick={()=>window.open(Urls.PIXABAY, '_blank')}
                         />
                         <TextField
                             label='Image Url'

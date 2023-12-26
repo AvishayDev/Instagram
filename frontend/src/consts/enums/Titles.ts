@@ -11,4 +11,6 @@ export enum Titles{
     BIO='Bio',
     UserNotHasPosts1="it seems like you don't have posts..",
     UserNotHasPosts2="Let's post one!",
+    NonPage1='How Did You Get Here..?',
+    NonPage2='Sound This!!',
 }

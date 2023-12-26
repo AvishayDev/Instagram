@@ -1,6 +1,5 @@
 import { Box, Stack, Typography, ImageList, ImageListItem, ImageListItemBar, IconButton, Button } from "@mui/material";
 import useLocalStorage from "../Hooks/useLocalStorage";
-import LinkButton from "../components/LinkButton";
 import { User } from "../redux/features/Api/users/types/User";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IMAGES } from "../consts/Images";
