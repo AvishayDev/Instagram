@@ -53,12 +53,12 @@ function Post(props :PostProps) {
     return (
         <Stack width='100vw' borderTop='#d3d3d3 solid 1px'>
             
-            <AutoClosePopup 
-                    message={Messages.ServerError}
-                    open={wasError}
-                    onClose={()=>setWasError(false)}
-                    color={Colors.ERROR}
-                    />
+            {wasError && <AutoClosePopup 
+                            message={Messages.ServerError}
+                            open={wasError}
+                            onClose={()=>setWasError(false)}
+                            color={Colors.ERROR}
+                            />}
             
             <Box sx={{ 
                 display:'flex',

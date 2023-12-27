@@ -28,7 +28,7 @@ function Profile(props:ProfileProps) {
 
 
     useEffect(()=>{
-        const loadData = async ()=> {user && await trigger(user.id)};
+        const loadData = async ()=> await trigger(user.id);
         loadData();
     },[])
 

@@ -17,6 +17,7 @@ import { Colors } from "../consts/enums/Colors";
 import { Paths } from "../consts/enums/Paths";
 import { ValidationMessages } from "../consts/ValidationErrorMessages";
 import { MaxLengths, MinLengths } from "../consts/MinMax";
+import { Messages } from "../consts/enums/Messages";
 
 const validationSchema = Yup.object({
     username: Yup.string()
@@ -66,12 +67,12 @@ function Login(props:LoginProps) {
 
     return ( 
         <>  
-            <AutoClosePopup
-                message="username or password are incorrect"
+            {openError && <AutoClosePopup
+                message={Messages.UsernameOrPasswordIncurrent}
                 color={Colors.ERROR}
                 open={openError}
                 onClose={()=>setOpenError(false)}
-                />
+                />}
             <Stack  spacing={4} 
                     flex={1} 
                     alignSelf='center' 

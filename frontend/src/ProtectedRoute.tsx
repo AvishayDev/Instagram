@@ -11,7 +11,7 @@ interface ProtectedRouteProps {
 
 function ProtectedRoute(props:ProtectedRouteProps) {
     
-    const {isAllowed,redirectPath,children} = props;
+    const {isAllowed, redirectPath, children} = props;
     
     return ( 
         <>

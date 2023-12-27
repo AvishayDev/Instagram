@@ -1,3 +1,4 @@
+import React from "react";
 import { Box, LinearProgress, Typography } from "@mui/material";
 import RegisterNavigation from "../../components/RegisterNavigation";
 import { useEffect, useState } from "react";
@@ -10,7 +11,6 @@ import { isAlpha, isAlphanumeric, isStrongPassword } from "class-validator";
 import * as Yup from 'yup';
 import { RegisterUser } from "../../redux/features/Api/users/types/RegisterUser";
 import { useLazyRegisterUserQuery } from "../../redux/features/Api/users/usersApiSlice";
-import useLocalStorage from "../../Hooks/useLocalStorage";
 import { User } from "../../redux/features/Api/users/types/User";
 import AutoClosePopup from "../../components/AutoClosePopup";
 import { clearFormValues } from "../../HelpFunctions";
@@ -146,12 +146,12 @@ function Register(props: RegisterProps) {
 
     return ( 
         <>
-            <AutoClosePopup 
+            {openError && <AutoClosePopup 
                 message={Messages.ServerError}
                 open={openError}
                 color={Colors.ERROR}
                 onClose={()=>setOpenError(false)}
-                />
+                />}
 
             <Box sx={{width:'50vw', marginTop:4}} onKeyDown={event => event.key === 'Enter' && formik.handleSubmit()}>
 

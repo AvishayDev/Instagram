@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertColor } from '@mui/material/Alert';
 import { Timings } from '../consts/enums/Timings';
+import { Messages } from '../consts/enums/Messages';
 
 
 interface AutoClosePopupProps {
-    message?:string,
+    message?:Messages,
     open?:boolean,
     onClose?:()=>void,
     color?: AlertColor,

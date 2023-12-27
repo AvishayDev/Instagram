@@ -5,6 +5,6 @@ export interface CreateUserDB {
     lastName:string;
     username:string;
     password:string;
-    profileImageUrl:string;
-    bio:string;
+    profileImageUrl?:string;
+    bio?:string;
 }

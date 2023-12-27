@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { AlertColor, Box, Button, TextField, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { IMAGES } from "../consts/Images";
 import { useFormik } from "formik";
@@ -23,16 +23,33 @@ const validationSchema = Yup.object({
     imageUrl: Yup.string()
                     .url(ValidationMessages.VALID_URL)
                     .max(MaxLengths.IMAGE_URL,ValidationMessages.TOO_LONG_URL),
+
     postText: Yup.string().max(MaxLengths.POST_TEXT,ValidationMessages.TOO_LONG)
 })
+
+interface PopupProps {
+    color: AlertColor
+    message: Messages
+}
+
+const ErrorPopupProps: PopupProps = {
+    color:Colors.ERROR,
+    message:Messages.ServerError
+}
+const SuccessPopupPopup: PopupProps = {
+    color:Colors.SUCCESS,
+    message:Messages.PostUploaded
+}
+
 
 function Share() {
 
     const [user] = useLocalStorage<User>('user');
     const [trigger] = useLazySharePostQuery();
     
-    const [openError,setOpenError] = useState(false);
-    const [openSuccess,setOpenSuccess] = useState(false);
+    const [openPopup,setOpenPopup] = useState(false);
+    const [popupProps,setPopupProps] = useState<PopupProps>(ErrorPopupProps);
+
     const [disableShare,setDisableShare] = useState(false)
 
 
@@ -44,39 +61,31 @@ function Share() {
             onSubmit: async (values, formikHelpers)=>{
                 const sendValues = clearFormValues({imageUrl:values.imageUrl,text:values.postText});
                             
-                const {isError, isSuccess}= await trigger({
+                const {isSuccess}= await trigger({
                                 userId:user.id,
                                 ...sendValues
                             });
                 
-                setOpenError(isError)
-                setOpenSuccess(isSuccess)
+                setPopupProps(isSuccess ? SuccessPopupPopup : ErrorPopupProps)
+                setOpenPopup(true)
                 
                 if (isSuccess){
                     formikHelpers.resetForm()
                     setDisableShare(true)
                     setTimeout(()=>setDisableShare(false),Timings.DisableShare)
-                }
-                
-                    
+                }       
             },
             validationSchema
     });
 
     return ( 
         <>
-            <AutoClosePopup 
-                message={Messages.ServerError}
-                open={openError}
-                color={Colors.ERROR}
-                onClose={()=>setOpenError(false)}
-                />
-            <AutoClosePopup 
-                message={Messages.PostUploaded}
-                open={openSuccess}
-                color={Colors.SUCCESS}
-                onClose={()=>setOpenSuccess(false)}
-                />
+            {openPopup &&<AutoClosePopup
+                            {...popupProps}
+                            open={openPopup}
+                            onClose={()=>setOpenPopup(false)}
+                            />}
+                
             <Stack spacing={3} marginTop={3} onKeyDown={event => event.key === 'Enter' && formik.handleSubmit()}>
 
                 <Typography variant="h4">{Titles.Share1}</Typography>
