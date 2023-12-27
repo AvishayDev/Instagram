@@ -8,7 +8,7 @@ import { User } from "../redux/features/Api/users/types/User";
 import AutoClosePopup from "../components/AutoClosePopup";
 import { useEffect, useState } from "react";
 import * as Yup from 'yup';
-import { clearFormValues } from "../HelpFunctions";
+import { clearFormValues, renameKey } from "../HelpFunctions";
 import { Timings } from "../consts/enums/Timings";
 import { Messages } from "../consts/enums/Messages";
 import { Titles } from "../consts/enums/Titles";
@@ -17,15 +17,10 @@ import { Colors } from "../consts/enums/Colors";
 import { ValidationMessages } from "../consts/ValidationErrorMessages";
 import { MaxLengths } from "../consts/MinMax";
 import { Urls } from "../consts/Urls";
+import { getValidationScheme } from "../Validation/ValidationFunctions";
 
 
-const validationSchema = Yup.object({
-    imageUrl: Yup.string()
-                    .url(ValidationMessages.VALID_URL)
-                    .max(MaxLengths.IMAGE_URL,ValidationMessages.TOO_LONG_URL),
-
-    postText: Yup.string().max(MaxLengths.POST_TEXT,ValidationMessages.TOO_LONG)
-})
+const validationSchema = getValidationScheme(['imageUrl','postText'])
 
 interface PopupProps {
     color: AlertColor
@@ -59,7 +54,7 @@ function Share() {
                 postText:''
             },
             onSubmit: async (values, formikHelpers)=>{
-                const sendValues = clearFormValues({imageUrl:values.imageUrl,text:values.postText});
+                const sendValues = clearFormValues(renameKey(values,'postText','text'));
                             
                 const {isSuccess}= await trigger({
                                 userId:user.id,
