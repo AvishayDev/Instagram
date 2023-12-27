@@ -2,9 +2,6 @@ import React from "react";
 import { Box, LinearProgress, Typography } from "@mui/material";
 import RegisterNavigation from "../../components/RegisterNavigation";
 import { useEffect, useState } from "react";
-import RegisterStep1 from "./RegisterStep1";
-import RegisterStep2 from "./RegisterStep2";
-import RegisterStep3 from "./RegisterStep3";
 import { useNavigate } from "react-router-dom";
 import { FormikContext, FormikErrors, FormikValues, useFormik,yupToFormErrors } from "formik";
 import { isAlpha, isAlphanumeric, isStrongPassword } from "class-validator";
@@ -22,6 +19,7 @@ import { ValidationMessages } from "../../consts/ValidationErrorMessages";
 import { MaxLengths, MinLengths } from "../../consts/MinMax";
 import { getValidationScheme, validateYupSchema } from "../../Validation/ValidationFunctions";
 import { ConnectedTvOutlined } from "@mui/icons-material";
+import RegisterStep from "./RegisterStep";
 
 
 const validationSchemaStep1 = getValidationScheme(['username','password','rePassword'])
@@ -31,9 +29,13 @@ const validationSchemaStep2 = getValidationScheme(['imageUrl','firstName','lastN
 const validationSchemaStep3 = getValidationScheme(['bio'])
 
 
+export enum Pages {
+    Step1,
+    Step2,
+    Step3
+}
 
-const initialPage = 1;
-
+const initialPage = 0;
 
 interface RegisterProps {
     onRegister:(user: User)=>void
@@ -41,7 +43,7 @@ interface RegisterProps {
 
 function Register(props: RegisterProps) {
 
-    const [currentPage,setCurrentPage] = useState(initialPage);
+    const [currentPage,setCurrentPage] = useState<Pages>(initialPage);
     const navigate = useNavigate();
     const [registerTrigger, {isLoading,isError}] = useLazyRegisterUserQuery();
 
@@ -63,10 +65,10 @@ function Register(props: RegisterProps) {
         },
         validate: async (values)=>{
             let errors:FormikErrors<typeof values> = {}
-            if (currentPage === 1){
+            if (currentPage === Pages.Step1){
                 const {username,password,rePassword} = values;
                 errors = await validateYupSchema({username,password,rePassword}, validationSchemaStep1)
-            } else if (currentPage === 2){
+            } else if (currentPage === Pages.Step2){
 
                 const {firstName,lastName,profileImageUrl} = values;
                 errors = await validateYupSchema({firstName,lastName,profileImageUrl}, validationSchemaStep2)
@@ -79,10 +81,10 @@ function Register(props: RegisterProps) {
         },
         onSubmit: async (values,formikHelpers)=>{
 
-            if (currentPage === 1){
+            if (currentPage === Pages.Step1){
                 formikHelpers.setTouched({username:true,password:true,rePassword:true})
                 setCurrentPage(currentPage + 1)
-            } else if (currentPage === 2){
+            } else if (currentPage === Pages.Step2){
                 setCurrentPage(currentPage + 1)
             } else {
                 const sendValues = clearFormValues(values) as RegisterUser;
@@ -124,17 +126,7 @@ function Register(props: RegisterProps) {
                 </Box>
 
                 <FormikContext.Provider value={formik}>
-                    {currentPage === 1 && 
-                            <RegisterStep1
-                                />}
-                    {currentPage === 2 && 
-                            <RegisterStep2
-                                
-                                /> }
-                    {currentPage === 3 && 
-                            <RegisterStep3
-                                
-                                /> }
+                    <RegisterStep currentPage={currentPage}/>
                 </FormikContext.Provider>
                 
                 <RegisterNavigation 
