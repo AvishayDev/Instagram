@@ -18,22 +18,9 @@ import { Paths } from "../consts/enums/Paths";
 import { ValidationMessages } from "../consts/ValidationErrorMessages";
 import { MaxLengths, MinLengths } from "../consts/MinMax";
 import { Messages } from "../consts/enums/Messages";
+import { getValidationScheme } from "../Validation/ValidationFunctions";
 
-const validationSchema = Yup.object({
-    username: Yup.string()
-                .required(ValidationMessages.REQUIRED)
-                .min(MinLengths.USERNAME,ValidationMessages.TOO_SHORT)
-                .max(MaxLengths.USERNAME,ValidationMessages.TOO_LONG)
-                .test('isAlphanumeric',
-                    'Username' + ValidationMessages.LETTERS_AND_NUMBERS,
-                    (value)=>isAlphanumeric(value)),
-    
-    password: Yup.string()
-                .required(ValidationMessages.REQUIRED)
-                .max(MaxLengths.PASSWORD,ValidationMessages.TOO_LONG)
-
-        
-})
+const validationSchema = getValidationScheme(['username','password'])
 
 interface LoginProps{
     onLogin:(user:User)=>void

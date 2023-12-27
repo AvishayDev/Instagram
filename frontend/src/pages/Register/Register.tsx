@@ -20,54 +20,17 @@ import { Colors } from "../../consts/enums/Colors";
 import { Paths } from "../../consts/enums/Paths";
 import { ValidationMessages } from "../../consts/ValidationErrorMessages";
 import { MaxLengths, MinLengths } from "../../consts/MinMax";
+import { getValidationScheme, validateYupSchema } from "../../Validation/ValidationFunctions";
+import { ConnectedTvOutlined } from "@mui/icons-material";
 
 
-async function validateYupSchema<T extends FormikValues>(values : T ,schema:Yup.AnyObjectSchema) : Promise<FormikErrors<T>>{
+const validationSchemaStep1 = getValidationScheme(['username','password','rePassword'])
 
-    return await schema.validate(values,{ abortEarly: false })
-                        .then(()=>({}))
-                        .catch(error => yupToFormErrors(error))    
-}
+const validationSchemaStep2 = getValidationScheme(['imageUrl','firstName','lastName'],{'imageUrl':'profileImageUrl'})
 
-const validationSchemaStep1 = Yup.object({
-    username: Yup.string()
-                    .required(ValidationMessages.REQUIRED)
-                    .min(MinLengths.USERNAME,ValidationMessages.TOO_SHORT)
-                    .max(MaxLengths.USERNAME,ValidationMessages.TOO_LONG)
-                    .test('isAlphanumeric',
-                        'Username' + ValidationMessages.LETTERS_AND_NUMBERS,
-                        (value)=> isAlphanumeric(value)),
-    password: Yup.string()
-                    .required(ValidationMessages.REQUIRED)
-                    .max(MaxLengths.PASSWORD,ValidationMessages.TOO_LONG)
-                    .test('isStrongPassword',
-                            ValidationMessages.STRONG_PASSWORD,
-                            (value)=>isStrongPassword(value)),
-    rePassword: Yup.string()
-                    .required(ValidationMessages.REQUIRED)
-                    .oneOf([Yup.ref('password')],ValidationMessages.MATCH_PASSWORDS),
-    
-});
+const validationSchemaStep3 = getValidationScheme(['bio'])
 
-const validationSchemaStep2 = Yup.object({
-    profileImageUrl: Yup.string()
-                        .max(MaxLengths.IMAGE_URL,ValidationMessages.TOO_LONG_URL)
-                        .url(ValidationMessages.VALID_URL),
-    firstName: Yup.string()
-                    .required(ValidationMessages.NAME_REQUIRED)
-                    .min(MinLengths.FIRSTNAME,ValidationMessages.TOO_SHORT)
-                    .max(MaxLengths.FIRSTNAME,ValidationMessages.TOO_LONG)
-                    .test('isAlpha','First name' + ValidationMessages.LETTERS,(value)=>isAlpha(value)),
-    lastName: Yup.string()
-                    .required(ValidationMessages.NAME_REQUIRED)
-                    .min(MinLengths.LASTNAME,ValidationMessages.TOO_SHORT)
-                    .max(MaxLengths.LASTNAME,ValidationMessages.TOO_LONG)
-                    .test('isAlpha','Last name' + ValidationMessages.LETTERS,(value)=>isAlpha(value))
-})
 
-const validationSchemaStep3 = Yup.object({
-    bio: Yup.string().max(MaxLengths.BIO,ValidationMessages.TOO_LONG)
-})
 
 const initialPage = 1;
 
@@ -143,7 +106,7 @@ function Register(props: RegisterProps) {
             navigate(Paths.LOGIN)
     }
 
-
+    useEffect(()=>console.log(formik.values.profileImageUrl),[formik.values.profileImageUrl])
     return ( 
         <>
             {openError && <AutoClosePopup 
