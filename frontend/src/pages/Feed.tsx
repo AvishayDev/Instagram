@@ -10,6 +10,7 @@ import { LoadingButton } from "@mui/lab";
 import RefreshPageIcon from "../components/RefreshPageIcon";
 import { ButtonsText } from "../consts/enums/ButtonsText";
 import { Messages } from "../consts/enums/Messages";
+import NoPosts from "../components/NoPosts";
 
 
 
@@ -56,7 +57,8 @@ function Feed() {
                 isError ?
                     <PageError/>
                 :
-                posts ?
+                posts ? 
+                posts.length === 0 ? <NoPosts/> :
                         <>
                             <List sx={ {  overflowY:'hidden'  }}>
                                 { posts.map((postData, index)=>{
