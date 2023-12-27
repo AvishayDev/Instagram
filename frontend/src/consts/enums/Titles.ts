@@ -13,4 +13,6 @@ export enum Titles{
     UserNotHasPosts2="Let's post one!",
     NonPage1='How Did You Get Here..?',
     NonPage2='Sound This!!',
+    NoPosts1="Wow! You're The First User!",
+    NoPost2='Feel free to upload the first post in our app!'
 }
