@@ -59,14 +59,14 @@ export class UsersService{
     }
 
     async checkUsernamePassword(checkUsernamePasswordDB:CheckUsernamePasswordDB){
+        
+        const {username,password} = checkUsernamePasswordDB
+        
         const user = await this.usersRepository.findOne({
             select: getSelectObject(['id','username',
                                      'profileImageUrl','firstName',
                                      'lastName','bio']),
-            where: {
-                username:checkUsernamePasswordDB.username,
-                password:checkUsernamePasswordDB.password
-            }
+            where: { username, password }
         })
 
         if (!user){

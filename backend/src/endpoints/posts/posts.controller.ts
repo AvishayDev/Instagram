@@ -26,4 +26,9 @@ export class PostsController {
         return this.postsService.createPost(addPostDTO);
     }
 
+    @Get('test')
+    test(){
+        return this.postsService.getPostsLikes([58,57,56,55,54,53,52,51,50])
+    }
+
 }

@@ -51,6 +51,9 @@ function Feed() {
         loadInitialData();
     },[]);
 
+
+
+    useEffect(()=>console.log(posts),[posts])
     return ( 
         <Stack>
             {
