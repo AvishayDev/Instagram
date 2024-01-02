@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/Tables/User";
 import { Repository } from "typeorm";
@@ -19,6 +19,9 @@ export class UsersService{
         @InjectRepository(Post) private postsRepository: Repository<Post>,
     ){}
 
+    async test(){
+        return await this.usersRepository.find()
+    }
 
     async checkUsernameExists(username: string){
         try {
@@ -58,23 +61,20 @@ export class UsersService{
         return this.usersRepository.save(newUser)
     }
 
-    async checkUsernamePassword(checkUsernamePasswordDB:CheckUsernamePasswordDB){
+    // async checkUsernamePassword(checkUsernamePasswordDB:CheckUsernamePasswordDB){
         
-        const {username,password} = checkUsernamePasswordDB
+    //     const {username,password} = checkUsernamePasswordDB
         
-        const user = await this.usersRepository.findOne({
-            select: getSelectObject(['id','username',
-                                     'profileImageUrl','firstName',
-                                     'lastName','bio']),
-            where: { username, password }
-        })
+    //     const user = await this.usersRepository.findOne({
+    //         where: { username, password }
+    //     })
 
-        if (!user){
-            throw new NotFoundException(UsersErrors.UsernameOrPasswordIncurrent)
-        }
-
-        return user;
-    }
+    //     if (!user){
+    //         throw new UnauthorizedException(UsersErrors.UsernameOrPasswordIncurrent)
+    //     }
+    //     const {password:userPassword, ...cleanUser} = user;
+    //     return cleanUser;
+    // }
 
     async getUserPosts(userId:number){
 

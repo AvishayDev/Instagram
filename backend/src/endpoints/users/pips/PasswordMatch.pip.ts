@@ -1,5 +1,5 @@
 import { PipeTransform, Injectable, ArgumentMetadata,BadRequestException } from '@nestjs/common';
-import { addUserDTO } from '../dtos/AddUser.dto';
+import { addUserDTO } from '../../auth/dtos/AddUser.dto';
 
 @Injectable()
 export class PasswordValidationPipe implements PipeTransform {

@@ -3,7 +3,6 @@
 
 
 export type SignLikeType = {
-    userId:number,
     postId:number
 }
 

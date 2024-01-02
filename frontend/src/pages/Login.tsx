@@ -1,7 +1,6 @@
 import { Stack, TextField, Box, Typography } from "@mui/material";
 import {IMAGES} from '../consts/Images'
 import LinkButton from "../components/LinkButton";
-import { useLazyLoginUserQuery } from "../redux/features/Api/users/usersApiSlice";
 import { LoadingButton } from "@mui/lab";
 import { isAlphanumeric, isEmpty, isNotEmpty } from "class-validator";
 import useLocalStorage from "../Hooks/useLocalStorage";
@@ -19,20 +18,19 @@ import { ValidationMessages } from "../consts/ValidationErrorMessages";
 import { MaxLengths, MinLengths } from "../consts/MinMax";
 import { Messages } from "../consts/enums/Messages";
 import { getValidationScheme } from "../Validation/ValidationFunctions";
+import { useLazyLoginQuery } from "../redux/features/Auth/authApiSlice";
+import { useStoreDispatch } from "../Hooks/storeHooks";
+import { authSliceActions } from "../redux/features/Auth/authSlice";
 
 const validationSchema = getValidationScheme(['username','password'])
 
-interface LoginProps{
-    onLogin:(user:User)=>void
-}
-
-
-function Login(props:LoginProps) {
+function Login() {
     
-    const [openError,setOpenError] = useState(false)
+    const [openError,setOpenError] = useState(false);
 
+    const dispatch = useStoreDispatch();
 
-    const [trigger,{isLoading}] = useLazyLoginUserQuery();
+    const [trigger,{isLoading}] = useLazyLoginQuery();
 
     const formik = useFormik({
         initialValues:{
@@ -43,7 +41,7 @@ function Login(props:LoginProps) {
             const {isSuccess, data} = await trigger(values);
 
             if (isSuccess){
-                props.onLogin(data)
+                dispatch(authSliceActions.setCredentials(data))
             } else
                 setOpenError(true)
         },

@@ -3,38 +3,66 @@ import useLocalStorage from "../Hooks/useLocalStorage";
 import { User } from "../redux/features/Api/users/types/User";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IMAGES } from "../consts/Images";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {  useLazyGetUserPostsQuery } from "../redux/features/Api/users/usersApiSlice";
-import { useStoreDispatch } from "../Hooks/storeHooks";
+import { useStoreDispatch, useStoreSelector } from "../Hooks/storeHooks";
 import CircularProgress from '@mui/material/CircularProgress';
 import PageError from "../components/PageError";
 import { ButtonsText } from "../consts/enums/ButtonsText";
 import { Titles } from "../consts/enums/Titles";
 import { Colors } from "../consts/enums/Colors";
 import UserNotHasPosts from "../components/UserNotHasPosts";
+import { useLazyLogoutQuery } from "../redux/features/Auth/authApiSlice";
+import { LoadingButton } from "@mui/lab";
+import AutoClosePopup from "../components/AutoClosePopup";
+import { Messages } from "../consts/enums/Messages";
+import { authSliceActions } from "../redux/features/Auth/authSlice";
+import { JwtPayload } from "../types/jwtPayload";
+import { useJwt } from "react-jwt";
 
 
-
-interface ProfileProps{
-    onLogout:()=>void
-}
-
-function Profile(props:ProfileProps) {
-
-    const [user] = useLocalStorage<User>('user');
+function Profile() {
 
     const [trigger,{isLoading, isError, data:userPosts}] = useLazyGetUserPostsQuery();
+    const [logoutTrigger,{isLoading:isLogoutLoading, isError:isLogoutError}] = useLazyLogoutQuery();
     
+    const [openLogoutError,setOpenLogoutError] = useState(isLogoutError)
+    useEffect(()=>setOpenLogoutError(isLogoutError),[isLogoutError])
 
+    const dispatch = useStoreDispatch();
+    const {access_token} = useStoreSelector(state => state.auth.tokens)
+    
+    const { decodedToken } = useJwt<JwtPayload>(access_token);
 
+    const user = decodedToken?.userData;
+    
+    
     useEffect(()=>{
-        const loadData = async ()=> await trigger(user.id);
+        const loadData = async ()=> await trigger();
         loadData();
     },[])
-
+    
+    
+    const handleLogout = async () => {
+        
+        const {isSuccess} = await logoutTrigger();
+        
+        isSuccess && dispatch(authSliceActions.logout())
+    }
+    
     return ( 
 
         <Stack width='100vw'>
+
+            {
+                isLogoutError && <AutoClosePopup 
+                                    color="error" 
+                                    message={Messages.ServerError}
+                                    open={openLogoutError}
+                                    onClose={()=>setOpenLogoutError(false)}
+                                    />
+            }
+
                 <Stack spacing={4} alignItems='flex-start' padding={2}>
                     <Stack direction='row' width='100%' alignItems='center' justifyContent='space-between'>
                         <Box   
@@ -45,25 +73,26 @@ function Profile(props:ProfileProps) {
                                     borderRadius:'100%',
                                     boxShadow:3
                                 }}
-                                src={user.profileImageUrl || IMAGES.defaultUserProfileImage }
+                                src={user?.profileImageUrl || IMAGES.defaultUserProfileImage }
                                 />
                         
-                        <Button 
+                        <LoadingButton 
                             variant="contained"
-                            onClick={props.onLogout}
+                            onClick={handleLogout}
+                            loading={isLogoutLoading}
                             >
                             {ButtonsText.LOGOUT}
-                        </Button>
+                        </LoadingButton>
                     </Stack>
                     
                     <Stack alignItems='flex-start'>
-                        <Typography>{user.firstName} {user.lastName}</Typography>
-                        <Typography>{user.username}</Typography>
+                        <Typography>{user?.firstName} {user?.lastName}</Typography>
+                        <Typography>{user?.username}</Typography>
                     </Stack >
                     
                     <Stack alignItems='flex-start'>
                         <Typography>{Titles.BIO}</Typography>
-                        <Typography variant="body2" align="left" sx={{width:'50vw'}}>{user.bio}</Typography>
+                        <Typography variant="body2" align="left" sx={{width:'50vw'}}>{user?.bio}</Typography>
                     </Stack>
                 </Stack>
                 

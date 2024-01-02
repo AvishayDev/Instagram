@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, LinearProgress, Typography } from "@mui/material";
+import { Box, Button, LinearProgress, Typography } from "@mui/material";
 import RegisterNavigation from "../../components/RegisterNavigation";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,6 @@ import { FormikContext, FormikErrors, FormikValues, useFormik,yupToFormErrors } 
 import { isAlpha, isAlphanumeric, isStrongPassword } from "class-validator";
 import * as Yup from 'yup';
 import { RegisterUser } from "../../redux/features/Api/users/types/RegisterUser";
-import { useLazyRegisterUserQuery } from "../../redux/features/Api/users/usersApiSlice";
 import { User } from "../../redux/features/Api/users/types/User";
 import AutoClosePopup from "../../components/AutoClosePopup";
 import { clearFormValues } from "../../HelpFunctions";
@@ -20,6 +19,9 @@ import { MaxLengths, MinLengths } from "../../consts/MinMax";
 import { getValidationScheme, validateYupSchema } from "../../Validation/ValidationFunctions";
 import { ConnectedTvOutlined } from "@mui/icons-material";
 import RegisterStep from "./RegisterStep";
+import { useLazyRegisterQuery } from "../../redux/features/Auth/authApiSlice";
+import { useStoreDispatch, useStoreSelector } from "../../Hooks/storeHooks";
+import { authSliceActions } from "../../redux/features/Auth/authSlice";
 
 
 const validationSchemaStep1 = getValidationScheme(['username','password','rePassword'])
@@ -37,15 +39,15 @@ export enum Pages {
 
 const initialPage = 0;
 
-interface RegisterProps {
-    onRegister:(user: User)=>void
-}
-
-function Register(props: RegisterProps) {
+function Register() {
 
     const [currentPage,setCurrentPage] = useState<Pages>(initialPage);
     const navigate = useNavigate();
-    const [registerTrigger, {isLoading,isError}] = useLazyRegisterUserQuery();
+    const [registerTrigger, {isLoading,isError}] = useLazyRegisterQuery();
+
+    const dispatch = useStoreDispatch()
+    const state = useStoreSelector(state=>state.auth)
+
 
     const [openError,setOpenError] = useState(false);
     useEffect(()=>setOpenError(isError),[isError])
@@ -89,13 +91,10 @@ function Register(props: RegisterProps) {
             } else {
                 const sendValues = clearFormValues(values) as RegisterUser;
 
-                const {data,isSuccess,error} = await registerTrigger({...sendValues});
-
-                console.log(error)
-
-                if (isSuccess)
-                    props.onRegister(data);
-
+                const {data,isSuccess} = await registerTrigger({...sendValues});
+                        
+                isSuccess && dispatch(authSliceActions.setCredentials(data));
+        
             }
         },
         validateOnBlur:true
@@ -108,7 +107,6 @@ function Register(props: RegisterProps) {
             navigate(Paths.LOGIN)
     }
 
-    useEffect(()=>console.log(formik.values.profileImageUrl),[formik.values.profileImageUrl])
     return ( 
         <>
             {openError && <AutoClosePopup 

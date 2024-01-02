@@ -18,10 +18,8 @@ const initialPages = 0;
 
 function Feed() {
 
-    const [user] = useLocalStorage<User>('user');
 
-
-    const [trigger,{isLoading,isError}] = useLazyGetPostsQuery();
+    const [trigger,{isFetching:isLoading,isError}] = useLazyGetPostsQuery();
     
     const [posts,setPosts] = useState<FeedPost[] | null>(null);
     const [page,setPage] = useState(initialPages);
@@ -37,14 +35,14 @@ function Feed() {
     const loadData = async () => {
         if (!posts) return
 
-        const {data} = await trigger({userId:user.id,page:page});
+        const {data} = await trigger({page:page});
 
         data && setNewPosts([...posts, ...data.posts],data.hasNext);
     }
 
     useEffect(()=>{
         const loadInitialData = async () =>{
-            const {data} = await trigger({userId:user.id,page:page});
+            const {data} = await trigger({page:page});
 
             data && setNewPosts(data.posts,data.hasNext)
         }
@@ -52,8 +50,6 @@ function Feed() {
     },[]);
 
 
-
-    useEffect(()=>console.log(posts),[posts])
     return ( 
         <Stack>
             {

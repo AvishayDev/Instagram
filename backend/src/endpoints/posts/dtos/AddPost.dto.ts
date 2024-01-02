@@ -9,9 +9,6 @@ export class AddPostDTO{
     @IsOptional()
     imageUrl:string;
 
-    @IsNumber()
-    userId:number;
-
     @IsString()
     @MaxLength(MaxLengths.POST_TEXT)
     @IsOptional()
