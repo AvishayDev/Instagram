@@ -20,8 +20,6 @@ interface PostProps {
 
 function Post(props :PostProps) {
 
-    const [user] = useLocalStorage<User>('user');
-
     const {post} = props;
 
     const [isLiked,setIsLiked] = useState(post.is_liked)
@@ -29,7 +27,7 @@ function Post(props :PostProps) {
     const [wasError,setWasError] = useState(false)
 
 
-    const signLike:SignLikeType = {userId:user.id, postId:post.post_id}
+    const signLike:SignLikeType = {postId:post.post_id}
 
     const [signTrigger] = useLazySignLikeQuery();
     const [unsignTrigger] = useLazyUnsignLikeQuery();

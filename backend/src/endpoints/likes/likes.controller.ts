@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Request } from "@nestjs/common";
 import { LikesService } from "./likes.service";
 import { SignLikeDTO } from "./dtos/SignLike.dto";
 import { EndPoints, LikesEndPoints } from "src/consts/EndPoints";
@@ -15,15 +15,19 @@ export class LikesController {
 
     @Post(LikesEndPoints.SIGN)
     signLike(
-        @Body() likeSignDTO:SignLikeDTO
+        @Body() likeSignDTO:SignLikeDTO,
+        @Request() req,
     ){
-        return this.likesService.signLike(likeSignDTO)
+        const {userId} = req;
+        return this.likesService.signLike({...likeSignDTO,userId})
     }
 
     @Delete(LikesEndPoints.UNSIGN)
     unsignLike(
-        @Body() likeSignDTO:SignLikeDTO
+        @Body() likeSignDTO:SignLikeDTO,
+        @Request() req,
     ){
-        return this.likesService.unsignLike(likeSignDTO)
+        const {userId} = req;
+        return this.likesService.unsignLike({...likeSignDTO,userId})
     }
 }

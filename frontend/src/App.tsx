@@ -13,15 +13,13 @@ import { User } from './redux/features/Api/users/types/User';
 import HowDidYouGetHere from './pages/How Did You Get Here/How did You Get Here';
 import { useNavigate } from 'react-router-dom';
 import { Paths } from './consts/enums/Paths';
+import { useStoreSelector } from './Hooks/storeHooks';
 
 
 
 function App() {
 
-  const [user,setUser] = useLocalStorage<User>('user');
-
-  const login = (user:User) => setUser(user);
-  const logout = () => setUser(null);
+  const {hasTokens} = useStoreSelector(state => state.auth)
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,19 +30,19 @@ function App() {
         <Routes>
           <Route path={Paths.BASE}>
               
-              <Route element={<ProtectedRoute isAllowed={!user} redirectPath={Paths.FEED}>
+              <Route element={<ProtectedRoute isAllowed={!hasTokens} redirectPath={Paths.FEED}>
                                 <Layout hasNavbar={false}/>
                               </ProtectedRoute>}>
-                <Route index path={Paths.LOGIN} element={<Login onLogin={login}/>}/>
-                <Route path={Paths.REGISTER} element={<Register onRegister={login}/>}/>
+                <Route index path={Paths.LOGIN} element={<Login />}/>
+                <Route path={Paths.REGISTER} element={<Register/>}/>
               </Route>
 
-              <Route element={<ProtectedRoute isAllowed={!!user} redirectPath={Paths.LOGIN}>
+              <Route element={<ProtectedRoute isAllowed={!!hasTokens} redirectPath={Paths.LOGIN}>
                                 <Layout hasNavbar={true}/>
                               </ProtectedRoute>}>
                 <Route path={Paths.FEED} element={<Feed/>}/>
                 <Route path={Paths.SHARE} element={<Share/>}/>
-                <Route path={Paths.PROFILE} element={<Profile onLogout={logout}/>}/>
+                <Route path={Paths.PROFILE} element={<Profile />}/>
               </Route>
 
               <Route path={Paths.STAR} element={<HowDidYouGetHere/>}/>

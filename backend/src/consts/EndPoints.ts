@@ -5,14 +5,14 @@
 export enum EndPoints {
     LIKES='likes',
     POSTS='posts',
-    USERS='users'
+    USERS='users',
+    AUTH='auth'
 }
 
 
 export enum UsersEndPoints {
     CHECK='check',
-    REGISTER='register',
-    LOGIN='login'
+    POSTS='posts'
 }
 
 export enum PostsEndPoints {
@@ -22,4 +22,12 @@ export enum PostsEndPoints {
 export enum LikesEndPoints {
     SIGN='sign',
     UNSIGN='unsign'
+}
+
+
+export enum AuthEndPoints {
+    LOGIN='login',
+    REGISTER='register',
+    LOGOUT='logout',
+    REFRESH='refresh',
 }

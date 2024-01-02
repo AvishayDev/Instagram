@@ -9,6 +9,7 @@ import { Post } from 'src/Tables/Post';
 @Module({
   imports:[TypeOrmModule.forFeature([User,Post])],
   controllers: [UsersController],
-  providers: [UsersService]
+  providers: [UsersService],
+  exports:[UsersService]
 })
 export class UsersModule {}

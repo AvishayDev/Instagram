@@ -39,7 +39,6 @@ const SuccessPopupPopup: PopupProps = {
 
 function Share() {
 
-    const [user] = useLocalStorage<User>('user');
     const [trigger] = useLazySharePostQuery();
     
     const [openPopup,setOpenPopup] = useState(false);
@@ -57,7 +56,6 @@ function Share() {
                 const sendValues = clearFormValues(renameKey(values,'postText','text'));
                             
                 const {isSuccess}= await trigger({
-                                userId:user.id,
                                 ...sendValues
                             });
                 

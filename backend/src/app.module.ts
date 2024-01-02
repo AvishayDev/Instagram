@@ -9,6 +9,7 @@ import { User } from './Tables/User';
 import { Post } from './Tables/Post';
 import { Like } from './Tables/Like';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from './endpoints/auth/auth.module';
 
 @Module({
   imports: [TypeOrmModule.forRootAsync({
@@ -27,7 +28,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ConfigModule.forRoot({isGlobal:true}),
     UsersModule, 
     PostsModule, 
-    LikesModule],
+    LikesModule, 
+    AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
