@@ -19,36 +19,37 @@ import { useStoreSelector } from './Hooks/storeHooks';
 
 function App() {
 
-  const {hasTokens} = useStoreSelector(state => state.auth)
+  const { hasTokens } = useStoreSelector(state => state.auth)
 
   const navigate = useNavigate();
   const location = useLocation();
-  useEffect(() => {location.pathname === Paths.BASE && navigate(Paths.LOGIN)}, []);
+  useEffect(() => { location.pathname === Paths.BASE && navigate(Paths.LOGIN) }, []);
 
+  
   return (
     <div className="App">
-        <Routes>
-          <Route path={Paths.BASE}>
-              
-              <Route element={<ProtectedRoute isAllowed={!hasTokens} redirectPath={Paths.FEED}>
-                                <Layout hasNavbar={false}/>
-                              </ProtectedRoute>}>
-                <Route index path={Paths.LOGIN} element={<Login />}/>
-                <Route path={Paths.REGISTER} element={<Register/>}/>
-              </Route>
+      <Routes>
+        <Route path={Paths.BASE}>
 
-              <Route element={<ProtectedRoute isAllowed={!!hasTokens} redirectPath={Paths.LOGIN}>
-                                <Layout hasNavbar={true}/>
-                              </ProtectedRoute>}>
-                <Route path={Paths.FEED} element={<Feed/>}/>
-                <Route path={Paths.SHARE} element={<Share/>}/>
-                <Route path={Paths.PROFILE} element={<Profile />}/>
-              </Route>
+          <Route element={<ProtectedRoute isAllowed={!hasTokens} redirectPath={Paths.FEED}>
+            <Layout hasNavbar={false} />
+          </ProtectedRoute>}>
+            <Route index path={Paths.LOGIN} element={<Login />} />
+            <Route path={Paths.REGISTER} element={<Register />} />
+          </Route>
 
-              <Route path={Paths.STAR} element={<HowDidYouGetHere/>}/>
+          <Route element={<ProtectedRoute isAllowed={hasTokens} redirectPath={Paths.LOGIN}>
+            <Layout hasNavbar={true} />
+          </ProtectedRoute>}>
+            <Route path={Paths.FEED} element={<Feed />} />
+            <Route path={Paths.SHARE} element={<Share />} />
+            <Route path={Paths.PROFILE} element={<Profile />} />
+          </Route>
 
-            </Route>
-        </Routes>
+          <Route path={Paths.STAR} element={<HowDidYouGetHere />} />
+
+        </Route>
+      </Routes>
     </div>
   );
 }
