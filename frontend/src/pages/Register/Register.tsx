@@ -46,8 +46,6 @@ function Register() {
     const [registerTrigger, {isLoading,isError}] = useLazyRegisterQuery();
 
     const dispatch = useStoreDispatch()
-    const state = useStoreSelector(state=>state.auth)
-
 
     const [openError,setOpenError] = useState(false);
     useEffect(()=>setOpenError(isError),[isError])

@@ -13,7 +13,6 @@ const baseQuery = fetchBaseQuery({
 
         if (access_token && !headers.get('Authorization'))
             headers.set('Authorization',`Bearer ${access_token}`)
-        
 
         return headers;
     }
@@ -47,8 +46,7 @@ const baseQueryWithReAuth = async (args: string | FetchArgs, api: BaseQueryApi, 
     } else {
         api.dispatch(authSliceActions.logout())
     }
-        
-
+    
     return result;
 }
 
